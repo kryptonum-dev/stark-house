@@ -1,19 +1,17 @@
 // Single Types
 import global from '../schema/singleTypes/global';
 import redirects from '../schema/singleTypes/redirects';
-import Index_Page from '../schema/singleTypes/Index_Page';
 
 const singleTypes = [
   global,
   redirects,
-  Index_Page,
 ];
 
 // Collections Types
-import Faq_Collection from '../schema/collectionTypes/Faq_Collection';
+import Landing_Collection from '../schema/collectionTypes/Landing_Collection';
 
 const collectionTypes = [
-  Faq_Collection,
+  Landing_Collection,
 ];
 
 // Components

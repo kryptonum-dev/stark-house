@@ -9,7 +9,5 @@ export const structure: StructureResolver = (S) =>
       createSingleton(S, "global"),
       createSingleton(S, "redirects"),
       S.divider(),
-      createSingleton(S, "Index_Page"),
-      S.divider(),
-      S.documentTypeListItem("Faq_Collection"),
+      S.documentTypeListItem("Landing_Collection"),
     ])

@@ -5,5 +5,5 @@
  * @type {{type: string}[]}
  */
 export const InternalLinkableTypes: { type: string }[] = [
-  { type: 'Index_Page' },
+  { type: 'Landing_Collection' },
 ];
