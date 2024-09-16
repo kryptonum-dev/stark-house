@@ -37,7 +37,7 @@ export default defineType({
       name: 'type',
       type: 'string',
       title: 'Type',
-      description: 'Choose "External" for links to websites outside your domain, or "Internal" for links to pages within your site.',
+      description: 'Choose "External" for links to websites outside your domain, "Internal" for links to pages within your site or "Internal ID" to link to a specific section.',
       options: {
         list: [
           { title: 'External', value: 'external' },
@@ -117,11 +117,12 @@ export default defineType({
       type: 'type',
       external: 'external',
       internal: 'internal.slug.current',
+      internalId: 'internalId',
     },
-    prepare({ title, theme, type, external, internal }) {
+    prepare({ title, theme, type, external, internal, internalId }) {
       return {
         title: `${title}`,
-        subtitle: type === 'external' ? external : internal,
+        subtitle: type === 'external' ? external : type === 'internal' ? internal : internalId,
         media: () => <Tooltip
           content={
             <Box padding={1}>
