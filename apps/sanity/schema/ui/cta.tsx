@@ -39,7 +39,11 @@ export default defineType({
       title: 'Type',
       description: 'Choose "External" for links to websites outside your domain, or "Internal" for links to pages within your site.',
       options: {
-        list: ['external', 'internal'],
+        list: [
+          { title: 'External', value: 'external' },
+          { title: 'Internal', value: 'internal' },
+          { title: 'Internal ID (for sections)', value: 'internalId' },
+        ],
         layout: 'radio',
         direction: 'horizontal',
       },
@@ -84,6 +88,26 @@ export default defineType({
           return true;
         }),
       ],
+    }),
+    defineField({
+      name: 'internalId',
+      type: 'string',
+      title: 'Section ID',
+      description: 'Enter the Section ID to link to a specific part of the page. This allows CTAs to navigate directly to a section. The pattern is `#SectionId`, and it always should start with the "#" symbol.',
+      hidden: ({ parent }) => parent?.type !== 'internalId',
+      validation: (Rule) => [
+        Rule.custom((value, { parent }) => {
+          const type = (parent as { type?: string })?.type;
+          if (type === 'internalId') {
+            if (!value) return "Section ID is required";
+            if (!value.startsWith('#')) {
+              return 'Section ID have to start with "#" symbol';
+            }
+          }
+          return true;
+        }),
+      ],
+      initialValue: '#',
     }),
   ],
   preview: {
