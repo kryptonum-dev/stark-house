@@ -1,4 +1,4 @@
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import { defineSlugForDocument } from "../../utils/define-slug-for-document";
 
 const name = 'Landing_Collection';
@@ -12,6 +12,23 @@ export default defineType({
   icon,
   fields: [
     ...defineSlugForDocument({}),
+    defineField({
+      name: 'components',
+      type: 'components',
+      title: 'Page Components',
+    }),
+    defineField({
+      name: 'seo',
+      type: 'seo',
+      title: 'SEO',
+      group: 'seo',
+    }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
   ],
   preview: {
     select: {
