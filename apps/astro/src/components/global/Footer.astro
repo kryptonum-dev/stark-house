@@ -101,21 +101,21 @@ const data = await sanityFetch<QueryProps>({
     gap: 12px 24px;
   }
   .socials {
-    @media (max-width: 629px) {
-      order: -1;
-      width: 100%;
-    }
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+    @media (max-width: 629px) {
+      order: -1;
+      width: 100%;
+    }
     a {
       display: block;
       padding: 12.5px 12px;
+      transition: color 0.3s;
       svg {
         display: block;
       }
-      transition: color 0.3s;
       &:hover {
         color: var(--primary-300);
       }

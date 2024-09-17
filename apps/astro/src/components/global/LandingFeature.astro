@@ -43,28 +43,26 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
     @media (min-width: 1000px) {
       grid-template-columns: 1.4fr 1fr;
       .img {
-        @media (min-width: 1000px) {
-          margin-right: calc(var(----pageMargin) * -1);
-          max-width: calc(100% + var(--pageMargin));
-        }
+        margin-right: calc(var(----pageMargin) * -1);
+        max-width: calc(100% + var(--pageMargin));
       }
     }
-    header {
-      padding: clamp(32px, calc(48vw / 7.68), 80px) 0 clamp(48px, calc(48vw / 7.68), 200px);
-      display: flex;
-      flex-direction: column;
-      gap: clamp(16px, calc(24vw / 7.68), 24px);
-    }
-    .img {
-      height: 100%;
-      clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
-    }
   }
-  .paragraph {
-    max-width: calc(626rem / 16);
+  header {
+    padding: clamp(32px, calc(48vw / 7.68), 80px) 0 clamp(48px, calc(48vw / 7.68), 200px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, calc(24vw / 7.68), 24px);
   }
   .logo {
     width: clamp(129px, calc(192vw / 7.68), 192px);
     margin-bottom: clamp(48px, calc(64vw / 7.68), 128px);
+  }
+  .paragraph {
+    max-width: calc(626rem / 16);
+  }
+  .img {
+    height: 100%;
+    clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
   }
 </style>
