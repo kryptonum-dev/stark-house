@@ -1,0 +1,77 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+export type Props = HTMLAttributes<'a' | 'button'> & {
+  text?: string | HTMLElement
+  theme: 'primary' | 'secondary'
+  type: 'external' | 'internal' | 'internalId'
+  href?: string
+}
+
+const { text, theme, type, href } = Astro.props
+
+const Cmp = !!href ? 'a' : 'button'
+const children = (await Astro.slots.render('default')) ?? text
+---
+
+<Cmp href={href} data-theme={theme} {...type === 'external' && { target: '_blank', rel: 'noreferrer' }} class="button">
+  {children}
+</Cmp>
+
+<style lang="scss">
+  .button {
+    font-size: clamp(calc(14rem / 16), calc(16vw / 7.68), 1rem);
+    text-align: center;
+    @media (max-width: 499px) {
+      width: 100%;
+    }
+    &[data-theme='primary'] {
+      padding: 8px 32px;
+      color: var(--neutral-700, #222);
+      position: relative;
+      z-index: 1;
+      &::before {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--primary-500, #dbb039);
+        clip-path: polygon(100% 0, 100% calc(100% - 24px), calc(100% - 30px) 100%, 0 100%, 0 0);
+        transition: background-color 0.3s;
+      }
+      &:hover {
+        &::before {
+          background: var(--primary-400, #f4cb5b);
+        }
+      }
+      &:active {
+        &::before {
+          background: var(--primary-300, #ffe6a2);
+        }
+      }
+    }
+    &[data-theme='secondary'] {
+      padding: 8px 32px;
+      box-shadow: inset 0px 0px 0px 1px var(--primary-300, #ffe6a2);
+      background-color: var(--neutral-700, #222);
+      color: var(--primary-300, #ffe6a2);
+      transition:
+        background-color 0.3s,
+        color 0.3s,
+        box-shadow 0.3s;
+      &:hover {
+        box-shadow: inset 0px 0px 0px 1px var(--primary-400, #f4cb5b);
+        background-color: var(--neutral-650, #2c2c2c);
+        color: var(--primary-400, #f4cb5b);
+      }
+      &:active {
+        box-shadow: inset 0px 0px 0px 1px var(--primary-400, #f4cb5b);
+        background-color: var(--neutral-600, #3b3b3b);
+        color: var(--primary-400, #f4cb5b);
+      }
+    }
+  }
+</style>
