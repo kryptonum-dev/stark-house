@@ -1,21 +1,24 @@
 @font-face {
-  font-family: 'Poppins';
+  font-family: 'Archivo';
   src:
-    url('/fonts/Poppins-Regular.woff2') format('woff2'),
-    url('/fonts/Poppins-Regular.woff') format('woff'),
-    url('/fonts/Poppins-Regular.ttf') format('truetype'),
-    url('/fonts/Poppins-Regular.eot') format('embedded-opentype');
+    url('/fonts/Archivo-Regular.woff2') format('woff2'),
+    url('/fonts/Archivo-Regular.woff') format('woff'),
+    url('/fonts/Archivo-Regular.ttf') format('truetype'),
+    url('/fonts/Archivo-Regular.eot') format('embedded-opentype');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
-
-@function rem($px) {
-  @if round($px) == $px {
-    @return calc($px / 16) + rem;
-  } @else {
-    @error "The value passed to rem() must be an integer";
-  }
+@font-face {
+  font-family: 'Archivo';
+  src:
+    url('/fonts/Archivo-SemiBold.woff2') format('woff2'),
+    url('/fonts/Archivo-SemiBold.woff') format('woff'),
+    url('/fonts/Archivo-SemiBold.ttf') format('truetype'),
+    url('/fonts/Archivo-SemiBold.eot') format('embedded-opentype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
 }
 
 *,
@@ -129,7 +132,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   background: var(--background-100, #fffcf9);
   color: var(--primary-900, #001b19);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Archivo', sans-serif;
   font-size: 1rem;
   line-height: 158%;
 }
@@ -160,7 +163,6 @@ h5,
 h6,
 .h6 {
   overflow-wrap: anywhere;
-  font-weight: 400;
   line-height: 128%;
   color: var(--primary-800, #01403b);
   strong {
