@@ -17,6 +17,7 @@
     "@sanity/client": "^6.21.3",
     "astro": "^4.15.6",
     "astro-portabletext": "^0.10.0",
+    "lenis": "^1.1.13",
     "sharp-ico": "^0.1.5",
     "typescript": "^5.6.2"
   },
