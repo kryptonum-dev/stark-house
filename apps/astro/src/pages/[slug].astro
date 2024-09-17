@@ -20,7 +20,7 @@ const slug = `/${paramsSlug}`
 
 const page = await sanityFetch<{ title: string; components: ComponentsProps }>({
   query: `
-    *[_type == 'Landing_Collection' && slug.current == $slug][] {
+    *[_type == 'Landing_Collection' && slug.current == $slug][0] {
       title,
       ${Components_Query}
     }
