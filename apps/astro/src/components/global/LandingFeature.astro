@@ -32,7 +32,7 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
       {ctas.map((cta) => <Button {...cta} />)}
     </div>
   </header>
-  <Image {...image} sizes="(max-width: 999px) 100vw, 50vw" priority={index === 0} class="img" />
+  <Image {...image} sizes="(max-width: 999px) 100vw, 33vw" priority={index === 0} class="img" />
 </section>
 
 <style lang="scss">
