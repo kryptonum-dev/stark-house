@@ -1,0 +1,39 @@
+---
+import Layout from '@/src/layouts/Layout.astro'
+import sanityFetch from '@/utils/sanity.fetch'
+import metadataFetch from '@/utils/metadata.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
+
+type QueryProps = {
+  title: string
+  slug: string
+  components: ComponentsProps
+}[]
+
+const data = await sanityFetch<QueryProps>({
+  query: `
+    *[_type == 'Landing_Collection'][] {
+      title,
+      "slug": slug.current,
+      ${Components_Query}
+    }
+  `,
+})
+
+export async function getStaticPaths() {
+  return data?.map(({ slug }) => ({ params: { slug } }))
+}
+
+const { slug: paramsSlug } = Astro.params
+const slug = `/${paramsSlug}`
+
+const page = data.find((page) => page.slug === slug)
+if (!page) return Astro.rewrite('/404')
+console.log(page.components[0].ctas)
+
+const metadata = await metadataFetch('Landing_Collection', slug)
+---
+
+<Layout {...metadata}>
+  <Components data={page.components} />
+</Layout>
