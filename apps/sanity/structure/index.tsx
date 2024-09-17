@@ -12,5 +12,7 @@ export const structure: StructureResolver = (S) =>
       createSingleton(S, "global"),
       createSingleton(S, "redirects"),
       S.divider(),
+      createSingleton(S, "NotFound_Page"),
+      S.divider(),
       createCollection(S, "Landing_Collection"),
     ])

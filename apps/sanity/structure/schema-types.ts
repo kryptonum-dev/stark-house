@@ -1,10 +1,12 @@
 // Single Types
 import global from '../schema/singleTypes/global';
 import redirects from '../schema/singleTypes/redirects';
+import NotFound_Page from '../schema/singleTypes/NotFound_Page';
 
 const singleTypes = [
   global,
   redirects,
+  NotFound_Page,
 ];
 
 // Collections Types
