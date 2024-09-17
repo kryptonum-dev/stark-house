@@ -1,0 +1,24 @@
+---
+import Layout from '@/src/layouts/Layout.astro'
+import sanityFetch from '@/utils/sanity.fetch'
+import metadataFetch from '@/utils/metadata.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
+
+type QueryProps = {
+  components: ComponentsProps
+}
+
+const page = await sanityFetch<QueryProps>({
+  query: `
+    *[_type == 'NotFound_Page'][0] {
+      ${Components_Query}
+    }
+  `,
+})
+
+const metadata = await metadataFetch('NotFound_Page')
+---
+
+<Layout {...metadata}>
+  <Components data={page.components} />
+</Layout>
