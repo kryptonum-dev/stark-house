@@ -1,0 +1,70 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const LandingFeature_Query = `
+  ${ImageDataQuery('logo')}
+  ${PortableTextQuery('heading')}
+  ${PortableTextQuery('paragraph')}
+  ${ButtonDataQuery('ctas[]')}
+  ${ImageDataQuery('image')}
+`
+
+type Props = {
+  index: number
+  logo?: ImageDataProps
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  ctas: ButtonDataProps[]
+  image: ImageDataProps
+}
+
+const { index, logo, heading, paragraph, ctas, image } = Astro.props
+---
+
+<section class="LandingFeature">
+  <header>
+    {logo && <Image {...logo} sizes="" class="logo" />}
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
+    <PortableText value={paragraph} class="paragraph" />
+    <div class="cta-wrapper">
+      {ctas.map((cta) => <Button {...cta} />)}
+    </div>
+  </header>
+  <Image {...image} sizes="(max-width: 999px) 100vw, 50vw" priority={index === 0} class="img" />
+</section>
+
+<style lang="scss">
+  .LandingFeature {
+    display: grid;
+    column-gap: 36px;
+    align-items: center;
+    @media (min-width: 1000px) {
+      grid-template-columns: 1.4fr 1fr;
+      .img {
+        @media (min-width: 1000px) {
+          margin-right: calc(var(----pageMargin) * -1);
+          max-width: calc(100% + var(--pageMargin));
+        }
+      }
+    }
+    header {
+      padding: clamp(32px, calc(48vw / 7.68), 80px) 0 clamp(48px, calc(48vw / 7.68), 200px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(16px, calc(24vw / 7.68), 24px);
+    }
+    .img {
+      height: 100%;
+      clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
+    }
+  }
+  .paragraph {
+    max-width: calc(626rem / 16);
+  }
+  .logo {
+    width: clamp(129px, calc(192vw / 7.68), 192px);
+    margin-bottom: clamp(48px, calc(64vw / 7.68), 128px);
+  }
+</style>

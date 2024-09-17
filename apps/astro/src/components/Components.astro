@@ -1,0 +1,40 @@
+---
+import type { ComponentProps } from 'astro/types'
+import LandingFeature, { LandingFeature_Query } from '@/src/components/global/LandingFeature.astro'
+
+const components = {
+  LandingFeature,
+}
+
+type ComponentsMap = {
+  [Component in keyof typeof components]: {
+    _type: Component
+  } & ComponentProps<(typeof components)[Component]>
+}
+
+export type ComponentsProps = Array<ComponentsMap[keyof typeof components]>
+
+type Props = {
+  data: ComponentsProps
+  indexStart?: number
+}
+
+const { data, indexStart = 0 } = Astro.props
+
+export const Components_Query = /* groq */ `
+  components[] {
+    _type,
+    _type == "LandingFeature" => {
+      ${LandingFeature_Query}
+    },
+  },
+`
+---
+
+{
+  data?.map((item, i) => {
+    const DynamicComponent = components[item._type]
+    if (!DynamicComponent) return null
+    return <DynamicComponent {...item} index={indexStart + i} />
+  })
+}
