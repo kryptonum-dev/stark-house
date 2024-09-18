@@ -3,11 +3,13 @@ import type { ComponentProps } from 'astro/types'
 import LandingFeature, { LandingFeature_Query } from '@/components/global/LandingFeature.astro'
 import FullWidthPhoto, { FullWidthPhoto_Query } from '@/components/global/FullWidthPhoto.astro'
 import BenefitsGrid, { BenefitsGrid_Query } from '@/components/global/BenefitsGrid.astro'
+import ImagedBenefitsSection, { ImagedBenefitsSection_Query } from '@/components/global/ImagedBenefitsSection.astro'
 
 const components = {
   LandingFeature,
   FullWidthPhoto,
   BenefitsGrid,
+  ImagedBenefitsSection,
 }
 
 type ComponentsMap = {
@@ -31,6 +33,7 @@ export const Components_Query = /* groq */ `
     _type == "LandingFeature" => ${LandingFeature_Query}
     _type == "FullWidthPhoto" => ${FullWidthPhoto_Query}
     _type == "BenefitsGrid" => ${BenefitsGrid_Query}
+    _type == "ImagedBenefitsSection" => ${ImagedBenefitsSection_Query}
   },
 `
 ---

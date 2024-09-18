@@ -1,0 +1,140 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const ImagedBenefitsSection_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    benefits[] {
+      ${PortableTextQuery('title')}
+      ${PortableTextQuery('description')}
+      ${ImageDataQuery('img')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  cta: ButtonDataProps
+  benefits: {
+    title: PortableTextValue
+    description: PortableTextValue
+    img: ImageDataProps
+  }[]
+}
+
+const { index, heading, paragraph, cta, benefits } = Astro.props
+---
+
+<section class="ImagedBenefitsSection">
+  <div class="header">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      <PortableText value={paragraph} />
+    </header>
+    <Button {...cta} />
+  </div>
+  <ul class="list">
+    {
+      benefits.map(({ title, description, img }, i) => (
+        <li class="item">
+          <header>
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" class="icon">
+              <path
+                fill="#B8B8B8"
+                fill-rule="evenodd"
+                d="M11.5 14.5V26h3V14.5H26v-3H14.5V0h-3v11.5H0v3h11.5Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
+            <PortableText value={description} />
+          </header>
+          <Image {...img} sizes="(max-width: 768px) 100vw, 33vw" priority={index === 0 && i === 0} />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  .ImagedBenefitsSection {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    & > .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
+      header {
+        max-width: calc(522rem / 16);
+        .heading {
+          margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+        }
+      }
+    }
+  }
+  .list {
+    .item {
+      padding: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(48rem / 16)) 0;
+      display: grid;
+      gap: clamp(calc(28rem / 16), calc(48vw / 7.68), calc(48rem / 16)) calc(24rem / 16);
+      @media (min-width: calc(1000rem / 16)) {
+        grid-template-columns: 1fr 1.4fr;
+      }
+      header {
+        display: flex;
+        flex-direction: column;
+        @media (max-width: calc(999rem / 16)) {
+          max-width: calc(672rem / 16);
+        }
+      }
+      .icon {
+        margin-bottom: clamp(calc(12rem / 16), calc(24vw / 7.68), calc(24rem / 16));
+        transition: transform 0.5s var(--easing);
+        &[data-active='true'] {
+          transform: rotate(180deg) scale(0.9);
+        }
+      }
+      .heading {
+        margin-top: auto;
+        font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+        margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      }
+      img {
+        clip-path: polygon(100% 0, 100% 100%, 23% 100%, 0 77%, 0 0);
+        width: 732px;
+      }
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelectorAll('.ImagedBenefitsSection')
+
+  section.forEach((element) => {
+    const icons = element.querySelectorAll('.icon')
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute('data-active', 'true')
+          } else {
+            entry.target.removeAttribute('data-active')
+          }
+        })
+      },
+      { rootMargin: '0px 0px -25% 0px' }
+    )
+    icons.forEach((icon) => {
+      observer.observe(icon)
+    })
+  })
+</script>
