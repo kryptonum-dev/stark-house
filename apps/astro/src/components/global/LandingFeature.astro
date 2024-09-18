@@ -41,6 +41,7 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
   .LandingFeature {
     display: grid;
     align-items: center;
+    column-gap: calc(36rem / 16);
     @media (min-width: calc(1000rem / 16)) {
       grid-template-columns: 1.4fr 1fr;
       .img {
@@ -65,5 +66,6 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
   .img {
     height: 100%;
     clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
+    max-width: 608px;
   }
 </style>
