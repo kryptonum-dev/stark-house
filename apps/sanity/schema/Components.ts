@@ -2,6 +2,7 @@ import { defineType } from "sanity";
 import LandingFeature from "./components/LandingFeature";
 import FullWidthPhoto from "./components/FullWidthPhoto";
 import BenefitsGrid from "./components/BenefitsGrid";
+import ImagedBenefitsSection from "./components/ImagedBenefitsSection";
 
 export default defineType({
   name: 'components',
@@ -11,6 +12,7 @@ export default defineType({
     LandingFeature,
     FullWidthPhoto,
     BenefitsGrid,
+    ImagedBenefitsSection,
   ],
   options: {
     insertMenu: {
