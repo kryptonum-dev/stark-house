@@ -3,7 +3,7 @@ import { toPlainText } from '../../utils/to-plain-text'
 
 const name = 'BenefitsGrid'
 const title = 'Siatka korzyści'
-const icon = () => '📊'
+const icon = () => '📊';
 
 export default defineField({
   name,

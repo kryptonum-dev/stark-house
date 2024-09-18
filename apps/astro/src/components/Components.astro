@@ -4,12 +4,16 @@ import LandingFeature, { LandingFeature_Query } from '@/components/global/Landin
 import FullWidthPhoto, { FullWidthPhoto_Query } from '@/components/global/FullWidthPhoto.astro'
 import BenefitsGrid, { BenefitsGrid_Query } from '@/components/global/BenefitsGrid.astro'
 import ImagedBenefitsSection, { ImagedBenefitsSection_Query } from '@/components/global/ImagedBenefitsSection.astro'
+import MetricsHighlightSection, {
+  MetricsHighlightSection_Query,
+} from '@/components/global/MetricsHighlightSection.astro'
 
 const components = {
   LandingFeature,
   FullWidthPhoto,
   BenefitsGrid,
   ImagedBenefitsSection,
+  MetricsHighlightSection,
 }
 
 type ComponentsMap = {
@@ -34,6 +38,7 @@ export const Components_Query = /* groq */ `
     _type == "FullWidthPhoto" => ${FullWidthPhoto_Query}
     _type == "BenefitsGrid" => ${BenefitsGrid_Query}
     _type == "ImagedBenefitsSection" => ${ImagedBenefitsSection_Query}
+    _type == "MetricsHighlightSection" => ${MetricsHighlightSection_Query}
   },
 `
 ---

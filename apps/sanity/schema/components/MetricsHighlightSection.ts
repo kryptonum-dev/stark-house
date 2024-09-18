@@ -3,7 +3,7 @@ import { toPlainText } from '../../utils/to-plain-text';
 
 const name = 'MetricsHighlightSection';
 const title = 'Sekcja z wyróżnionymi metrykami';
-const icon = () => '📊';
+const icon = () => '📈'
 
 export default defineField({
   name,
