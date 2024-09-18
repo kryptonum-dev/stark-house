@@ -1,9 +1,11 @@
 ---
 import type { ComponentProps } from 'astro/types'
 import LandingFeature, { LandingFeature_Query } from '@/components/global/LandingFeature.astro'
+import FullWidthPhoto, { FullWidthPhoto_Query } from '@/components/global/FullWidthPhoto.astro'
 
 const components = {
   LandingFeature,
+  FullWidthPhoto,
 }
 
 type ComponentsMap = {
@@ -24,16 +26,15 @@ const { data, indexStart = 0 } = Astro.props
 export const Components_Query = /* groq */ `
   components[] {
     _type,
-    _type == "LandingFeature" => {
-      ${LandingFeature_Query}
-    },
+    _type == "LandingFeature" => ${LandingFeature_Query}
+    _type == "FullWidthPhoto" => ${FullWidthPhoto_Query}
   },
 `
 ---
 
 {
   data?.map((item, i) => {
-    const DynamicComponent = components[item._type]
+    const DynamicComponent = components[item._type] as any
     if (!DynamicComponent) return null
     return <DynamicComponent {...item} index={indexStart + i} />
   })

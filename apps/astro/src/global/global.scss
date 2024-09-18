@@ -52,7 +52,7 @@
   --success-100: #e0ffe9;
   --success-500: #3abf62;
 
-  --easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing: cubic-bezier(0, 0, 0.2, 1);
   --pageMargin: clamp(16px, calc(40vw / 7.68), 40px);
   @media (max-width: 899px) and (min-width: 600px) {
     --pageMargin: clamp(40px, calc(80vw / 7.68), 80px);

@@ -1,5 +1,6 @@
 import { defineType } from "sanity";
 import LandingFeature from "./components/LandingFeature";
+import FullWidthPhoto from "./components/FullWidthPhoto";
 
 export default defineType({
   name: 'components',
@@ -7,6 +8,7 @@ export default defineType({
   title: 'Components',
   of: [
     LandingFeature,
+    FullWidthPhoto,
   ],
   options: {
     insertMenu: {

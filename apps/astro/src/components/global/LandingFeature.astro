@@ -4,11 +4,13 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/b
 import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
 
 export const LandingFeature_Query = `
-  ${ImageDataQuery('logo')}
-  ${PortableTextQuery('heading')}
-  ${PortableTextQuery('paragraph')}
-  ${ButtonDataQuery('ctas[]')}
-  ${ImageDataQuery('image')}
+  {
+    ${ImageDataQuery('logo')}
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('ctas[]')}
+    ${ImageDataQuery('image')}
+  },
 `
 
 type Props = {
@@ -25,8 +27,8 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
 
 <section class="LandingFeature">
   <header>
-    {logo && <Image {...logo} sizes="" class="logo" />}
-    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
+    {logo && <Image {...logo} sizes="" class="logo" loading="eager" />}
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h1" />
     <PortableText value={paragraph} class="paragraph" />
     <div class="cta-wrapper">
       {ctas.map((cta) => <Button {...cta} />)}
