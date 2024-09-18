@@ -30,27 +30,23 @@ const children = (await Astro.slots.render('default')) ?? text
       color: var(--neutral-700, #222);
       position: relative;
       z-index: 1;
+      background: var(--primary-500, #dbb039);
+      transition: background-color 0.3s;
       &::before {
         content: '';
-        z-index: -1;
         position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--primary-500, #dbb039);
-        clip-path: polygon(100% 0, 100% calc(100% - 24px), calc(100% - 30px) 100%, 0 100%, 0 0);
-        transition: background-color 0.3s;
+        width: 30px;
+        height: 24px;
+        right: -0.5px;
+        bottom: -0.5px;
+        background-color: var(--neutral-700, #222);
+        clip-path: polygon(100% 0, 0 100%, 100% 100%);
       }
       &:hover {
-        &::before {
-          background: var(--primary-400, #f4cb5b);
-        }
+        background: var(--primary-400, #f4cb5b);
       }
       &:active {
-        &::before {
-          background: var(--primary-300, #ffe6a2);
-        }
+        background: var(--primary-300, #ffe6a2);
       }
     }
     &[data-theme='secondary'] {
@@ -71,6 +67,15 @@ const children = (await Astro.slots.render('default')) ?? text
         box-shadow: inset 0px 0px 0px 1px var(--primary-400, #f4cb5b);
         background-color: var(--neutral-600, #3b3b3b);
         color: var(--primary-400, #f4cb5b);
+      }
+    }
+  }
+  :global([light-background]) {
+    .button {
+      &[data-theme='primary'] {
+        &::before {
+          background-color: var(--primary-100, #edebe7);
+        }
       }
     }
   }
