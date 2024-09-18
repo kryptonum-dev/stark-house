@@ -47,6 +47,7 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
       .img {
         margin-right: calc(var(--pageMargin) * -1);
         max-width: calc(100% + var(--pageMargin));
+        margin-bottom: 0;
       }
     }
   }
@@ -64,8 +65,8 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
     max-width: calc(626rem / 16);
   }
   .img {
-    height: 100%;
     clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
-    max-width: 608px;
+    width: 608px;
+    margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
   }
 </style>
