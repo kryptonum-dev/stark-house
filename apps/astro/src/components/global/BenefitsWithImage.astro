@@ -1,0 +1,98 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const BenefitsWithImage_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    ${ImageDataQuery('img')}
+    benefits[] {
+      ${PortableTextQuery('title')}
+      ${PortableTextQuery('description')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  cta: ButtonDataProps
+  img: ImageDataProps
+  benefits: {
+    title: PortableTextValue
+    description: PortableTextValue
+  }[]
+}
+
+const { index, heading, paragraph, benefits, img, cta } = Astro.props
+---
+
+<section class="BenefitsWithImage sec-wo-margin" light-background>
+  <div class="max-width">
+    <div class="header">
+      <header>
+        <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+        <PortableText value={paragraph} />
+      </header>
+      <Button {...cta} />
+    </div>
+    <div class="column">
+      <Image {...img} sizes="(max-width: 768px) 100vw, 50vw" priority={index === 0} />
+      <ul class="benefits">
+        {
+          benefits.map(({ title, description }) => (
+            <li class="benefit">
+              <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
+              <PortableText value={description} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .BenefitsWithImage {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
+      header {
+        max-width: calc(522rem / 16);
+        .heading {
+          margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+        }
+      }
+    }
+  }
+  .column {
+    display: grid;
+    align-items: center;
+    gap: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16))
+      clamp(calc(82rem / 16), calc(82vw / 7.68), calc(134rem / 16));
+    @media (min-width: calc(1000rem / 16)) {
+      grid-template-columns: 1fr 1.4fr;
+    }
+    img {
+      width: 608px;
+    }
+    .benefits {
+      max-width: calc(608rem / 16);
+      display: grid;
+      gap: clamp(calc(24rem / 16), calc(36vw / 7.68), calc(36rem / 16));
+    }
+    .heading {
+      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+      margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+    }
+  }
+</style>
