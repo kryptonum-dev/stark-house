@@ -11,9 +11,10 @@ const singleTypes = [
 
 // Collections Types
 import Landing_Collection from '../schema/collectionTypes/Landing_Collection';
-
+import Faq_Collection from '../schema/collectionTypes/Faq_Collection';
 const collectionTypes = [
   Landing_Collection,
+  Faq_Collection,
 ];
 
 // Components
