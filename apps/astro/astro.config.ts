@@ -19,6 +19,6 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: 'hybrid',
+  output: 'server',
   adapter: vercel(),
 });
