@@ -4,7 +4,7 @@ import { isPreviewDeployment } from './is-preview-deployment';
 const SANITY_API_TOKEN = import.meta.env.SANITY_API_TOKEN || process.env.SANITY_API_TOKEN;
 
 if (isPreviewDeployment && !SANITY_API_TOKEN) {
-  console.warn('\x1b[33m%s\x1b[0m', "The `SANITY_API_TOKEN` environment variable is required.");
+  console.warn('\x1b[34m%s\x1b[0m', "The `SANITY_API_TOKEN` environment variable is required.");
 }
 
 export const client = createClient({

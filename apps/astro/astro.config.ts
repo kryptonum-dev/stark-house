@@ -20,6 +20,6 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: isPreviewDeployment ? "server" : 'hybrid',
+  output: isPreviewDeployment ? "server" : "hybrid",
   adapter: vercel(),
 });
