@@ -12,6 +12,14 @@ export default defineField({
   icon,
   fields: [
     defineField({
+      name: 'isReversed',
+      type: 'boolean',
+      title: 'Czy sekcja powinna być odwrócona?',
+      description: 'Domyślnie sekcja nie jest odwrócona, i zdjęcia znajdują się po prawej stronie. Jeśli zaznaczysz tą opcję, zdjęcia będą po lewej stronie.',
+      initialValue: false,
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'heading',
       type: 'Heading',
       title: 'Nagłówek',
