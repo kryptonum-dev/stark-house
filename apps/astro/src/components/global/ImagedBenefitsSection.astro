@@ -57,7 +57,11 @@ const { index, isReversed, heading, paragraph, cta, benefits } = Astro.props
             <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
             <PortableText value={description} />
           </header>
-          <Image {...img} sizes="(max-width: 768px) 100vw, 33vw" priority={index === 0 && i === 0} />
+          <Image
+            {...img}
+            sizes="(max-width: 599px) 100vw, (max-width: 1379px) 60vw, 732px"
+            priority={index === 0 && i === 0}
+          />
         </li>
       ))
     }

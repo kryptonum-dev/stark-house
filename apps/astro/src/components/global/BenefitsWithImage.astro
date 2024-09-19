@@ -41,7 +41,7 @@ const { index, heading, paragraph, benefits, img, cta } = Astro.props
       <Button {...cta} />
     </div>
     <div class="column">
-      <Image {...img} sizes="(max-width: 768px) 100vw, 50vw" priority={index === 0} />
+      <Image {...img} sizes="(max-width: 599px) 100vw, (max-width: 999px) 80vw, 40vw" priority={index === 0} />
       <ul class="benefits">
         {
           benefits.map(({ title, description }) => (
@@ -78,7 +78,7 @@ const { index, heading, paragraph, benefits, img, cta } = Astro.props
     display: grid;
     align-items: center;
     gap: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16))
-      clamp(calc(82rem / 16), calc(82vw / 7.68), calc(134rem / 16));
+      clamp(calc(64rem / 16), calc(64vw / 7.68), calc(134rem / 16));
     @media (min-width: calc(1000rem / 16)) {
       grid-template-columns: 1fr 1.4fr;
     }
