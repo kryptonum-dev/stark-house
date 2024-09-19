@@ -8,6 +8,7 @@ import MetricsHighlightSection, {
   MetricsHighlightSection_Query,
 } from '@/components/global/MetricsHighlightSection.astro'
 import BenefitsWithImage, { BenefitsWithImage_Query } from '@/components/global/BenefitsWithImage.astro'
+import BenefitsNumberedGrid, { BenefitsNumberedGrid_Query } from '@/components/global/BenefitsNumberedGrid.astro'
 
 const components = {
   LandingFeature,
@@ -16,6 +17,7 @@ const components = {
   ImagedBenefitsSection,
   MetricsHighlightSection,
   BenefitsWithImage,
+  BenefitsNumberedGrid,
 }
 
 type ComponentsMap = {
@@ -42,6 +44,7 @@ export const Components_Query = /* groq */ `
     _type == "ImagedBenefitsSection" => ${ImagedBenefitsSection_Query}
     _type == "MetricsHighlightSection" => ${MetricsHighlightSection_Query}
     _type == "BenefitsWithImage" => ${BenefitsWithImage_Query}
+    _type == "BenefitsNumberedGrid" => ${BenefitsNumberedGrid_Query}
   },
 `
 ---
