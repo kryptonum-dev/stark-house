@@ -4,6 +4,7 @@ import FullWidthPhoto from "./components/FullWidthPhoto";
 import BenefitsGrid from "./components/BenefitsGrid";
 import ImagedBenefitsSection from "./components/ImagedBenefitsSection";
 import MetricsHighlightSection from "./components/MetricsHighlightSection";
+import BenefitsWithImage from "./components/BenefitsWithImage";
 
 export default defineType({
   name: 'components',
@@ -15,6 +16,7 @@ export default defineType({
     BenefitsGrid,
     ImagedBenefitsSection,
     MetricsHighlightSection,
+    BenefitsWithImage,
   ],
   options: {
     insertMenu: {
