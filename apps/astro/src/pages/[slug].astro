@@ -4,6 +4,17 @@ import sanityFetch from '@/utils/sanity.fetch'
 import metadataFetch from '@/utils/metadata.fetch'
 import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
 
+export async function getStaticPaths() {
+  const collection = await sanityFetch<{ slug: string }[]>({
+    query: `
+      *[_type == 'Landing_Collection'][] {
+        "slug": slug.current,
+      }
+    `,
+  })
+  return collection?.map(({ slug }) => ({ params: { slug } }))
+}
+
 const { slug: paramsSlug } = Astro.params
 const slug = `/${paramsSlug}`
 

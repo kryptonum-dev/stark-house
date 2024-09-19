@@ -3,7 +3,7 @@ import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from "./src/global/constants";
 import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
-// import redirects from "./redirects";
+import redirects from "./redirects";
 
 export default defineConfig({
   site: DOMAIN,
@@ -19,6 +19,7 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true
   },
+  redirects: redirects,
   output: isPreviewDeployment ? "server" : 'hybrid',
   adapter: vercel(),
 });
