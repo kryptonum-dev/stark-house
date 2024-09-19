@@ -2,8 +2,7 @@ import { createClient, type QueryParams } from '@sanity/client'
 import { isPreviewDeployment } from './is-preview-deployment';
 import { loadEnv } from "vite";
 
-const env = loadEnv(process.env.NODE_ENV!, process.cwd(), "");
-const SANITY_API_TOKEN = env.SANITY_API_TOKEN || process.env.SANITY_API_TOKEN
+const SANITY_API_TOKEN = process.env.SANITY_API_TOKEN || loadEnv(process.env.NODE_ENV!, process.cwd(), "").SANITY_API_TOKEN
 
 if (isPreviewDeployment && !SANITY_API_TOKEN) {
   throw new Error("The `SANITY_API_TOKEN` environment variable is required.");
