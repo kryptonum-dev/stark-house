@@ -31,7 +31,7 @@ const { index, logo, heading, paragraph, ctas, image } = Astro.props
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h1" />
     <PortableText value={paragraph} class="paragraph" />
     <div class="cta-wrapper">
-      {ctas.map((cta) => <Button {...cta} />)}
+      {ctas?.map((cta) => <Button {...cta} />)}
     </div>
   </header>
   <Image {...image} sizes="(max-width: 999px) 100vw, 33vw" priority={index === 0} class="img" />
