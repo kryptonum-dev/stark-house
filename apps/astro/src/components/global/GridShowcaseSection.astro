@@ -1,0 +1,155 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const GridShowcaseSection_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    items[] {
+      ${ImageDataQuery('img')}
+      tag,
+      ${PortableTextQuery('title')}
+      ${PortableTextQuery('description')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  items: {
+    img: ImageDataProps
+    tag: string
+    title: PortableTextValue
+    description: PortableTextValue
+  }[]
+}
+
+const { index, heading, paragraph, items } = Astro.props
+---
+
+<section class="GridShowcaseSection">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} />
+  </header>
+  <ul class="list">
+    {
+      items.map(({ img, tag, title, description }, i) => (
+        <li class="item" style={i >= 2 ? 'display: none;' : ''}>
+          <Image
+            {...img}
+            sizes="(max-width: 599px) 100vw, (max-width: 699px) 80vw, 50vw"
+            priority={index === 0 && i === 0}
+          />
+          <p class="tag">{tag}</p>
+          <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="title" />
+          <PortableText value={description} />
+        </li>
+      ))
+    }
+  </ul>
+  {
+    items.length > 2 && (
+      <div class="actions">
+        <button class="load-more" data-total-items={items.length}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" fill="none">
+            <path fill="#FFE6A2" d="M11.5 14.785v11.5h3v-11.5H26v-3H14.5V.285h-3v11.5H0v3h11.5Z" />
+          </svg>
+          <span>pokaż więcej</span>
+        </button>
+        <p class="info">
+          wyświetlono <span class="count-visible-elements">2</span> z {items.length} projektów.
+        </p>
+      </div>
+    )
+  }
+</section>
+
+<style lang="scss">
+  .GridShowcaseSection {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    header {
+      max-width: calc(608rem / 16);
+      margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
+      .heading {
+        margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      }
+    }
+  }
+  .list {
+    display: grid;
+    gap: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16))
+      clamp(calc(42rem / 16), calc(56vw / 7.68), calc(56rem / 16));
+    .item {
+      padding: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+      max-width: calc(624rem / 16);
+    }
+    img {
+      margin-bottom: clamp(calc(20rem / 16), calc(24vw / 7.68), calc(32rem / 16));
+    }
+    .tag {
+      padding: calc(8rem / 16) 1rem;
+      display: inline-block;
+      background: var(--neutral-600, #3b3b3b);
+    }
+    .title {
+      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+      margin: clamp(calc(20rem / 16), calc(24vw / 7.68), calc(32rem / 16)) 0
+        clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+    }
+    @media (min-width: calc(1000rem / 16)) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .actions {
+    text-align: center;
+    margin-top: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+    button {
+      display: block;
+      margin: 0 auto 24px;
+      color: var(--primary-300, #ffe6a2);
+      svg {
+        display: block;
+        margin: 0 auto clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+        transition: transform 0.5s var(--easing);
+      }
+      &:hover {
+        svg {
+          transform: rotate(90deg) scale(0.9);
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.GridShowcaseSection').forEach((section) => {
+    const loadMoreButton = section.querySelector('.load-more')
+    const itemsList = section.querySelector('.list')
+    const countVisibleElements = section.querySelector('.count-visible-elements')
+    if (!loadMoreButton || !itemsList || !countVisibleElements) return
+    const totalItems = parseInt(loadMoreButton.getAttribute('data-total-items') || '0')
+    let visibleItems = 2
+    loadMoreButton.addEventListener('click', () => {
+      const items = itemsList.querySelectorAll<HTMLDivElement>('.item')
+      if (visibleItems < totalItems) {
+        for (let i = visibleItems; i < Math.min(visibleItems + 2, totalItems); i++) {
+          items[i].style.display = ''
+        }
+        visibleItems = Math.min(visibleItems + 2, totalItems)
+      } else {
+        for (let i = 2; i < totalItems; i++) {
+          items[i].style.display = 'none'
+        }
+        section.scrollIntoView({ behavior: 'smooth' })
+        visibleItems = 2
+      }
+      loadMoreButton.querySelector<HTMLSpanElement>('span')!.textContent =
+        visibleItems < totalItems ? 'pokaż więcej' : 'pokaż mniej'
+      countVisibleElements.textContent = visibleItems.toString()
+    })
+  })
+</script>

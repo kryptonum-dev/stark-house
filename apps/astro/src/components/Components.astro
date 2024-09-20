@@ -9,6 +9,7 @@ import MetricsHighlightSection, {
 } from '@/components/global/MetricsHighlightSection.astro'
 import BenefitsWithImage, { BenefitsWithImage_Query } from '@/components/global/BenefitsWithImage.astro'
 import BenefitsNumberedGrid, { BenefitsNumberedGrid_Query } from '@/components/global/BenefitsNumberedGrid.astro'
+import GridShowcaseSection, { GridShowcaseSection_Query } from '@/components/global/GridShowcaseSection.astro'
 import Faq, { Faq_Query } from '@/components/global/Faq.astro'
 
 const components = {
@@ -19,6 +20,7 @@ const components = {
   MetricsHighlightSection,
   BenefitsWithImage,
   BenefitsNumberedGrid,
+  GridShowcaseSection,
   Faq,
 }
 
@@ -47,6 +49,7 @@ export const Components_Query = /* groq */ `
     _type == "MetricsHighlightSection" => ${MetricsHighlightSection_Query}
     _type == "BenefitsWithImage" => ${BenefitsWithImage_Query}
     _type == "BenefitsNumberedGrid" => ${BenefitsNumberedGrid_Query}
+    _type == "GridShowcaseSection" => ${GridShowcaseSection_Query}
     _type == "Faq" => ${Faq_Query}
   },
 `
