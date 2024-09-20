@@ -37,7 +37,7 @@ const { index, heading, paragraph, items } = Astro.props
   </header>
   <ul class="list">
     {
-      items.map(({ img, tag, title, description }, i) => (
+      items?.map(({ img, tag, title, description }, i) => (
         <li class="item" style={i >= 2 ? 'display: none;' : ''}>
           <Image
             {...img}

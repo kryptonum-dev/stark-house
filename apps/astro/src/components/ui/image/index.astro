@@ -24,6 +24,8 @@ type Props = ImageDataProps & {
 
 const { asset, sizes, priority, ...props } = Astro.props
 
+if (!asset) return
+
 const imageProps = {
   src: asset.url,
   alt: asset.altText || '',
