@@ -1,0 +1,107 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import PortableText, { type PortableTextValue } from './portable-text'
+
+type Props = {
+  summary: PortableTextValue
+} & HTMLAttributes<'details'>
+
+const { summary, ...props } = Astro.props
+---
+
+<details {...props} data-expanded={props.open ? 'true' : 'false'}>
+  <summary>
+    <PortableText value={summary} class="heading" />
+    <div class="icon"><div></div><div></div></div>
+  </summary>
+  <div class="content"><slot /></div>
+</details>
+
+<style lang="scss">
+  details {
+    border-bottom: 1px solid var(--neutral-500, #6f6f6f);
+    &[data-expanded='true'] {
+      .icon {
+        div:first-child {
+          transform: rotate(0deg);
+        }
+      }
+    }
+  }
+  summary {
+    padding: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16)) 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: flex-start;
+    .heading {
+      max-width: calc(600rem / 16);
+      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+    }
+  }
+  .icon {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div {
+      width: 26px;
+      height: 2px;
+      background-color: var(--neutral-300, #b8b8b8);
+      &:first-child {
+        position: absolute;
+        transition: transform 0.3s var(--easing);
+        transform: rotate(90deg);
+      }
+    }
+  }
+  .content {
+    max-width: calc(600rem / 16);
+    overflow: hidden;
+    transition: height 0.5s var(--easing);
+    :global(> :last-child) {
+      margin-bottom: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16));
+    }
+  }
+</style>
+
+<script>
+  const setOpen = (details: HTMLDetailsElement, open: boolean) => {
+    details.open = open
+    details.setAttribute('data-expanded', open ? 'true' : 'false')
+  }
+  document.querySelectorAll('details').forEach((details) => {
+    const content = details.querySelector<HTMLDivElement>('.content')
+    const summary = details.querySelector<HTMLDivElement>('summary')
+    if (!content || !summary) return
+    summary.addEventListener('click', (event) => {
+      event.preventDefault()
+      const isOpened = details.getAttribute('data-expanded') === 'true'
+      if (isOpened) {
+        content.style.height = content.scrollHeight + 'px'
+        requestAnimationFrame(() => (content.style.height = '0px'))
+        content.addEventListener(
+          'transitionend',
+          () => {
+            setOpen(details, false)
+            content.style.height = ''
+          },
+          { once: true }
+        )
+      } else {
+        setOpen(details, true)
+        const startHeight = content.scrollHeight + 'px'
+        content.style.height = '0px'
+        requestAnimationFrame(() => (content.style.height = startHeight))
+        content.addEventListener(
+          'transitionend',
+          () => {
+            content.style.height = ''
+          },
+          { once: true }
+        )
+      }
+    })
+  })
+</script>
