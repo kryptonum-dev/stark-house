@@ -6,6 +6,7 @@ import ImagedBenefitsSection from "./components/ImagedBenefitsSection";
 import MetricsHighlightSection from "./components/MetricsHighlightSection";
 import BenefitsWithImage from "./components/BenefitsWithImage";
 import BenefitsNumberedGrid from "./components/BenefitsNumberedGrid";
+import GridShowcaseSection from "./components/GridShowcaseSection";
 import Faq from "./components/Faq";
 
 export default defineType({
@@ -20,6 +21,7 @@ export default defineType({
     MetricsHighlightSection,
     BenefitsWithImage,
     BenefitsNumberedGrid,
+    GridShowcaseSection,
     Faq,
   ],
   options: {
