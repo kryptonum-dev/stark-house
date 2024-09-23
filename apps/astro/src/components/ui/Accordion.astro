@@ -37,6 +37,8 @@ const { summary, ...props } = Astro.props
     .heading {
       max-width: calc(600rem / 16);
       font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+      font-weight: 600;
+      color: var(--neutral-100, #e6e6e6);
     }
   }
   .icon {
@@ -62,6 +64,13 @@ const { summary, ...props } = Astro.props
     transition: height 0.5s var(--easing);
     :global(> :last-child) {
       margin-bottom: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16));
+    }
+  }
+  @media (min-width: calc(500rem / 16)) {
+    summary,
+    .content {
+      padding-left: calc(20rem / 16);
+      padding-right: calc(20rem / 16);
     }
   }
 </style>
