@@ -1,0 +1,92 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+
+export const TestimonialSection_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    items[] {
+      ${PortableTextQuery('text')}
+      author,
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  items: {
+    text: PortableTextValue
+    author: string
+  }[]
+}
+
+const { index, heading, items } = Astro.props
+---
+
+<section class="TestimonialSection">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h3" />
+  </header>
+  <ul class="list">
+    {
+      items.map(({ text, author }) => (
+        <li class="item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" fill="#B8B8B8">
+            <path d="M0 14.509v-2.448c2.304-.384 3.312-2.688 3.312-5.376H.336V.541h6.096v5.616c0 5.616-3.072 7.728-6.432 8.352Zm9.696 0v-2.448c2.304-.384 3.312-2.688 3.312-5.376h-2.976V.541h6.096v5.616c0 5.616-3.072 7.728-6.432 8.352Z" />
+          </svg>
+          <PortableText value={text} class="h3 text" />
+          <p class="author">{author}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  .TestimonialSection {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+  }
+  header {
+    max-width: calc(608rem / 16);
+    margin-bottom: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(82rem / 16));
+  }
+  .list {
+    @media (min-width: calc(850rem / 16)) {
+      columns: 2;
+    }
+    $row-gap: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(84rem / 16));
+    .item {
+      break-inside: avoid;
+      & + .item {
+        margin-top: $row-gap;
+      }
+    }
+    svg {
+      margin-bottom: calc(12rem / 16);
+    }
+    .text {
+      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    }
+    column-gap: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(82rem / 16));
+  }
+  .actions {
+    text-align: center;
+    margin-top: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+    button {
+      display: block;
+      margin: 0 auto 24px;
+      color: var(--primary-300, #ffe6a2);
+      svg {
+        display: block;
+        margin: 0 auto clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+        transition: transform 0.5s var(--easing);
+      }
+      &:hover {
+        svg {
+          transform: rotate(90deg) scale(0.9);
+        }
+      }
+    }
+  }
+</style>

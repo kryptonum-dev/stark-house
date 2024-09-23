@@ -12,6 +12,7 @@ import BenefitsNumberedGrid, { BenefitsNumberedGrid_Query } from '@/components/g
 import GridShowcaseSection, { GridShowcaseSection_Query } from '@/components/global/GridShowcaseSection.astro'
 import Faq, { Faq_Query } from '@/components/global/Faq.astro'
 import ProcessAccordion, { ProcessAccordion_Query } from '@/components/global/ProcessAccordion.astro'
+import TestimonialSection, { TestimonialSection_Query } from '@/components/global/TestimonialSection.astro'
 
 const components = {
   LandingFeature,
@@ -24,6 +25,7 @@ const components = {
   GridShowcaseSection,
   Faq,
   ProcessAccordion,
+  TestimonialSection,
 }
 
 type ComponentsMap = {
@@ -54,6 +56,7 @@ export const Components_Query = /* groq */ `
     _type == "GridShowcaseSection" => ${GridShowcaseSection_Query}
     _type == "Faq" => ${Faq_Query}
     _type == "ProcessAccordion" => ${ProcessAccordion_Query}
+    _type == "TestimonialSection" => ${TestimonialSection_Query}
   },
 `
 ---

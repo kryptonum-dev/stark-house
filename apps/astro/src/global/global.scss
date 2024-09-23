@@ -208,10 +208,8 @@ h6,
 .h6 {
   overflow-wrap: anywhere;
   line-height: 116%;
+  font-weight: 600;
   color: var(--neutral-100, #e6e6e6);
-  strong {
-    font-weight: 400;
-  }
 }
 h1,
 .h1 {
