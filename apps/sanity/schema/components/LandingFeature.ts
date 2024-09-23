@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import sectionId from '../ui/sectionId';
 
 const name = 'LandingFeature';
 const title = 'Sekcja z cechami carportu';
@@ -42,16 +43,7 @@ export default defineField({
       title: 'Image',
       validation: Rule => Rule.required(),
     }),
-    defineField({
-      name: 'sectionId',
-      type: 'string',
-      title: 'Section ID (optional)',
-      description: 'The Section ID is a unique identifier used to link to specific sections of the page.',
-      group: 'sectionId',
-    }),
-  ],
-  groups: [
-    { name: 'sectionId', title: 'Section ID' },
+    ...sectionId,
   ],
   preview: {
     select: {

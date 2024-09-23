@@ -46,6 +46,7 @@ const { data, indexStart = 0 } = Astro.props
 export const Components_Query = /* groq */ `
   components[] {
     _type,
+    sectionId,
     _type == "LandingFeature" => ${LandingFeature_Query}
     _type == "FullWidthPhoto" => ${FullWidthPhoto_Query}
     _type == "BenefitsGrid" => ${BenefitsGrid_Query}

@@ -13,6 +13,7 @@ export const TestimonialSection_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   items: {
     text: PortableTextValue
@@ -20,10 +21,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, items } = Astro.props
+const { index, sectionId, heading, items } = Astro.props
 ---
 
-<section class="TestimonialSection">
+<section class="TestimonialSection" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h3" />
   </header>

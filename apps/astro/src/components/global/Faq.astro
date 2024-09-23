@@ -16,6 +16,7 @@ export const Faq_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   cta: ButtonDataProps
   items: {
@@ -24,10 +25,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, cta, items } = Astro.props
+const { index, sectionId, heading, cta, items } = Astro.props
 ---
 
-<section class="Faq">
+<section class="Faq" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
     <Button {...cta} />

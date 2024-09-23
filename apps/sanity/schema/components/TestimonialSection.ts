@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import sectionId from '../ui/sectionId';
 
 const name = 'TestimonialSection';
 const title = 'Sekcja z opiniami';
@@ -53,6 +54,7 @@ export default defineField({
       ],
       validation: Rule => Rule.required(),
     }),
+    ...sectionId,
   ],
   preview: {
     select: {

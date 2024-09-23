@@ -15,6 +15,7 @@ export const LandingFeature_Query = `
 
 type Props = {
   index: number
+  sectionId?: string
   logo?: ImageDataProps
   heading: PortableTextValue
   paragraph: PortableTextValue
@@ -22,10 +23,10 @@ type Props = {
   image: ImageDataProps
 }
 
-const { index, logo, heading, paragraph, ctas, image } = Astro.props
+const { index, sectionId, logo, heading, paragraph, ctas, image } = Astro.props
 ---
 
-<section class="LandingFeature">
+<section class="LandingFeature" id={sectionId}>
   <header>
     {logo && <Image {...logo} sizes="" class="logo" loading="eager" />}
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h1" />

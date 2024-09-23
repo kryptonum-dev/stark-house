@@ -17,6 +17,7 @@ export const GridShowcaseSection_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   paragraph: PortableTextValue
   items: {
@@ -27,10 +28,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, paragraph, items } = Astro.props
+const { index, sectionId, heading, paragraph, items } = Astro.props
 ---
 
-<section class="GridShowcaseSection">
+<section class="GridShowcaseSection" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
     <PortableText value={paragraph} />

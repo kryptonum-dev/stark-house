@@ -14,6 +14,7 @@ export const BenefitsGrid_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   subheading: PortableTextValue
   benefits: {
@@ -22,10 +23,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, subheading, benefits } = Astro.props
+const { index, sectionId, heading, subheading, benefits } = Astro.props
 ---
 
-<section class="BenefitsGrid">
+<section class="BenefitsGrid" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
     <PortableText value={subheading} />

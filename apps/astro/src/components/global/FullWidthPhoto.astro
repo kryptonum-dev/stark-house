@@ -9,13 +9,14 @@ export const FullWidthPhoto_Query = `
 
 type Props = {
   index: number
+  sectionId?: string
   img: ImageDataProps
 }
 
-const { index, img } = Astro.props
+const { index, sectionId, img } = Astro.props
 ---
 
-<section class="FullWidthPhoto">
+<section class="FullWidthPhoto" id={sectionId}>
   <Image {...img} sizes="100vw" priority={index === 0} class="img" />
 </section>
 

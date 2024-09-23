@@ -18,6 +18,7 @@ export const BenefitsWithImage_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   paragraph: PortableTextValue
   cta: ButtonDataProps
@@ -28,10 +29,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, paragraph, benefits, img, cta } = Astro.props
+const { index, sectionId, heading, paragraph, benefits, img, cta } = Astro.props
 ---
 
-<section class="BenefitsWithImage sec-wo-margin" light-background>
+<section class="BenefitsWithImage sec-wo-margin" light-background id={sectionId}>
   <div class="max-width">
     <div class="header">
       <header>

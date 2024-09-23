@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import sectionId from '../ui/sectionId';
 
 const name = 'GridShowcaseSection';
 const title = 'Sekcja z prezentacją realizacji';
@@ -73,6 +74,7 @@ export default defineField({
       ],
       validation: Rule => Rule.required()
     }),
+    ...sectionId,
   ],
   preview: {
     select: {

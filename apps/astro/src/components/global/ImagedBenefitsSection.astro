@@ -19,6 +19,7 @@ export const ImagedBenefitsSection_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   isReversed: boolean
   heading: PortableTextValue
   paragraph: PortableTextValue
@@ -30,10 +31,10 @@ export type Props = {
   }[]
 }
 
-const { index, isReversed, heading, paragraph, cta, benefits } = Astro.props
+const { index, sectionId, isReversed, heading, paragraph, cta, benefits } = Astro.props
 ---
 
-<section class="ImagedBenefitsSection" data-is-reversed={isReversed}>
+<section class="ImagedBenefitsSection" data-is-reversed={isReversed} id={sectionId}>
   <div class="header">
     <header>
       <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
