@@ -60,7 +60,7 @@
 }
 
 [light-background] {
-  background: var(--primary-100, #edebe7);
+  background-color: var(--primary-100, #edebe7);
   color: var(--neutral-700, #222);
   --neutral-000: #fcfcfc;
   --neutral-100: #3b3b3b;
@@ -232,7 +232,6 @@ h3,
       content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0U2RTZFNiIgc3Ryb2tlPSIjRTZFNkU2IiBkPSJNMS4yNjQgMWg3LjczdjhoLS44OTJWMi4zOTNMMS42MzEgOC44NjQgMSA4LjIzNGw2LjM0MS02LjM0MkgxLjI2NFYxWiIvPjwvc3ZnPg==');
       display: inline-block;
       margin-left: 5px;
-      vertical-align: middle;
       transition: transform 0.3s var(--easing);
     }
   }
