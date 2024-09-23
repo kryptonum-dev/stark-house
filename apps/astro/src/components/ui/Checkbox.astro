@@ -1,0 +1,87 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import Error from '@/components/ui/Error.astro'
+
+type Props = {
+  name: HTMLAttributes<'input'>['name']
+  error?: string
+} & HTMLAttributes<'label'>
+
+const { name, error, ...props } = Astro.props
+---
+
+<label {...props}>
+  <div class="checkmark">
+    <input type="checkbox" name={name} aria-invalid={!!error} />
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" fill="none">
+      <path stroke="#DBB039" stroke-width="2" d="M.987 4.974 5.013 9l8-8"></path>
+    </svg>
+  </div>
+  <p><slot /></p>
+  {error && <Error error={error} class="error" />}
+</label>
+
+<style lang="scss">
+  label {
+    display: grid;
+    width: fit-content;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    gap: calc(2rem / 16);
+    font-size: 1rem;
+    color: var(--neutral-100, #e6e6e6);
+    cursor: pointer;
+    &:not(:has(input:checked)):hover {
+      .checkmark {
+        border: 1px solid var(--neutral-500, #6f6f6f);
+        background-color: var(--neutral-100, #b8b8b8);
+      }
+    }
+    &:active {
+      .checkmark {
+        transform: scale(0.9);
+      }
+    }
+    &:has(input:focus-visible) {
+      .checkmark {
+        outline: 2px solid var(--primary-300, #ffe6a2);
+        outline-offset: 5px;
+      }
+    }
+  }
+  .checkmark {
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border: 1px solid var(--neutral-300, #b8b8b8);
+    background: var(--neutral-000, #fcfcfc);
+    display: grid;
+    place-items: center;
+    transition:
+      border 0.3s var(--easing),
+      background-color 0.3s var(--easing),
+      transform 0.5s var(--easing);
+    input {
+      opacity: 0;
+      position: absolute;
+    }
+    svg {
+      transition: stroke-dasharray 0.5s var(--easing);
+      stroke-dasharray: 0 17;
+    }
+    &:has(input[aria-invalid='true']) {
+      border: 1px solid var(--Error-500, #ff6a59);
+      background-color: var(--Error-100, #ffe2de);
+    }
+    input:checked {
+      + svg {
+        stroke-dasharray: 17 17;
+      }
+    }
+  }
+  .error {
+    width: 100%;
+    grid-column: 2;
+    margin-top: 0;
+  }
+</style>
