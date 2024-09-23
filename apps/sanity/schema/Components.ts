@@ -9,6 +9,7 @@ import BenefitsNumberedGrid from "./components/BenefitsNumberedGrid";
 import GridShowcaseSection from "./components/GridShowcaseSection";
 import Faq from "./components/Faq";
 import ProcessAccordion from "./components/ProcessAccordion";
+import TestimonialSection from "./components/TestimonialSection";
 
 export default defineType({
   name: 'components',
@@ -25,6 +26,7 @@ export default defineType({
     GridShowcaseSection,
     Faq,
     ProcessAccordion,
+    TestimonialSection,
   ],
   options: {
     insertMenu: {
