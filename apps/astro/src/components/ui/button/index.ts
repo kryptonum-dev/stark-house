@@ -1,4 +1,4 @@
-export { default, type Props as ButtonDataProps } from './index.astro';
+export { default, type Props as ButtonDataProps } from './button';
 
 export const ButtonDataQuery = (name: string) => `
   ${name} {
