@@ -1,4 +1,4 @@
-export { default, type Props as ButtonDataProps } from './button';
+export { default, type Props as ButtonDataProps } from './Button';
 
 export const ButtonDataQuery = (name: string) => `
   ${name} {
