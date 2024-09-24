@@ -10,6 +10,7 @@ import GridShowcaseSection from "./components/GridShowcaseSection";
 import Faq from "./components/Faq";
 import ProcessAccordion from "./components/ProcessAccordion";
 import TestimonialSection from "./components/TestimonialSection";
+import Newsletter from "./components/Newsletter";
 
 export default defineType({
   name: 'components',
@@ -27,6 +28,7 @@ export default defineType({
     Faq,
     ProcessAccordion,
     TestimonialSection,
+    Newsletter,
   ],
   options: {
     insertMenu: {
