@@ -1,3 +1,5 @@
+export const prerender = false
+
 import { REGEX } from "@/src/global/constants";
 import type { APIRoute } from "astro";
 

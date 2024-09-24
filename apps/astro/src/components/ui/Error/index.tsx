@@ -2,9 +2,9 @@ import styles from './styles.module.scss'
 
 type Props = {
   error?: string;
-} & React.HTMLAttributes<HTMLSpanElement>
+}
 
-export default function Error({ error, ...props }: Props) {
+export default function Error({ error }: Props) {
   return (
     error && (
       <span

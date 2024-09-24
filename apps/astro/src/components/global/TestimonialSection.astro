@@ -52,9 +52,6 @@ const { index, sectionId, heading, items } = Astro.props
     margin-bottom: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(82rem / 16));
   }
   .list {
-    @media (min-width: calc(850rem / 16)) {
-      columns: 2;
-    }
     $row-gap: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(84rem / 16));
     .item {
       break-inside: avoid;
@@ -70,6 +67,9 @@ const { index, sectionId, heading, items } = Astro.props
       margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
     }
     column-gap: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(82rem / 16));
+    @media (min-width: calc(850rem / 16)) {
+      columns: 2;
+    }
   }
   .actions {
     text-align: center;

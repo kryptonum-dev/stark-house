@@ -20,7 +20,6 @@ export default function Form({ groupId }: { groupId: string }) {
   const onSubmit = async (data: FieldValues) => {
     setStatus({ sending: true, success: undefined });
     data.group_id = groupId
-    console.log(data)
     try {
       const response = await fetch('/api/newsletter', {
         method: 'POST',
