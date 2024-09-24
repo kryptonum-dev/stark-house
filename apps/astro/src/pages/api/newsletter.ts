@@ -3,6 +3,8 @@ export const prerender = false
 import { REGEX } from "@/src/global/constants";
 import type { APIRoute } from "astro";
 
+const MAILERLITE_API_KEY = import.meta.env.MAILERLITE_API_KEY || process.env.MAILERLITE_API_KEY;
+
 type Props = {
   name: string
   email: string
@@ -20,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
     const res = await fetch(`https://api.mailerlite.com/api/v2/groups/${group_id}/subscribers`, {
       method: 'POST',
       headers: {
-        'X-MailerLite-ApiKey': import.meta.env.MAILERLITE_API_KEY,
+        'X-MailerLite-ApiKey': MAILERLITE_API_KEY,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
