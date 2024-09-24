@@ -3,23 +3,36 @@ import type { HTMLAttributes } from 'astro/types'
 
 export type Props = HTMLAttributes<'a' | 'button'> & {
   text?: string | HTMLElement
-  theme: 'primary' | 'secondary'
-  type: 'external' | 'internal' | 'internalId'
+  theme?: 'primary' | 'secondary'
+  linkType?: 'external' | 'internal' | 'internalId' | undefined
   href?: string
 }
 
-const { text, theme, type, href } = Astro.props
+const { text, theme = 'primary', linkType = 'internal', href, ...props } = Astro.props
 
-const Cmp = !!href ? 'a' : 'button'
+const isExternal = linkType === 'external'
 const children = (await Astro.slots.render('default')) ?? text
 ---
 
-<Cmp href={href} data-theme={theme} {...type === 'external' && { target: '_blank', rel: 'noreferrer' }} class="button">
-  {children}
-</Cmp>
+{
+  !!href ? (
+    <a
+      href={href}
+      {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+      data-theme={theme}
+      {...(props as HTMLAttributes<'a'>)}>
+      {children}
+    </a>
+  ) : (
+    <button data-theme={theme} {...(props as HTMLAttributes<'button'>)}>
+      {children}
+    </button>
+  )
+}
 
 <style lang="scss">
-  .button {
+  a,
+  button {
     font-size: clamp(calc(14rem / 16), calc(16vw / 7.68), 1rem);
     text-align: center;
     @media (max-width: 499px) {
@@ -71,7 +84,8 @@ const children = (await Astro.slots.render('default')) ?? text
     }
   }
   :global([light-background]) {
-    .button {
+    a,
+    button {
       &[data-theme='primary'] {
         &::before {
           background-color: var(--primary-100, #edebe7);
