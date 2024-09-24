@@ -1,10 +1,10 @@
-export { default, type Props as ButtonDataProps } from './index.astro';
+export { default, type Props as ButtonDataProps } from './Button';
 
 export const ButtonDataQuery = (name: string) => `
   ${name} {
     text,
     theme,
-    type,
+    "linkType": type,
     "href": select(type == "internal" => internal -> slug.current, type == "internalId" => internalId, type == "external" => external),
   },
 `

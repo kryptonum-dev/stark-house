@@ -1,0 +1,66 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/src/components/ui/Button'
+import Accordion from '@/components/ui/Accordion.astro'
+
+export const Faq_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${ButtonDataQuery('cta')}
+    items[] -> {
+      ${PortableTextQuery('question')}
+      ${PortableTextQuery('answer')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  cta: ButtonDataProps
+  items: {
+    question: PortableTextValue
+    answer: PortableTextValue
+  }[]
+}
+
+const { index, sectionId, heading, cta, items } = Astro.props
+---
+
+<section class="Faq" id={sectionId}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <Button {...cta} />
+  </header>
+  <div class="items">
+    {
+      items.map(({ question, answer }) => (
+        <Accordion summary={question}>
+          <PortableText value={answer} />
+        </Accordion>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .Faq {
+    padding: clamp(calc(64rem / 16), calc(96vw / 7.68), calc(96rem / 16)) 0;
+    display: grid;
+    gap: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(48rem / 16))
+      clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
+    @media (min-width: calc(1150rem/16)) {
+      grid-template-columns: 1fr 1.2fr;
+    }
+  }
+  header {
+    max-width: calc(680rem / 16);
+    .heading {
+      margin-bottom: clamp(calc(32rem / 16), calc(42vw / 7.68), calc(42rem / 16));
+    }
+  }
+  .items {
+    max-width: calc(680rem / 16);
+  }
+</style>

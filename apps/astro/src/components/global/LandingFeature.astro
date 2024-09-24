@@ -1,6 +1,6 @@
 ---
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
-import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/src/components/ui/Button'
 import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
 
 export const LandingFeature_Query = `
@@ -15,6 +15,7 @@ export const LandingFeature_Query = `
 
 type Props = {
   index: number
+  sectionId?: string
   logo?: ImageDataProps
   heading: PortableTextValue
   paragraph: PortableTextValue
@@ -22,16 +23,16 @@ type Props = {
   image: ImageDataProps
 }
 
-const { index, logo, heading, paragraph, ctas, image } = Astro.props
+const { index, sectionId, logo, heading, paragraph, ctas, image } = Astro.props
 ---
 
-<section class="LandingFeature">
+<section class="LandingFeature" id={sectionId}>
   <header>
     {logo && <Image {...logo} sizes="" class="logo" loading="eager" />}
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h1" />
     <PortableText value={paragraph} class="paragraph" />
     <div class="cta-wrapper">
-      {ctas.map((cta) => <Button {...cta} />)}
+      {ctas?.map((cta) => <Button {...cta} />)}
     </div>
   </header>
   <Image {...image} sizes="(max-width: 999px) 100vw, 33vw" priority={index === 0} class="img" />

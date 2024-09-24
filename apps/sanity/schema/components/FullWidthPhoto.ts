@@ -1,4 +1,5 @@
 import { defineField } from 'sanity';
+import sectionId from '../ui/sectionId';
 
 const name = 'FullWidthPhoto';
 const title = 'Sekcja ze zdjęciem na całą szerokość';
@@ -16,6 +17,7 @@ export default defineField({
       title: 'Image',
       validation: Rule => Rule.required(),
     }),
+    ...sectionId,
   ],
   preview: {
     select: {

@@ -5,6 +5,12 @@ import BenefitsGrid from "./components/BenefitsGrid";
 import ImagedBenefitsSection from "./components/ImagedBenefitsSection";
 import MetricsHighlightSection from "./components/MetricsHighlightSection";
 import BenefitsWithImage from "./components/BenefitsWithImage";
+import BenefitsNumberedGrid from "./components/BenefitsNumberedGrid";
+import GridShowcaseSection from "./components/GridShowcaseSection";
+import Faq from "./components/Faq";
+import ProcessAccordion from "./components/ProcessAccordion";
+import TestimonialSection from "./components/TestimonialSection";
+import Newsletter from "./components/Newsletter";
 
 export default defineType({
   name: 'components',
@@ -17,6 +23,12 @@ export default defineType({
     ImagedBenefitsSection,
     MetricsHighlightSection,
     BenefitsWithImage,
+    BenefitsNumberedGrid,
+    GridShowcaseSection,
+    Faq,
+    ProcessAccordion,
+    TestimonialSection,
+    Newsletter,
   ],
   options: {
     insertMenu: {

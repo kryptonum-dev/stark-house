@@ -1,0 +1,81 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Accordion from '../ui/Accordion.astro'
+
+export const ProcessAccordion_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    items[] {
+      ${PortableTextQuery('title')}
+      ${PortableTextQuery('description')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  items: {
+    title: PortableTextValue
+    description: PortableTextValue
+  }[]
+}
+
+const { index, sectionId, heading, paragraph, items } = Astro.props
+---
+
+<section class="ProcessAccordion" id={sectionId}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} />
+  </header>
+  <div class="items">
+    {
+      items.map(({ title, description }, i) => (
+        <Accordion summary={title} open={i === 0} class="item">
+          <PortableText value={description} />
+        </Accordion>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .ProcessAccordion {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+  }
+  header {
+    max-width: calc(608rem / 16);
+    margin-bottom: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(64rem / 16));
+    .heading {
+      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    }
+  }
+  .items {
+    max-width: calc(946rem / 16);
+    margin-left: auto;
+    counter-reset: item;
+    .item {
+      counter-increment: item;
+      :global(.heading) {
+        display: grid;
+        gap: clamp(calc(12rem / 16), calc(16vw / 7.68), calc(16rem / 16)) calc(24rem / 16);
+        &::before {
+          content: '0' counter(item);
+          color: var(--neutral-300, #b8b8b8);
+        }
+      }
+      @media (min-width: calc(800rem / 16)) {
+        :global(.heading) {
+          grid-template-columns: calc(34rem / 16) 1fr;
+        }
+        :global(.content) {
+          margin-left: calc((34rem / 16) + calc(24rem / 16));
+        }
+      }
+    }
+  }
+</style>

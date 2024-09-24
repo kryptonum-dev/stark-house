@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import sectionId from '../ui/sectionId';
 
 const name = 'ImagedBenefitsSection';
 const title = 'Sekcja korzyści z obrazkami';
@@ -11,6 +12,14 @@ export default defineField({
   title,
   icon,
   fields: [
+    defineField({
+      name: 'isReversed',
+      type: 'boolean',
+      title: 'Czy sekcja powinna być odwrócona?',
+      description: 'Domyślnie sekcja nie jest odwrócona, i zdjęcia znajdują się po prawej stronie. Jeśli zaznaczysz tą opcję, zdjęcia będą po lewej stronie.',
+      initialValue: false,
+      validation: Rule => Rule.required(),
+    }),
     defineField({
       name: 'heading',
       type: 'Heading',
@@ -73,6 +82,7 @@ export default defineField({
       ],
       validation: Rule => Rule.required()
     }),
+    ...sectionId,
   ],
   preview: {
     select: {

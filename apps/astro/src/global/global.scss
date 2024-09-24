@@ -60,7 +60,7 @@
 }
 
 [light-background] {
-  background: var(--primary-100, #edebe7);
+  background-color: var(--primary-100, #edebe7);
   color: var(--neutral-700, #222);
   --neutral-000: #fcfcfc;
   --neutral-100: #3b3b3b;
@@ -82,7 +82,7 @@
   --error-500: #d13d2c;
 
   --success-100: #14652c;
-  --success-500: #1da546;
+  --success-500: #045d1f;
 }
 
 svg {
@@ -160,7 +160,7 @@ img {
   outline: none;
 }
 :focus-visible {
-  outline: 2px solid var(--primary-300, #ffe6a2);
+  outline: 2px solid var(--primary-400, #f4cb5b);
   outline-offset: 5px;
 }
 
@@ -170,7 +170,7 @@ body {
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 123px;
+  scroll-padding-top: 34px;
 }
 body {
   overflow: clip;
@@ -208,10 +208,8 @@ h6,
 .h6 {
   overflow-wrap: anywhere;
   line-height: 116%;
+  font-weight: 600;
   color: var(--neutral-100, #e6e6e6);
-  strong {
-    font-weight: 400;
-  }
 }
 h1,
 .h1 {
@@ -234,7 +232,6 @@ h3,
       content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0U2RTZFNiIgc3Ryb2tlPSIjRTZFNkU2IiBkPSJNMS4yNjQgMWg3LjczdjhoLS44OTJWMi4zOTNMMS42MzEgOC44NjQgMSA4LjIzNGw2LjM0MS02LjM0MkgxLjI2NFYxWiIvPjwvc3ZnPg==');
       display: inline-block;
       margin-left: 5px;
-      vertical-align: middle;
       transition: transform 0.3s var(--easing);
     }
   }
@@ -246,6 +243,18 @@ h3,
   }
   &:active {
     color: var(--primary-500, #dbb039);
+  }
+}
+[light-background] {
+  .link {
+    &[target='_blank'] {
+      &::after {
+        content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iIzNCM0IzQiIgc3Ryb2tlPSIjM0IzQjNCIiBkPSJNMS43NTYuNzc3aDcuNzN2OGgtLjg5MVYyLjE3TDIuMTIzIDguNjQxbC0uNjMtLjYzIDYuMzQxLTYuMzQySDEuNzU2Vi43NzdaIi8+PC9zdmc+');
+      }
+    }
+    &:hover {
+      color: var(--primary-500);
+    }
   }
 }
 
@@ -289,5 +298,14 @@ h3,
 div.paragraph {
   & > *:not(:last-child) {
     margin-bottom: 8px;
+  }
+}
+
+.Form {
+  position: relative;
+  &:has([data-form-state]) {
+    & > *:not([data-form-state]) {
+      display: none;
+    }
   }
 }

@@ -1,0 +1,38 @@
+.FormState {
+  h3 {
+    display: grid;
+    gap: calc(8rem / 16);
+    grid-template-columns: auto 1fr;
+    font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+    svg {
+      margin-top: calc(4rem / 16);
+    }
+  }
+  .paragraph {
+    margin: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16)) 0
+      clamp(calc(24rem / 16), calc(36vw / 7.68), calc(36rem / 16));
+    & > *:not(:last-child) {
+      margin-bottom: calc(8rem / 16);
+    }
+  }
+  &[data-is-success='true'] {
+    h3 {
+      color: var(--success-500, #045d1f);
+    }
+  }
+  &[data-is-success='false'] {
+    h3 {
+      color: var(--error-500, #b02313);
+    }
+  }
+  animation: FormState 500ms var(--easing);
+  @keyframes FormState {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

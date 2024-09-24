@@ -6,6 +6,7 @@ import { TYPES_TO_EXCLUDE_PREVIEWS } from ".";
 export const createCollection = (S: StructureBuilder, name: string) => {
   const { title, icon } = schemaTypes.find(item => item.name === name) as { title: string, icon: React.ReactNode };
   return S.listItem()
+    .id(name)
     .title(title)
     .icon(icon)
     .child(

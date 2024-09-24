@@ -1,0 +1,54 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Form from './Form'
+
+export const Newsletter_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    groupId
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  groupId: string
+}
+
+const { index, sectionId, heading, paragraph, groupId } = Astro.props
+---
+
+<section class="Newsletter sec-wo-margin" light-background id={sectionId}>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      <PortableText value={paragraph} />
+    </header>
+    <Form groupId={groupId} client:idle />
+  </div>
+</section>
+
+<style lang="scss">
+  .Newsletter {
+    padding: clamp(calc(64rem / 16), calc(80vw / 7.68), calc(96rem / 16)) 0;
+    & > .max-width {
+      display: grid;
+      gap: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+      @media (min-width: calc(900rem / 16)) {
+        grid-template-columns: 1fr 1fr;
+        :global(form) {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+  header {
+    max-width: calc(518rem / 16);
+    .heading {
+      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    }
+  }
+</style>

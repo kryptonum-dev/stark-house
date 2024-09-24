@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import sectionId from '../ui/sectionId';
 
 const name = 'MetricsHighlightSection';
 const title = 'Sekcja z wyróżnionymi metrykami';
@@ -60,6 +61,7 @@ export default defineField({
       ],
       validation: Rule => Rule.required()
     }),
+    ...sectionId,
   ],
   preview: {
     select: {

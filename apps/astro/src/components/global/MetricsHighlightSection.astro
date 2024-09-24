@@ -15,6 +15,7 @@ export const MetricsHighlightSection_Query = `
 
 export type Props = {
   index: number
+  sectionId?: string
   heading: PortableTextValue
   paragraph: PortableTextValue
   metrics: {
@@ -23,10 +24,10 @@ export type Props = {
   }[]
 }
 
-const { index, heading, paragraph, metrics } = Astro.props
+const { index, sectionId, heading, paragraph, metrics } = Astro.props
 ---
 
-<section class="MetricsHighlightSection">
+<section class="MetricsHighlightSection" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
     <PortableText value={paragraph} />

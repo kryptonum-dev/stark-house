@@ -34,3 +34,25 @@ const valueArray = Array.isArray(value) ? value : [value]
     </div>
   )
 }
+
+<style lang="scss">
+  div {
+    &:global(> *:not(:last-child)) {
+      margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+    }
+    :global(ul li) {
+      padding-left: 38px;
+      position: relative;
+      &::before {
+        content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIxMyIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0idXJsKCNhKSIgZD0ibTEyIDEyLjE3Ni0xMi0xMmgxNy4xM2wxMiAxMkgxMloiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB4Mj0iMjkuMTMiIHkxPSIuMTc2IiB5Mj0iMTIuMTc2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iI0RFQUQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzI1MjUyNSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==');
+        width: 29px;
+        position: absolute;
+        left: 0;
+        top: 1px;
+      }
+      &:not(:last-child) {
+        margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      }
+    }
+  }
+</style>
