@@ -1,5 +1,9 @@
+[light-background] .label {
+  color: var(--neutral-600, #3b3b3b);
+}
+
 .label {
-  color: var(--neutral-600, #3B3B3B);
+  color: var(--neutral-300, #b8b8b8);
   font-size: calc(12rem / 16);
   line-height: 158%;
   margin-bottom: calc(2rem / 16);
