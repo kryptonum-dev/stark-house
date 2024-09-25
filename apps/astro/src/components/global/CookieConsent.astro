@@ -78,7 +78,7 @@ const groups = [
         ))
       }
     </div>
-    <div class="buttons">
+    <div class="actions">
       <Button className="agree">Zgoda na wszystkie</Button>
       <Button className="setPreferences" theme="secondary">Ustaw preferencje</Button>
       <Button className="deny" theme="secondary">Odmowa</Button>
@@ -121,7 +121,8 @@ const groups = [
       display: flex;
       flex-direction: column;
       gap: clamp(12px, calc(20vw / 7.68), 20px);
-      overflow: auto;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       label {
         display: grid;
         grid-template-columns: auto 1fr;
@@ -137,7 +138,7 @@ const groups = [
       }
     }
   }
-  .buttons {
+  .actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
