@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify({
         from: 'Stark House Formularz <formularz@send.starkhouse.pl>',
-        to: 'bogumil@kryptonum.eu',
+        to: 'artur.szenawa@starkhouse.pl',
         reply_to: email,
         subject: `Wiadomość z formularza kontaktowego wysłana przez ${email}`,
         html: template({ email, phone, message }),
