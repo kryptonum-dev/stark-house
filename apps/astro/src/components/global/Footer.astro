@@ -20,7 +20,7 @@ const data = await sanityFetch<QueryProps>({
 })
 ---
 
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="max-width">
     <p class="copy">
       © 2024{' '}
@@ -39,7 +39,7 @@ const data = await sanityFetch<QueryProps>({
         <button class="link reset-cookies">ustawienia plików cookies</button>
       </li>
       <li>
-        <a href="/polityka-prywatnosci" class="link">polityka prywatnosci</a>
+        <a href="/polityka-prywatnosci" class="link" target="_blank" rel="noreferrer">polityka prywatnosci</a>
       </li>
     </ul>
     <ul class="socials">
@@ -128,9 +128,9 @@ const data = await sanityFetch<QueryProps>({
 
 <script>
   import { setCookie } from '@/utils/set-cookie'
-
-  const footer = document.querySelector('#footer')
-  footer?.querySelector('.reset-cookies')?.addEventListener('click', () => {
+  const footer = document.querySelector('#footer')!
+  const resetCookiesButton = footer.querySelector('.reset-cookies')!
+  resetCookiesButton.addEventListener('click', () => {
     document.cookie.split(';').forEach((cookie) => {
       const eqPos = cookie.indexOf('=')
       const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie
