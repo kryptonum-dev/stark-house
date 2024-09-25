@@ -53,9 +53,9 @@
   --success-500: #3abf62;
 
   --easing: cubic-bezier(0, 0, 0.2, 1);
-  --page-margin: clamp(16px, calc(40vw / 7.68), 40px);
+  --page-margin: clamp(calc(16rem / 16), calc(40vw / 7.68), calc(40rem / 16));
   @media (max-width: 899px) and (min-width: 600px) {
-    --page-margin: clamp(40px, calc(80vw / 7.68), 80px);
+    --page-margin: clamp(calc(40rem / 16), calc(80vw / 7.68), calc(80rem / 16));
   }
 }
 

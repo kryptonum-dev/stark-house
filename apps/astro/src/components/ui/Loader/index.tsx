@@ -3,7 +3,7 @@ import styles from './styles.module.scss';
 export default function Loader({ loading }: { loading: boolean }) {
   return (
     loading && (
-      <div className={styles.loader} aria-label='Ładowanie...'>
+      <div className={`${styles.loader} Loader`} aria-label='Ładowanie...'>
         <CircleLoaderIcon className={styles.icon} />
       </div>
     )

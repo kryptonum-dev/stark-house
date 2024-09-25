@@ -14,6 +14,7 @@ import Faq, { Faq_Query } from '@/components/global/Faq.astro'
 import ProcessAccordion, { ProcessAccordion_Query } from '@/components/global/ProcessAccordion.astro'
 import TestimonialSection, { TestimonialSection_Query } from '@/components/global/TestimonialSection.astro'
 import Newsletter, { Newsletter_Query } from '@/src/components/global/Newsletter/Newsletter.astro'
+import ContactForm, { ContactForm_Query } from '@/src/components/global/ContactForm/index.astro'
 
 const components = {
   LandingFeature,
@@ -28,6 +29,7 @@ const components = {
   ProcessAccordion,
   TestimonialSection,
   Newsletter,
+  ContactForm,
 }
 
 type ComponentsMap = {
@@ -61,6 +63,7 @@ export const Components_Query = /* groq */ `
     _type == "ProcessAccordion" => ${ProcessAccordion_Query}
     _type == "TestimonialSection" => ${TestimonialSection_Query}
     _type == "Newsletter" => ${Newsletter_Query}
+    _type == "ContactForm" => ${ContactForm_Query}
   },
 `
 ---
