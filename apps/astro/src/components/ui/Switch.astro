@@ -1,0 +1,78 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = {
+  asLabel?: boolean
+  inputProps?: HTMLAttributes<'input'>
+} & HTMLAttributes<'label'>
+
+const { inputProps, asLabel, ...props } = Astro.props
+
+const Element = asLabel ? 'label' : 'div'
+---
+
+<Element data-switch {...props}>
+  <input type="checkbox" {...inputProps} />
+  <div class="toggle-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" fill="none">
+      <path stroke="#FFE6A2" stroke-linecap="round" stroke-linejoin="round" d="m11.2 6.1-4.772 4.8L4.8 9.264"></path>
+    </svg>
+  </div>
+</Element>
+
+<style lang="scss">
+  [data-switch] {
+    cursor: pointer;
+    width: 54px;
+    height: 30px;
+    margin: 6px 0;
+    border: 1px solid var(--neutral-500, #6f6f6f);
+    background-color: var(--neutral-600, #3b3b3b);
+    transition:
+      border-color 500ms var(--easing),
+      background-color 500ms var(--easing);
+    &:hover {
+      .toggle-icon {
+        background-color: var(--neutral-300, #b8b8b8);
+      }
+    }
+    &:has(input:focus-visible) {
+      outline: 2px solid var(--primary-400, #f4cb5b);
+      outline-offset: 5px;
+    }
+    &:has(input:checked) {
+      border: 1px solid var(--primary-300, #ffe6a2);
+      background-color: var(--primary-400, #f4cb5b);
+      .toggle-icon {
+        transform: translateX(24px);
+        background: var(--neutral-650, #2c2c2c);
+        svg {
+          stroke-dashoffset: 0;
+        }
+      }
+    }
+    &:has(input:disabled) {
+      opacity: 0.62;
+    }
+    input {
+      position: absolute;
+      opacity: 0;
+    }
+  }
+  .toggle-icon {
+    margin: 2px;
+    width: 24px;
+    height: 24px;
+    background: var(--neutral-500, #6f6f6f);
+    transition:
+      transform 0.5s var(--easing),
+      background-color 0.5s var(--easing);
+    display: grid;
+    place-items: center;
+    svg {
+      stroke-dasharray: 10;
+      stroke-dashoffset: -10;
+      transition: stroke-dashoffset 500ms var(--easing);
+    }
+  }
+</style>
