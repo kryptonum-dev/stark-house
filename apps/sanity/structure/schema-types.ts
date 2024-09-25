@@ -2,16 +2,19 @@
 import global from '../schema/singleTypes/global';
 import redirects from '../schema/singleTypes/redirects';
 import NotFound_Page from '../schema/singleTypes/NotFound_Page';
+import PrivacyPolicy_Page from '../schema/singleTypes/PrivacyPolicy_Page';
 
 const singleTypes = [
   global,
   redirects,
   NotFound_Page,
+  PrivacyPolicy_Page,
 ];
 
 // Collections Types
 import Landing_Collection from '../schema/collectionTypes/Landing_Collection';
 import Faq_Collection from '../schema/collectionTypes/Faq_Collection';
+
 const collectionTypes = [
   Landing_Collection,
   Faq_Collection,

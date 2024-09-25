@@ -6,4 +6,5 @@
  */
 export const InternalLinkableTypes: { type: string }[] = [
   { type: 'Landing_Collection' },
+  { type: 'PrivacyPolicy_Page' },
 ];

@@ -1,19 +1,25 @@
-import { defineField, defineType, useClient } from "sanity";
+import { defineField } from "sanity";
 import { CustomInput } from "./CustomInput";
 import { isValidUrl } from "../../../utils/is-valid-url";
 import { InternalLinkableTypes } from "../../../structure/internal-linkable-types";
 
-export default defineType({
-  name: 'PortableText',
+export const PortableText = ({ name, title, allowHeadings = false }: { name?: string, title?: string, allowHeadings?: boolean }) => defineField({
+  name: name || 'PortableText',
   type: 'array',
-  title: 'Portable Text',
+  title: title || 'Portable Text',
   components: {
     // @ts-ignore
     input: CustomInput
   },
   of: [{
     type: 'block',
-    styles: [{ title: 'Normal', value: 'normal' }],
+    styles: [
+      { title: 'Normal', value: 'normal' },
+      ...(allowHeadings ? [
+        { title: 'Heading 2', value: 'h2' },
+        { title: 'Heading 3', value: 'h3' }
+      ] : [])
+    ],
     lists: [
       { title: 'Bullet', value: 'bullet' },
       { title: 'Numbered', value: 'number' }
@@ -87,3 +93,5 @@ export default defineType({
     }
   }],
 });
+
+export default PortableText({});
