@@ -1,0 +1,73 @@
+---
+import Layout from '@/src/layouts/Layout.astro'
+import sanityFetch from '@/utils/sanity.fetch'
+import metadataFetch from '@/utils/metadata.fetch'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+
+type QueryProps = {
+  header: {
+    heading: PortableTextValue
+    paragraph: PortableTextValue
+  }
+  content: PortableTextValue
+}
+
+const page = await sanityFetch<QueryProps>({
+  query: `
+    *[_type == 'PrivacyPolicy_Page'][0] {
+      header {
+        ${PortableTextQuery('heading')}
+        ${PortableTextQuery('paragraph')}
+      },
+      ${PortableTextQuery('content')}
+    }
+  `,
+})
+
+const metadata = await metadataFetch('PrivacyPolicy_Page')
+---
+
+<Layout {...metadata}>
+  <header>
+    <PortableText value={page.header.heading} heading="h1" />
+    <PortableText value={page.header.paragraph} />
+  </header>
+  <PortableText value={page.content} class="content" />
+</Layout>
+
+<style lang="scss">
+  header {
+    margin: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(112rem / 16)) 0
+      clamp(calc(36rem / 16), calc(48vw / 7.68), calc(64rem / 16));
+    h1 {
+      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    }
+    max-width: calc(796rem / 16);
+  }
+  .content {
+    max-width: calc(796rem / 16);
+    counter-reset: counter;
+    margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(128rem / 16));
+    :global(h2) {
+      &:not(:first-child) {
+        margin-top: clamp(calc(36rem / 16), calc(48vw / 7.68), calc(64rem / 16));
+      }
+      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+      counter-increment: counter;
+      display: grid;
+      grid-template-columns: calc(34rem / 16) 1fr;
+      gap: calc(12rem / 16);
+      &::before {
+        content: '0' counter(counter);
+        color: var(--neutral-300, #b8b8b8);
+      }
+    }
+    @media (min-width: calc(500rem / 16)) {
+      padding-left: calc(46rem / 16);
+      :global(h2) {
+        margin-left: calc(-46rem / 16);
+      }
+    }
+  }
+</style>

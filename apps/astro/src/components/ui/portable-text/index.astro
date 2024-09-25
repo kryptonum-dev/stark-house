@@ -53,6 +53,12 @@ const valueArray = Array.isArray(value) ? value : [value]
       &:not(:last-child) {
         margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
       }
+      :global(ul) {
+        margin-top: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+        :global(li::before) {
+          filter: grayscale(1);
+        }
+      }
     }
   }
 </style>
