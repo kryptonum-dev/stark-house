@@ -33,5 +33,16 @@ const metadata = await metadataFetch('Landing_Collection', slug)
 ---
 
 <Layout {...metadata}>
+  <button id="test">0</button>
   <Components data={page.components} />
 </Layout>
+
+<script>
+  document.querySelector('#test')!.addEventListener('click', (e) => {
+    ;(e.target as HTMLButtonElement).textContent = (
+      parseInt((e.target as HTMLButtonElement).textContent!) + 1
+    ).toString()
+  })
+</script>
+
+<script is:inline src="/test.js"></script>

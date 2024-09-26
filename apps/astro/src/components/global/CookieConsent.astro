@@ -2,7 +2,7 @@
 import Switch from '@/components/ui/Switch.astro'
 import Button from '@/components/ui/Button'
 
-const GTAG_ID = 'GTM-KDTPBM4N'
+const GTM_CONTAINER_ID = 'GTM-KDTPBM4N'
 
 const groups = [
   {
@@ -30,7 +30,7 @@ const groups = [
 
 <noscript>
   <iframe
-    src={`https://www.googletagmanager.com/ns.html?id=${GTAG_ID}`}
+    src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
     height="0"
     width="0"
     style="display:none;visibility:hidden;">
@@ -159,13 +159,39 @@ const groups = [
 
 <script is:inline>
   window.dataLayer = window.dataLayer || []
-  // eslint-disable-next-line no-unused-vars
   function gtag() {
     window.dataLayer.push(arguments)
   }
-</script>
-<script>
-  import { getCookie } from '@/utils/get-cookie'
+  function getCookie(name) {
+    const cookieString = document.cookie
+    if (!cookieString) return null
+    const cookies = cookieString.split(';').map((cookie) => cookie.trim())
+    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`))
+    if (cookie) {
+      const cookieValue = cookie.substring(name.length + 1)
+      return decodeURIComponent(cookieValue)
+    }
+    return null
+  }
+  function setCookie(name, value, days = 1) {
+    const date = new Date(Date.now() + 24 * 60 * 60 * 1000 * days)
+    const expires = days ? `; expires=${date.toUTCString()}` : ''
+    const cookieValue = encodeURIComponent(value)
+    document.cookie = `${name}=${cookieValue}${expires}; SameSite=Strict`
+  }
+  function setConsent(consent) {
+    const consentMode = {
+      functionality_storage: consent.necessary ? 'granted' : 'denied',
+      security_storage: consent.necessary ? 'granted' : 'denied',
+      ad_storage: consent.marketing ? 'granted' : 'denied',
+      ad_user_data: consent.marketing ? 'granted' : 'denied',
+      ad_personalization: consent.marketing ? 'granted' : 'denied',
+      analytics_storage: consent.analytics ? 'granted' : 'denied',
+      personalization_storage: consent.preferences ? 'granted' : 'denied',
+    }
+    gtag('consent', 'update', consentMode)
+    setCookie('cookie-consent', JSON.stringify(consentMode), 365)
+  }
   if (getCookie('cookie-consent') === null) {
     gtag('consent', 'default', {
       functionality_storage: 'denied',
@@ -176,38 +202,14 @@ const groups = [
       analytics_storage: 'denied',
       personalization_storage: 'denied',
     })
-    document.querySelector('.cookie-consent')!.setAttribute('aria-hidden', 'false')
+    document.querySelector('.cookie-consent').setAttribute('aria-hidden', 'false')
   } else {
-    gtag('consent', 'default', JSON.parse(getCookie('cookie-consent')!))
+    gtag('consent', 'default', JSON.parse(getCookie('cookie-consent')))
   }
-</script>
-<script is:inline define:vars={{ GTAG_ID }}>
-  // prettier-ignore
-  ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer',GTAG_ID);
-</script>
-<script>
-  import { setCookie } from '@/utils/set-cookie'
-  function setConsent(consent: { necessary: boolean; marketing: boolean; analytics: boolean; preferences: boolean }) {
-    const consentMode = {
-      functionality_storage: consent.necessary ? 'granted' : 'denied',
-      security_storage: consent.necessary ? 'granted' : 'denied',
-      ad_storage: consent.marketing ? 'granted' : 'denied',
-      ad_user_data: consent.marketing ? 'granted' : 'denied',
-      ad_personalization: consent.marketing ? 'granted' : 'denied',
-      analytics_storage: consent.analytics ? 'granted' : 'denied',
-      personalization_storage: consent.preferences ? 'granted' : 'denied',
-    } as const
-    gtag('consent', 'update', consentMode)
-    setCookie('cookie-consent', JSON.stringify(consentMode), 365)
-  }
-  const $this = document.querySelector('.cookie-consent')!
-  const $agree = $this.querySelector('.agree')!
-  const $setPreferences = $this.querySelector('.setPreferences')!
-  const $deny = $this.querySelector('.deny')!
+  const $this = document.querySelector('.cookie-consent')
+  const $agree = $this.querySelector('.agree')
+  const $setPreferences = $this.querySelector('.setPreferences')
+  const $deny = $this.querySelector('.deny')
   $agree.addEventListener('click', () => {
     setConsent({
       necessary: true,
@@ -220,17 +222,17 @@ const groups = [
   let setsPreferences = false
   $setPreferences.addEventListener('click', () => {
     if (!setsPreferences) {
-      $this.querySelector<HTMLDivElement>('.header [data-header-initial]')!.style.display = 'none'
-      $this.querySelector<HTMLDivElement>('.header [data-header-settings]')!.style.removeProperty('display')
-      $this.querySelector<HTMLDivElement>('.settings')!.style.removeProperty('display')
+      $this.querySelector('.header [data-header-initial]').style.display = 'none'
+      $this.querySelector('.header [data-header-settings]').style.removeProperty('display')
+      $this.querySelector('.settings').style.removeProperty('display')
       setsPreferences = true
     } else {
       $this.setAttribute('aria-hidden', 'true')
       setConsent({
-        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]')!.checked,
-        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]')!.checked,
-        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]')!.checked,
-        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]')!.checked,
+        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]').checked,
+        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]').checked,
+        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]').checked,
+        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]').checked,
       })
     }
   })
@@ -243,4 +245,13 @@ const groups = [
       preferences: false,
     })
   })
+</script>
+
+<script is:inline define:vars={{ GTM_CONTAINER_ID }} type="text/partytown">
+  // prettier-ignore
+  ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',GTM_CONTAINER_ID);
 </script>
