@@ -6,7 +6,6 @@ export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
   const targetUrl = url.searchParams.get('url');
 
-  console.log('targetUrl', targetUrl);
 
   if (!targetUrl) {
     return new Response('Missing URL parameter', { status: 400 });
@@ -19,11 +18,9 @@ export const GET: APIRoute = async ({ request }) => {
         host: new URL(targetUrl).host,
       },
     });
-
     const headers = new Headers(response.headers);
     headers.set('Access-Control-Allow-Origin', '*');
-
-    return new Response(response.body);
+    return new Response(response.body, { headers });
   } catch (error) {
     console.error('Proxy error:', error);
     return new Response('Proxy error', { status: 500 });

@@ -19,6 +19,7 @@ export default defineConfig({
             console.log('Proxying URL:', url.href);
             const proxyUrl = new URL('/proxy', 'https://stark-house-git-dev-kryptonum.vercel.app');
             proxyUrl.searchParams.append('url', url.href);
+            console.log('Proxied URL:', proxyUrl);
             return proxyUrl;
           }
           return url;
