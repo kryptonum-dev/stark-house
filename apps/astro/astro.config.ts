@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import preact from '@astrojs/preact';
-import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel/serverless";
 import { DOMAIN } from "./src/global/constants";
 import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
 import redirects from "./redirects";

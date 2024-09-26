@@ -10,4 +10,12 @@ import 'lenis/dist/lenis.css'
     requestAnimationFrame(raf)
   }
   requestAnimationFrame(raf)
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault()
+      const target = document.querySelector<HTMLElement>(this.getAttribute('href')!)
+      target && lenis.scrollTo(target)
+    })
+  })
 </script>
