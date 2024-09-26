@@ -1,6 +1,7 @@
+import type { FieldErrors } from 'react-hook-form'
 import styles from './styles.module.scss'
 import Error from '@/src/components/ui/Error'
-import type { FieldErrors } from 'react-hook-form'
+import Textarea from './Textarea'
 
 type Props = {
   register: {
@@ -12,7 +13,7 @@ type Props = {
 } & React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>
 
 export default function Input({ register, label, isTextarea, errors, ...props }: Props) {
-  const Element = isTextarea ? 'textarea' : 'input'
+  const Element = isTextarea ? Textarea : 'input'
 
   return (
     <label className={styles.label}>
