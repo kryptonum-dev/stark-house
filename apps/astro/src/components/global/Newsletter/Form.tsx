@@ -67,7 +67,7 @@ export default function Form({ groupId }: { groupId: string }) {
           politykę prywatności
         </a>
       </Checkbox>
-      <Button type="submit" className={styles.cta}>Zapisz się do newslettera</Button>
+      <Button type="submit" className={`${styles.cta} cta`}>Zapisz się do newslettera</Button>
 
       <Loader loading={status.sending} />
       <FormState

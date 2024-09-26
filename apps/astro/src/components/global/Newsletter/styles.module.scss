@@ -3,7 +3,4 @@
   width: 100%;
   gap: clamp(calc(16rem / 16), calc(20vw / 7.68), calc(20rem / 16));
   max-width: calc(420rem / 16);
-  .cta {
-    width: fit-content;
-  }
 }

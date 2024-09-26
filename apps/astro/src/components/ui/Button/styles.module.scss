@@ -1,6 +1,7 @@
 .button {
   font-size: clamp(calc(14rem / 16), calc(16vw / 7.68), 1rem);
   text-align: center;
+  display: inline-block;
   @media (max-width: 499px) {
     width: 100%;
   }
@@ -16,8 +17,8 @@
       position: absolute;
       width: 30px;
       height: 24px;
-      right: -0.5px;
-      bottom: -0.5px;
+      right: -1px;
+      bottom: -1px;
       background-color: var(--neutral-700, #222);
       clip-path: polygon(100% 0, 0 100%, 100% 100%);
     }
