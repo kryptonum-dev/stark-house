@@ -13,13 +13,12 @@ export default defineConfig({
     preact({ compat: true }),
     partytown({
       config: {
+        debug: true,
         forward: ['dataLayer.push', 'fbq'],
         resolveUrl: function (url, _, type) {
           if (type === 'script' && !url.href.includes('/proxy')) {
             console.log('Proxying URL:', url.href);
-            const proxyUrl = new URL('/proxy', 'https://stark-house-git-dev-kryptonum.vercel.app');
-            proxyUrl.searchParams.append('url', url.href);
-            console.log('Proxied URL:', proxyUrl);
+            const proxyUrl = new URL(`/proxy/${url.href}}`, 'https://stark-house-git-dev-kryptonum.vercel.app');
             return proxyUrl;
           }
           return url;
