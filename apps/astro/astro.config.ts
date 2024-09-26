@@ -17,7 +17,7 @@ export default defineConfig({
         resolveUrl: function (url, _, type) {
           if (type === 'script' && !url.href.includes('/proxy')) {
             console.log('Proxying URL:', url.href);
-            const proxyUrl = new URL('/proxy', DOMAIN);
+            const proxyUrl = new URL('/proxy', 'https://stark-house-git-dev-kryptonum.vercel.app');
             proxyUrl.searchParams.append('url', url.href);
             return proxyUrl;
           }
@@ -41,7 +41,7 @@ export default defineConfig({
   adapter: vercel(),
   vite: {
     ssr: {
-      noExternal: ['react-hook-form']
+      noExternal: ['react-hook-form', '@astrojs/partytown']
     }
   }
 });
