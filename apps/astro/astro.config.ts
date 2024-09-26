@@ -14,7 +14,7 @@ export default defineConfig({
     partytown({
       config: {
         debug: true,
-        forward: ['dataLayer.push', 'fbq'],
+        forward: ['dataLayer.push', 'fbq', 'gtag'],
         resolveUrl: function (url, _, type) {
           console.log('Proxying URL:', url.href);
           const proxyUrl = new URL('/proxy', 'https://stark-house-git-dev-kryptonum.vercel.app');
