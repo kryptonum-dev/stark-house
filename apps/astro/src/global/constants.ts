@@ -29,7 +29,7 @@ export const LOCALE: string = "pl";
  * @constant
  * @type {string}
  */
-export const DOMAIN: string = "https://stark-house-git-dev-kryptonum.vercel.app";
+export const DOMAIN: string = "https://lp.starkhouse.pl";
 
 /**
  * Global declaration of the default title for the application.
