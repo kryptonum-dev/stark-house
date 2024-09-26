@@ -1,3 +1,0 @@
-{
-  "rewrites": [{ "source": "/proxy/:gtmfullurl(.*)", "destination": ":gtmfullurl" }]
-}
