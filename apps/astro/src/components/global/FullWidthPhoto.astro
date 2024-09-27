@@ -31,7 +31,7 @@ const { index, sectionId, img } = Astro.props
   .img {
     width: 100%;
     @supports (animation-timeline: view()) {
-      animation: scroll-image linear forwards;
+      animation: scroll-image linear both;
       animation-timeline: view();
       transform-origin: top;
       @keyframes scroll-image {
@@ -39,7 +39,7 @@ const { index, sectionId, img } = Astro.props
           transform: translateY(0);
         }
         to {
-          transform: translateY(-20%) scale(1.2);
+          transform: translateY(-25%) scale(1.25);
         }
       }
     }
