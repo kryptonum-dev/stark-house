@@ -110,8 +110,10 @@ const data = await sanityFetch<QueryProps>({
       width: 100%;
     }
     a {
-      display: block;
-      padding: 12.5px 12px;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
       transition: color 0.3s;
       svg {
         display: block;

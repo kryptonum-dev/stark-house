@@ -4,7 +4,7 @@
   align-items: center;
   grid-template-columns: auto 1fr;
   gap: calc(2rem / 16);
-  font-size: 1rem;
+  font-size: calc(14rem / 16);
   color: var(--neutral-100, #e6e6e6);
   cursor: pointer;
   &:not(:has(input:checked)):hover {
@@ -32,7 +32,7 @@
 .checkmark {
   width: 32px;
   height: 32px;
-  margin: 8px;
+  margin: 6px;
   border: 1px solid var(--neutral-300, #b8b8b8);
   background: var(--neutral-000, #fcfcfc);
   display: grid;

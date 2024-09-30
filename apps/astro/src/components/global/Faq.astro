@@ -35,8 +35,8 @@ const { index, sectionId, heading, cta, items } = Astro.props
   </header>
   <div class="items">
     {
-      items.map(({ question, answer }) => (
-        <Accordion summary={question}>
+      items.map(({ question, answer }, i) => (
+        <Accordion summary={question} open={i === 0}>
           <PortableText value={answer} />
         </Accordion>
       ))
