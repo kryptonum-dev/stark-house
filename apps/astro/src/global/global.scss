@@ -2,23 +2,18 @@
   font-family: 'Archivo';
   src:
     url('/fonts/Archivo-Regular.woff2') format('woff2'),
-    url('/fonts/Archivo-Regular.woff') format('woff'),
-    url('/fonts/Archivo-Regular.ttf') format('truetype'),
-    url('/fonts/Archivo-Regular.eot') format('embedded-opentype');
+    url('/fonts/Archivo-Regular.woff') format('woff');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
-  font-family: 'Archivo';
-  src:
-    url('/fonts/Archivo-SemiBold.woff2') format('woff2'),
-    url('/fonts/Archivo-SemiBold.woff') format('woff'),
-    url('/fonts/Archivo-SemiBold.ttf') format('truetype'),
-    url('/fonts/Archivo-SemiBold.eot') format('embedded-opentype');
-  font-weight: 600;
-  font-display: swap;
-  font-style: normal;
+  font-family: 'Archivo Fallback';
+  src: local('Arial');
+  ascent-override: 88.96%;
+  descent-override: 21.28%;
+  line-gap-override: 0%;
+  size-adjust: 98.7%;
 }
 
 *,
@@ -178,9 +173,9 @@ body {
   -webkit-tap-highlight-color: transparent;
   background: var(--neutral-700, #222);
   color: var(--neutral-300, #b8b8b8);
-  font-family: 'Archivo', sans-serif;
-  font-size: clamp(1rem, calc(18vw / 7.68), calc(18rem / 16));
-  line-height: 158%;
+  font-family: 'Archivo', 'Archivo Fallback', sans-serif;
+  font-size: clamp(1rem, calc(1.125vw / 0.48), 1.125rem);
+  line-height: 1.58;
 }
 
 main,
@@ -207,8 +202,8 @@ h5,
 h6,
 .h6 {
   overflow-wrap: anywhere;
-  line-height: 116%;
-  font-weight: 600;
+  line-height: 1.16;
+  font-weight: 400;
   color: var(--neutral-100, #e6e6e6);
 }
 h1,

@@ -1,7 +1,10 @@
 .button {
   font-size: clamp(calc(14rem / 16), calc(16vw / 7.68), 1rem);
   text-align: center;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
   @media (max-width: 499px) {
     width: 100%;
   }
