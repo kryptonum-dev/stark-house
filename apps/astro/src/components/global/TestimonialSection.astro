@@ -31,42 +31,58 @@ export type Props = {
 const { index, sectionId, heading, paragraph, items } = Astro.props
 ---
 
-<section class="TestimonialSection" id={sectionId}>
-  <header>
-    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
-    <PortableText value={paragraph} class="paragraph" />
-  </header>
-  <ul class="list">
-    {
-      items.map(({ img, name, position, content }) => (
-        <li class="item">
-          <div class="stars">
-            {Array.from({ length: 5 }).map(() => (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
-                <path
-                  fill="#DEAD26"
-                  d="M10.885 1.278a1.188 1.188 0 0 1 2.23 0l2.434 6.123c.175.437.568.736 1.019.774l6.32.53c1.07.09 1.504 1.487.688 2.218l-4.814 4.314a1.298 1.298 0 0 0-.39 1.252l1.472 6.45c.249 1.094-.888 1.957-1.804 1.372l-5.41-3.457a1.162 1.162 0 0 0-1.26 0l-5.41 3.457c-.916.585-2.053-.278-1.804-1.371l1.471-6.45a1.298 1.298 0 0 0-.389-1.253L.424 10.923c-.816-.73-.382-2.128.689-2.218l6.319-.53A1.213 1.213 0 0 0 8.45 7.4l2.435-6.123Z"
-                />
-              </svg>
-            ))}
-          </div>
-          <PortableText value={content} class="content" />
-          <div class="author">
-            {img && <Image {...img} sizes="56px" loading={index === 0 ? 'eager' : 'lazy'} />}
-            <div>
-              <p class="name">{name}</p>
-              {position && <p class="position">{position}</p>}
+<section class="TestimonialSection sec-wo-margin" id={sectionId}>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
+      <PortableText value={paragraph} class="paragraph" />
+    </header>
+    <ul class="list">
+      {
+        items.map(({ img, name, position, content }) => (
+          <li class="item">
+            <div class="stars">
+              {Array.from({ length: 5 }).map(() => (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
+                  <path
+                    fill="#DEAD26"
+                    d="M10.885 1.278a1.188 1.188 0 0 1 2.23 0l2.434 6.123c.175.437.568.736 1.019.774l6.32.53c1.07.09 1.504 1.487.688 2.218l-4.814 4.314a1.298 1.298 0 0 0-.39 1.252l1.472 6.45c.249 1.094-.888 1.957-1.804 1.372l-5.41-3.457a1.162 1.162 0 0 0-1.26 0l-5.41 3.457c-.916.585-2.053-.278-1.804-1.371l1.471-6.45a1.298 1.298 0 0 0-.389-1.253L.424 10.923c-.816-.73-.382-2.128.689-2.218l6.319-.53A1.213 1.213 0 0 0 8.45 7.4l2.435-6.123Z"
+                  />
+                </svg>
+              ))}
             </div>
-          </div>
-        </li>
-      ))
-    }
-  </ul>
+            <PortableText value={content} class="content" />
+            <div class="author">
+              {img && <Image {...img} sizes="56px" loading={index === 0 ? 'eager' : 'lazy'} />}
+              <div>
+                <p class="name">{name}</p>
+                {position && <p class="position">{position}</p>}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </section>
 
 <style lang="scss">
   .TestimonialSection {
-    padding: clamp(3rem, calc(5vw / 0.48), 5rem) 0;
+    padding: clamp(5rem, calc(5vw / 0.48), 7rem) 0;
+    position: relative;
+    z-index: 1;
+    &::before {
+      content: '';
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1/1;
+      background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.08));
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 63% 100%);
+    }
     header {
       max-width: 34rem;
       margin-bottom: clamp(3rem, calc(5vw / 0.48), 5rem);

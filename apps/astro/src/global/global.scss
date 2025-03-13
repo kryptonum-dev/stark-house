@@ -194,7 +194,7 @@ h6,
 }
 h1,
 .h1 {
-  font-size: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(64rem / 16));
+  font-size: clamp(2.625rem, calc(4vw / 0.48), 4rem);
 }
 h1,
 .h1,
@@ -207,10 +207,12 @@ h2,
   }
 }
 h2,
-.h2,
+.h2 {
+  font-size: clamp(2rem, calc(3vw / 0.48), 3rem);
+}
 h3,
 .h3 {
-  font-size: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+  font-size: clamp(1.5rem, calc(1.5vw / 0.48), 1.75rem);
 }
 
 .link {
@@ -226,7 +228,7 @@ h3,
     }
   }
   &:hover {
-    text-underline-offset: 0.2em;
+    text-underline-offset: 0.125rem;
     &::after {
       transform: translate(1px, -1px);
     }
