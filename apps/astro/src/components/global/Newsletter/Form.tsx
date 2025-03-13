@@ -1,12 +1,12 @@
 import { useState } from 'preact/hooks';
 import { useForm, type FieldValues } from 'react-hook-form';
 import styles from './styles.module.scss';
-import Input from '@/components/ui/Input'
-import Checkbox from '@/components/ui/Checkbox/Checkbox'
-import Button from '@/src/components/ui/Button';
-import Loader from '@/components/ui/Loader';
-import FormState from '@/components/ui/FormState';
-import { REGEX } from '@/global/constants';
+import Input from '@components/ui/Input'
+import Checkbox from '@components/ui/Checkbox/Checkbox'
+import Button from '@components/ui/Button';
+import Loader from '@components/ui/Loader';
+import FormState from '@components/ui/FormState';
+import { REGEX } from '@global/constants';
 
 export default function Form({ groupId }: { groupId: string }) {
   const [status, setStatus] = useState<FormStatusTypes>({ sending: false, success: undefined });

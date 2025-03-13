@@ -1,6 +1,6 @@
 export const prerender = false
 
-import { REGEX } from "@/src/global/constants";
+import { REGEX } from "@global/constants";
 import type { APIRoute } from "astro";
 
 const MAILERLITE_API_KEY = import.meta.env.MAILERLITE_API_KEY || process.env.MAILERLITE_API_KEY;

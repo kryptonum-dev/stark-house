@@ -1,5 +1,5 @@
 ---
-import sanityFetch from '@/utils/sanity.fetch'
+import sanityFetch from '@utils/sanity.fetch'
 
 type QueryProps = {
   socials: {
@@ -129,7 +129,7 @@ const data = await sanityFetch<QueryProps>({
 </style>
 
 <script>
-  import { setCookie } from '@/utils/set-cookie'
+  import { setCookie } from '@utils/set-cookie'
   const footer = document.querySelector('#footer')!
   const resetCookiesButton = footer.querySelector('.reset-cookies')!
   resetCookiesButton.addEventListener('click', () => {
