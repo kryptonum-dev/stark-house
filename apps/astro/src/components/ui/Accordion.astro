@@ -82,6 +82,27 @@ const { summary, ...props } = Astro.props
     if (!content || !summary) return
     summary.addEventListener('click', (event) => {
       event.preventDefault()
+      const parent = details.parentElement
+      if (parent) {
+        parent.querySelectorAll<HTMLDetailsElement>('details[open]').forEach((openDetails) => {
+          if (openDetails !== details) {
+            const openContent = openDetails.querySelector<HTMLDivElement>('.content')
+            if (openContent) {
+              openContent.style.height = openContent.scrollHeight + 'px'
+              requestAnimationFrame(() => (openContent.style.height = '0px'))
+              openDetails.setAttribute('data-expanded', 'false')
+              openContent.addEventListener(
+                'transitionend',
+                () => {
+                  openDetails.open = false
+                  openContent.style.height = ''
+                },
+                { once: true }
+              )
+            }
+          }
+        })
+      }
       if (details.open) {
         content.style.height = content.scrollHeight + 'px'
         requestAnimationFrame(() => (content.style.height = '0px'))
