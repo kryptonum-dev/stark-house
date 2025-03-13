@@ -6,24 +6,22 @@ import type { APIRoute } from "astro";
 
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
 
-const template = ({ email, phone, message }: { email: string, phone?: string, message: string }) => `
+const template = ({ email, message }: { email: string, message: string }) => `
   <p>Adres email: <b>${email}</b></p>
-  <p>Telefon: <b>${phone || 'Nie podano'}</b></p>
   <br />
   <p>${message.trim().replace(/\n/g, '<br />')}</p>
 `;
 
 type Props = {
   email: string
-  phone?: string
   message: string
   legal: boolean
 }
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { email, phone, message, legal } = await request.json() as Props
-    if (!REGEX.email.test(email) || (phone && !REGEX.phone.test(phone)) || !message || !legal) {
+    const { email, message, legal } = await request.json() as Props
+    if (!REGEX.email.test(email) || !message || !legal) {
       return new Response(JSON.stringify({ message: "Missing required fields", success: false }), { status: 400 })
     }
     const res = await fetch(`https://api.resend.com/emails`, {
@@ -34,11 +32,11 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify({
         from: 'Stark House Formularz <formularz@send.starkhouse.pl>',
-        to: 'artur.szenawa@starkhouse.pl',
+        to: 'bogumil@kryptonum.eu',
         reply_to: email,
         subject: `Wiadomość z formularza kontaktowego wysłana przez ${email}`,
-        html: template({ email, phone, message }),
-        text: htmlToString(template({ email, phone, message })),
+        html: template({ email, message }),
+        text: htmlToString(template({ email, message })),
       }),
     });
     if (res.status !== 200) {

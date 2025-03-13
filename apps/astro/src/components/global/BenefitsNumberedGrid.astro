@@ -2,7 +2,7 @@
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 
 export const BenefitsNumberedGrid_Query = `
-  {
+  _type == "BenefitsNumberedGrid" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     benefits[] {

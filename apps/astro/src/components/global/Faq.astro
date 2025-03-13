@@ -4,7 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Bu
 import Accordion from '@components/ui/Accordion.astro'
 
 export const Faq_Query = `
-  {
+  _type == "Faq" => {
     ${PortableTextQuery('heading')}
     ${ButtonDataQuery('cta')}
     items[] -> {

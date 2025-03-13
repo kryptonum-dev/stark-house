@@ -3,7 +3,7 @@ import PortableText, { PortableTextQuery, type PortableTextValue } from '@compon
 import Accordion from '../ui/Accordion.astro'
 
 export const ProcessAccordion_Query = `
-  {
+  _type == "ProcessAccordion" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     items[] {

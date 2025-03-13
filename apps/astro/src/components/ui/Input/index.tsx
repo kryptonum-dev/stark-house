@@ -1,5 +1,5 @@
 import type { FieldErrors } from 'react-hook-form'
-import styles from './styles.module.scss'
+import styles from './Input.module.scss'
 import Error from '@components/ui/Error'
 import Textarea from './Textarea'
 
@@ -10,15 +10,15 @@ type Props = {
   label: string
   isTextarea?: boolean
   errors: FieldErrors;
-} & React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>
+} & React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>
 
-export default function Input({ register, label, isTextarea, errors, ...props }: Props) {
+export default function Input({ register, label, isTextarea, errors, placeholder, ...props }: Props) {
   const Element = isTextarea ? Textarea : 'input'
 
   return (
-    <label className={styles.label}>
+    <label className={styles.Input}>
       <p className="label">{label}</p>
-      <Element {...register} {...props} placeholder=" " aria-invalid={!!errors[register.name]} />
+      <Element {...register} {...props} placeholder={placeholder || ' '} aria-invalid={!!errors[register.name]} />
       <Error error={errors[register.name]?.message?.toString()} />
     </label>
   )

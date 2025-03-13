@@ -3,7 +3,7 @@ import PortableText, { PortableTextQuery, type PortableTextValue } from '@compon
 import CountUp from '../ui/count-up.astro'
 
 export const MetricsHighlightSection_Query = `
-  {
+  _type == "MetricsHighlightSection" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     metrics[] {

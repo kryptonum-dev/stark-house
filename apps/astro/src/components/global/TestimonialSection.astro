@@ -2,7 +2,7 @@
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 
 export const TestimonialSection_Query = `
-  {
+  _type == "TestimonialSection" => {
     ${PortableTextQuery('heading')}
     items[] {
       ${PortableTextQuery('text')}

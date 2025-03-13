@@ -40,17 +40,11 @@ export default function Form() {
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
       <Input
-        label='Email'
+        label='Adres e-mail'
+        type='email'
         register={register('email', {
           required: { value: true, message: 'Email jest wymagany' },
           pattern: { value: REGEX.email, message: 'Niepoprawny adres e-mail' },
-        })}
-        errors={errors}
-      />
-      <Input
-        label='Telefon (opcjonalnie)'
-        register={register('phone', {
-          pattern: { value: REGEX.phone, message: 'Niepoprawny numer telefonu' },
         })}
         errors={errors}
       />
@@ -60,6 +54,7 @@ export default function Form() {
           required: { value: true, message: 'Wiadomość jest wymagana' },
         })}
         isTextarea={true}
+        placeholder='Wpisz swoją wiadomość'
         errors={errors}
       />
       <Checkbox
@@ -72,7 +67,7 @@ export default function Form() {
           politykę prywatności
         </a>
       </Checkbox>
-      <Button type="submit" className={`${styles.cta} cta`}>Zapisz się do newslettera</Button>
+      <Button type="submit" className={`${styles.cta} cta`}>Wyślij wiadomość</Button>
 
       <Loader loading={status.sending} />
       <FormState

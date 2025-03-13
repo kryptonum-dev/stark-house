@@ -4,7 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Bu
 import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
 
 export const LandingFeature_Query = `
-  {
+  _type == "LandingFeature" => {
     ${ImageDataQuery('logo')}
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}

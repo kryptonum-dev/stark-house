@@ -10,7 +10,7 @@
   &:not(:has(input:checked)):hover {
     .checkmark {
       border: 1px solid var(--neutral-500, #6f6f6f);
-      background-color: var(--primary-100, #edebe7);
+      background-color: var(--primary-100, #fbf6e9);
     }
   }
   &:active {

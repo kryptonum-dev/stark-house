@@ -1,11 +1,19 @@
 ---
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
 import Form from './Form'
 
 export const ContactForm_Query = `
-  {
+  _type == "ContactForm" => {
     ${PortableTextQuery('heading')}
-    ${PortableTextQuery('paragraph')}
+    review {
+      ${ImageDataQuery('img')}
+      name,
+      position,
+      review
+    },
+    "email": *[_type == "global"][0].email,
+    "tel": *[_type == "global"][0].tel,
   },
 `
 
@@ -13,46 +21,154 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  paragraph: PortableTextValue
+  review?: {
+    img?: ImageDataProps
+    name: string
+    position?: string
+    review: PortableTextValue
+  }
+  email: string
+  tel?: string
 }
 
-const { index, sectionId, heading, paragraph } = Astro.props
+const { index, sectionId, heading, review, email, tel } = Astro.props
 ---
 
-<section class="ContactForm" id={sectionId}>
-  <header>
-    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    <PortableText value={paragraph} />
-  </header>
-  <Form client:idle />
+<section class="ContactForm sec-wo-margin" id={sectionId} light-background>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      {
+        review && (
+          <div class="review">
+            {review.img && <Image {...review.img} sizes="56px" />}
+            <div class="header">
+              <p class="name">{review.name}</p>
+              {review.position && <p class="position">{review.position}</p>}
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+              <path
+                fill="#CCC5B4"
+                d="M19.5.722v2.935a4.507 4.507 0 0 0-2.323 1.55c-.609.76-1.079 1.74-1.41 2.935-.277 1.196-.415 2.501-.415 3.914h3.235v7.666h-7.052v-6.769c0-3.098.442-5.49 1.327-7.176.886-1.74 1.936-2.962 3.153-3.669C17.232 1.347 18.394.885 19.5.722Zm-11.035 0v2.935c-.996.272-1.798.789-2.406 1.55-.553.76-.996 1.74-1.328 2.935-.276 1.196-.414 2.501-.414 3.914h3.235v7.666H.5v-6.769c0-3.098.443-5.49 1.328-7.176.885-1.74 1.935-2.962 3.152-3.669C6.197 1.347 7.36.885 8.465.722Z"
+              />
+            </svg>
+            <p class="content">{review.review}</p>
+          </div>
+        )
+      }
+      <div class="contact">
+        <p class="email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
+            <path
+              stroke="#DEAD26"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m22 7.722-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7.722m2-3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z">
+            </path>
+          </svg>
+          <a href={`mailto:${email}`} class="link">{email}</a>
+        </p>
+        {
+          tel && (
+            <p class="tel">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
+                <path
+                  stroke="#DEAD26"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M22.001 17.642v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.501 19.501 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67 2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.362 1.902.7 2.81a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.908.338 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03Z"
+                />
+              </svg>
+              <a href={`tel:${tel}`} class="link">
+                {tel}
+              </a>
+            </p>
+          )
+        }
+      </div>
+    </header>
+    <Form client:idle />
+  </div>
 </section>
 
 <style lang="scss">
   .ContactForm {
     padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
-    display: grid;
-    gap: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(48rem / 16));
-    header {
-      max-width: calc(608rem / 16);
-      .heading {
-        margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
-      }
+    position: relative;
+    z-index: 1;
+    &::before {
+      content: '';
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1/1;
+      background: linear-gradient(#fff1cc, rgba(255, 245, 218, 0));
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 38% 0, 100% 100%, 0% 100%);
     }
-    @media (min-width: calc(1000rem / 16)) {
-      grid-template-columns: 1fr 1fr;
-      header {
-        max-width: calc(518rem / 16);
-      }
-      :global(.Form) {
-        width: 100%;
-        margin-left: auto;
-        :global(.cta) {
-          width: fit-content;
+    .max-width {
+      display: grid;
+      gap: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+      @media (min-width: calc(1000rem / 16)) {
+        grid-template-columns: 1fr 1fr;
+        :global(.Form) {
+          width: 100%;
+          margin-left: auto;
+          :global(.cta) {
+            width: fit-content;
+          }
         }
       }
+      :global(.Loader) {
+        color: var(--neutral-700, #222);
+      }
     }
-    :global(.Loader) {
-      color: var(--neutral-700, #222);
+    header {
+      max-width: 34rem;
+      .review {
+        margin-top: 2rem;
+        border-left: 1px solid #dead26;
+        padding-left: 1.5rem;
+        display: grid;
+        grid-template-columns: 3.5rem 1fr;
+        gap: 1.5rem 1rem;
+        img {
+          width: 3.5rem;
+          height: 3.5rem;
+          border-radius: 50%;
+        }
+        .header {
+          align-self: center;
+          .position {
+            font-size: 0.875rem;
+          }
+        }
+        svg {
+          justify-self: center;
+        }
+        .content {
+          font-size: 0.875rem;
+        }
+      }
+      .contact {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+        .email,
+        .tel {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 1rem;
+          align-items: center;
+          a {
+            width: fit-content;
+          }
+        }
+      }
     }
   }
 </style>

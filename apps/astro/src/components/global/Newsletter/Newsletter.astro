@@ -3,7 +3,7 @@ import PortableText, { PortableTextQuery, type PortableTextValue } from '@compon
 import Form from './Form'
 
 export const Newsletter_Query = `
-  {
+  _type == "Newsletter" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     groupId

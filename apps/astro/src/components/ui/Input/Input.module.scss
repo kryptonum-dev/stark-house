@@ -1,8 +1,8 @@
-[light-background] .label {
+[light-background] .Input {
   color: var(--neutral-600, #3b3b3b);
 }
 
-.label {
+.Input {
   color: var(--neutral-300, #b8b8b8);
   font-size: calc(12rem / 16);
   line-height: 158%;
@@ -17,11 +17,11 @@
     transition: background-color 0.5s var(--easing);
     font-size: 1rem;
     &:hover {
-      background-color: var(--primary-100, #edebe7);
+      background-color: var(--primary-100, #fbf6e9);
     }
     &:focus-visible {
       outline: none;
-      background-color: var(--primary-100, #edebe7);
+      background-color: var(--primary-100, #fbf6e9);
     }
     &:not(:placeholder-shown) {
       background-color: var(--neutral-000, #fcfcfc);
@@ -29,6 +29,9 @@
     &[aria-invalid='true'] {
       border: 1px solid var(--error-500, #ff6a59);
       background: #ffe2de;
+    }
+    &::placeholder {
+      color: var(--neutral-500, #6f6f6f);
     }
   }
   input {
