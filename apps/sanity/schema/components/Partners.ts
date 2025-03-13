@@ -53,6 +53,18 @@ export default defineField({
           validation: Rule => Rule.required(),
         }),
       ],
+      preview: {
+        select: {
+          media: 'img',
+          name: 'name',
+          position: 'position',
+        },
+        prepare: ({ media, name, position }) => ({
+          title: name,
+          subtitle: position,
+          media,
+        }),
+      },
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -60,7 +72,8 @@ export default defineField({
       type: 'array',
       title: 'Partnerzy',
       of: [
-        {
+        defineField({
+          name: 'partner',
           type: 'object',
           title: 'Partner',
           fields: [
@@ -92,7 +105,7 @@ export default defineField({
               media,
             }),
           },
-        },
+        }),
       ],
       validation: Rule => Rule.required().min(1),
     }),

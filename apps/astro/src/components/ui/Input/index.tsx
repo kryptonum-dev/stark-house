@@ -17,7 +17,7 @@ export default function Input({ register, label, isTextarea, errors, placeholder
 
   return (
     <label className={styles.Input}>
-      <p className="label">{label}</p>
+      <p className={styles.label}>{label}</p>
       <Element {...register} {...props} placeholder={placeholder || ' '} aria-invalid={!!errors[register.name]} />
       <Error error={errors[register.name]?.message?.toString()} />
     </label>
