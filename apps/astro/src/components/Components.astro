@@ -15,6 +15,7 @@ import ProcessAccordion, { ProcessAccordion_Query } from '@components/global/Pro
 import TestimonialSection, { TestimonialSection_Query } from '@components/global/TestimonialSection.astro'
 import Newsletter, { Newsletter_Query } from '@components/global/Newsletter/Newsletter.astro'
 import ContactForm, { ContactForm_Query } from '@components/global/ContactForm/index.astro'
+import Partners, { Partners_Query } from '@components/global/Partners.astro'
 
 const components = {
   LandingFeature,
@@ -30,6 +31,7 @@ const components = {
   TestimonialSection,
   Newsletter,
   ContactForm,
+  Partners,
 }
 
 type ComponentsMap = {
@@ -64,6 +66,7 @@ export const Components_Query = /* groq */ `
     ${TestimonialSection_Query}
     ${Newsletter_Query}
     ${ContactForm_Query}
+    ${Partners_Query}
   },
 `
 ---

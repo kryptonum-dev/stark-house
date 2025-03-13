@@ -12,6 +12,7 @@ import ProcessAccordion from "./components/ProcessAccordion";
 import TestimonialSection from "./components/TestimonialSection";
 import Newsletter from "./components/Newsletter";
 import ContactForm from "./components/ContactForm";
+import Partners from "./components/Partners";
 
 export default defineType({
   name: 'components',
@@ -31,6 +32,7 @@ export default defineType({
     TestimonialSection,
     Newsletter,
     ContactForm,
+    Partners,
   ],
   options: {
     insertMenu: {
