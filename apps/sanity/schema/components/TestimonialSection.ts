@@ -19,37 +19,57 @@ export default defineField({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'paragraph',
+      type: 'PortableText',
+      title: 'Paragraf',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'items',
       type: 'array',
       title: 'Opinie',
       of: [
         defineField({
-          name: 'testimonial',
+          name: 'review',
           type: 'object',
+          title: 'Opinia',
           fields: [
             defineField({
-              name: 'text',
-              type: 'PortableText',
-              title: 'Tekst',
+              name: 'img',
+              type: 'image',
+              title: 'Zdjęcie (opcjonalne)',
+            }),
+            defineField({
+              name: 'name',
+              type: 'string',
+              title: 'Imię i nazwisko',
               validation: Rule => Rule.required(),
             }),
             defineField({
-              name: 'author',
+              name: 'position',
               type: 'string',
-              title: 'Autor',
+              title: 'Stanowisko',
+            }),
+            defineField({
+              name: 'content',
+              type: 'PortableText',
+              title: 'Treść opinii',
               validation: Rule => Rule.required(),
             }),
           ],
           preview: {
             select: {
-              text: 'text',
-              author: 'author',
+              media: 'img',
+              name: 'name',
+              position: 'position',
             },
-            prepare: ({ text, author }) => ({
-              title: toPlainText(text),
-              subtitle: author,
+            prepare: ({ media, name, position }) => ({
+              title: name,
+              subtitle: position,
+              media,
             }),
           },
+          validation: Rule => Rule.required(),
         }),
       ],
       validation: Rule => Rule.required(),
