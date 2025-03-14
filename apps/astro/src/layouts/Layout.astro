@@ -9,7 +9,7 @@ import Footer from '@components/global/Footer.astro'
 import SmoothScroll from '@layouts/smooth-scroll.astro'
 
 type Props = HeadProps & {
-  nav_cta: ComponentProps<typeof Header>['nav_cta']
+  nav_cta?: ComponentProps<typeof Header>['nav_cta']
 }
 
 const { nav_cta, ...props } = Astro.props
