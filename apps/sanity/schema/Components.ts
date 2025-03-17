@@ -13,6 +13,7 @@ import TestimonialSection from "./components/TestimonialSection";
 import Newsletter from "./components/Newsletter";
 import ContactForm from "./components/ContactForm";
 import Partners from "./components/Partners";
+import ImagesMarquee from "./components/ImagesMarquee";
 
 export default defineType({
   name: 'components',
@@ -33,6 +34,7 @@ export default defineType({
     Newsletter,
     ContactForm,
     Partners,
+    ImagesMarquee,
   ],
   options: {
     insertMenu: {

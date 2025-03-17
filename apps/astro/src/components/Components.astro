@@ -16,6 +16,7 @@ import TestimonialSection, { TestimonialSection_Query } from '@components/global
 import Newsletter, { Newsletter_Query } from '@components/global/Newsletter/Newsletter.astro'
 import ContactForm, { ContactForm_Query } from '@components/global/ContactForm/index.astro'
 import Partners, { Partners_Query } from '@components/global/Partners.astro'
+import ImagesMarquee, { ImagesMarquee_Query } from '@components/global/ImagesMarquee.astro'
 
 const components = {
   LandingFeature,
@@ -32,6 +33,7 @@ const components = {
   Newsletter,
   ContactForm,
   Partners,
+  ImagesMarquee,
 }
 
 type ComponentsMap = {
@@ -67,6 +69,7 @@ export const Components_Query = /* groq */ `
     ${Newsletter_Query}
     ${ContactForm_Query}
     ${Partners_Query}
+    ${ImagesMarquee_Query}
   },
 `
 ---
