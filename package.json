@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "dotenv -- turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -16,7 +16,8 @@
     "turbo": "^2.4.4",
     "typescript": "^5.8.2",
     "eslint": "^9.22.0",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "dotenv": "^16.4.7"
   },
   "engines": {
     "node": ">=18"

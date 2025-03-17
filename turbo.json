@@ -4,14 +4,16 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vercel/**"]
+      "outputs": ["dist/**", ".vercel/**"],
+      "env": ["SANITY_API_TOKEN", "MAILERLITE_API_KEY", "RESEND_API_KEY"]
     },
     "lint": {
       "dependsOn": ["^lint"]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["SANITY_API_TOKEN", "MAILERLITE_API_KEY", "RESEND_API_KEY"]
     }
   }
 }

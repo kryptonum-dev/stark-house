@@ -7,6 +7,7 @@ import Button from '@components/ui/Button';
 import Loader from '@components/ui/Loader';
 import FormState from '@components/ui/FormState';
 import { REGEX } from '@global/constants';
+import { trackEvent } from '@pages/api/meta-conversion/track-event';
 
 export default function Form({ groupId }: { groupId: string }) {
   const [status, setStatus] = useState<FormStatusTypes>({ sending: false, success: undefined });
@@ -28,6 +29,11 @@ export default function Form({ groupId }: { groupId: string }) {
       });
       const responseData = await response.json();
       if (response.ok && responseData.success) {
+        await trackEvent('CompleteRegistration', {
+          slug: window.location.pathname,
+          name: data.name,
+          email: data.email
+        });
         setStatus({ sending: false, success: true });
         reset();
       } else {
