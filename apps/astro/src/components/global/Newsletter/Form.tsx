@@ -30,7 +30,7 @@ export default function Form({ groupId }: { groupId: string }) {
       const responseData = await response.json();
       if (response.ok && responseData.success) {
         await trackEvent('CompleteRegistration', {
-          slug: window.location.pathname,
+          content_name: 'Newsletter Form',
           name: data.name,
           email: data.email
         });

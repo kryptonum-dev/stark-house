@@ -3,6 +3,7 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 import { hash } from '@utils/hash'
 import sanityFetch from '@utils/sanity.fetch';
+import type { TrackEventProps } from './track-event';
 
 const { metaPixelId, metaConversionToken } = await sanityFetch<{
   metaPixelId: string;
@@ -14,33 +15,24 @@ const { metaPixelId, metaConversionToken } = await sanityFetch<{
   }`,
 })
 
-type UserData = {
-  name?: string
-  email?: string
-  phone?: string
-  eventName: string
-  slug: string
-  event_id: string
-  event_time: number
-}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const {
-      eventName,
+      event_name,
+      content_name,
+      url,
+      event_id,
+      event_time,
       name,
       email,
       phone,
-      slug,
-      event_id,
-      event_time,
-    } = (await request.json()) as UserData
+    } = (await request.json()) as TrackEventProps
 
     const getCookie = (name: string) => {
       const cookie = request.headers.get('cookie')?.split(';').find(cookie => cookie.trim().split('=')[0] === name);
       return cookie ? cookie.trim().split('=')[1] : '';
     };
-
 
     if (!metaConversionToken) {
       return new Response(JSON.stringify({
@@ -96,12 +88,13 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         data: [
           {
-            event_name: eventName,
+            event_name: event_name,
+            content_name: content_name,
+            event_source_url: url,
             event_id,
             event_time,
             action_source: 'website',
             referrer_url: referer,
-            event_source_url: slug,
             user_data: {
               ...userData_prepared,
             },
@@ -110,28 +103,25 @@ export const POST: APIRoute = async ({ request }) => {
             },
           },
         ],
+        'test_event_code': 'TEST13366'
       }),
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      return new Response(
-        JSON.stringify({
-          message: 'Failed to send conversion event',
-          error: errorData,
-          success: false,
-        }), { status: response.status }
-      )
+      return new Response(JSON.stringify({
+        success: false,
+        message: `Failed to send conversion event to Meta (Status: ${response.status})`,
+      }), { status: response.status })
     }
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Successfully sent conversion event',
+      message: 'Successfully sent conversion event to Meta',
     }), { status: 200 })
   } catch (error) {
     return new Response(JSON.stringify({
       success: false,
-      message: error,
+      message: 'Error processing conversion event',
     }), { status: 500 })
   }
 }

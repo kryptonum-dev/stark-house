@@ -92,8 +92,7 @@ export default defineType({
       title: 'Analytics',
       type: 'object',
       options: { collapsible: true },
-      description:
-        'Configure analytics tracking tools to monitor page performance and user behavior. Leave fields empty to disable tracking.',
+      description: 'Configure analytics tracking tools to monitor page performance and user behavior. Leave fields empty to disable tracking.',
       fields: [
         defineField({
           name: 'gtmId',
