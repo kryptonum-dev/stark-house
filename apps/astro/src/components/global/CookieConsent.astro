@@ -3,7 +3,7 @@ import sanityFetch from '@utils/sanity.fetch'
 import Switch from '@components/ui/Switch.astro'
 import Button from '@components/ui/Button'
 
-const gtmId = await sanityFetch<{ gtmId: string }>({
+const GTM_CONTAINER_ID = await sanityFetch<{ gtmId: string }>({
   query: `*[_type == "global"][0].analytics.gtmId`,
 })
 
@@ -11,34 +11,38 @@ const groups = [
   {
     id: 'necessary',
     name: 'Niezbędne',
-    description: `Niezbędne pliki cookie pomagają uczynić naszą stronę użyteczną, umożliwiając działanie podstawowych funkcji, takich jak nawigacja po stronie internetowej czy dostęp do bezpiecznych obszarów strony. Bez tych plików cookie niektóre podstawowe funkcje strony nie będą działać prawidłowo.`,
+    description:
+      'Te pliki cookie są konieczne do działania strony i nie mogą być wyłączone. Umożliwiają podstawowe funkcje, takie jak nawigacja i dostęp do zabezpieczonych obszarów. Strona nie może funkcjonować poprawnie bez nich.',
   },
   {
     id: 'analytics',
     name: 'Analityczne',
-    description: `Pliki cookie analityczne pomagają nam zrozumieć, w jaki sposób użytkownicy wchodzą w interakcje z naszą stroną internetową, zbierając i raportując informacje anonimowo. Te dane są wykorzystywane do doskonalenia struktury i treści strony.`,
+    description:
+      'Pomagają nam zrozumieć, jak korzystasz z naszej strony, zbierając anonimowe dane. Dzięki nim możemy ulepszać strukturę i zawartość witryny.',
   },
   {
     id: 'preferences',
     name: 'Preferencyjne',
-    description: `Pliki cookie preferencyjne pozwalają stronie internetowej zapamiętywać informacje, które zmieniają sposób, w jaki strona się zachowuje lub wygląda, takie jak preferowany język lub region, w którym się znajdujesz.`,
+    description:
+      'Zapamiętują Twoje wybory (np. preferowany język), aby dostosować wygląd i działanie strony do Twoich potrzeb.',
   },
   {
     id: 'marketing',
     name: 'Marketingowe',
-    description: `Pliki cookie marketingowe są używane do śledzenia odwiedzających na stronach internetowych. Ich celem jest wyświetlanie reklam, które są istotne i interesujące dla indywidualnych użytkowników, a tym samym bardziej wartościowe dla wydawców i zewnętrznych reklamodawców.`,
+    description:
+      'Służą do śledzenia Twoich aktywności na różnych stronach, aby wyświetlać Ci bardziej trafne i interesujące reklamy.',
     subGroups: [
       {
         id: 'conversion_api',
-        name: 'API Konwersji (Facebook)',
+        name: 'API Konwersji',
         description:
-          'Pozwala na przesyłanie danych o konwersjach bezpośrednio do platform reklamowych w celu poprawy skuteczności reklam i lepszego mierzenia ich efektywności.',
+          'Przesyła dane o Twoich działaniach bezpośrednio do Facebooka, aby mierzyć skuteczność reklam zgodnie z GDPR.',
       },
       {
         id: 'advanced_matching',
-        name: 'Zaawansowane Dopasowanie (Facebook)',
+        name: 'Zaawansowane Dopasowanie',
         description:
-          'Umożliwia lepsze dopasowanie użytkowników do ich działań na stronie, co pomaga w dokładniejszym targetowaniu reklam i analizie ich skuteczności.',
+          'Pomaga Facebookowi lepiej dopasować Twoje działania na stronie do Twojego profilu, co zwiększa trafność wyświetlanych reklam.',
       },
     ],
   },
@@ -46,10 +50,10 @@ const groups = [
 ---
 
 {
-  gtmId && (
+  GTM_CONTAINER_ID && (
     <noscript>
       <iframe
-        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
         height="0"
         width="0"
         style="display:none;visibility:hidden;"
@@ -153,8 +157,8 @@ const groups = [
     padding: $padding;
     max-height: calc(100vh - $padding * 2);
     max-height: calc(100dvh - $padding * 2);
-    border: 1px solid var(--primary-200, #e6dbd1);
-    background-color: var(--primary-100, #f2ede8);
+    border: 1px solid var(--neutral-500, #555454);
+    background-color: var(--neutral-600, #252423);
     max-width: 48rem;
     display: flex;
     flex-direction: column;
@@ -176,7 +180,7 @@ const groups = [
         padding-top: 1.5rem;
         gap: clamp(0.75rem, calc(1.25vw / 0.48), 1.25rem);
         position: relative;
-        border-left: 1px solid var(--primary-200, #e6dbd1);
+        border-left: 1px solid var(--neutral-500, #555454);
       }
       label {
         display: grid;
@@ -212,12 +216,11 @@ const groups = [
   }
 </style>
 
-<script is:inline define:vars={{ gtmId }}>
+<script is:inline define:vars={{ GTM_CONTAINER_ID }}>
   window.dataLayer = window.dataLayer || []
   function gtag() {
     window.dataLayer.push(arguments)
   }
-
   function getCookie(name) {
     const cookies = document.cookie.split(';').map((cookie) => cookie.trim())
     const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`))
@@ -228,7 +231,6 @@ const groups = [
     const expires = days ? `; expires=${date.toUTCString()}` : ''
     document.cookie = `${name}=${encodeURIComponent(value)}${expires}; SameSite=Strict`
   }
-
   function setConsent(consent) {
     const consentMode = {
       functionality_storage: consent.necessary ? 'granted' : 'denied',
@@ -248,7 +250,6 @@ const groups = [
     if (focusedElement && cookieConsentElement.contains(focusedElement)) {
       focusedElement.blur()
     }
-
     cookieConsentElement.style.display = 'none'
     cookieConsentElement.setAttribute('aria-hidden', 'true')
   }
@@ -259,17 +260,12 @@ const groups = [
   const denyButton = cookieConsentElement.querySelector('.deny')
   let isPreferencesOpen = false
 
-  // Initialize GTM
-  ;(function (w, d, s, l, i) {
-    w[l] = w[l] || []
-    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s),
-      dl = l != 'dataLayer' ? '&l=' + l : ''
-    j.async = true
-    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-    f.parentNode.insertBefore(j, f)
-  })(window, document, 'script', 'dataLayer', gtmId)
+  // prettier-ignore
+  ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',GTM_CONTAINER_ID);
 
   if (getCookie('cookie-consent') === null) {
     gtag('consent', 'default', {
@@ -298,7 +294,6 @@ const groups = [
       advanced_matching: true,
     })
   })
-
   preferencesButton.addEventListener('click', () => {
     if (!isPreferencesOpen) {
       cookieConsentElement.querySelector('.header [data-header-initial]').style.display = 'none'
@@ -316,7 +311,6 @@ const groups = [
       })
     }
   })
-
   denyButton.addEventListener('click', () => {
     setConsent({
       necessary: false,
@@ -330,7 +324,6 @@ const groups = [
 
   const marketingSwitch = cookieConsentElement.querySelector('input[id="marketing"]')
   const subSwitches = cookieConsentElement.querySelectorAll('.sub-groups input[type="checkbox"]')
-
   let isMarketingSwitchTriggered = false
 
   marketingSwitch.addEventListener('change', (e) => {
@@ -340,7 +333,6 @@ const groups = [
     })
     isMarketingSwitchTriggered = false
   })
-
   subSwitches.forEach((subSwitch) => {
     subSwitch.addEventListener('change', (e) => {
       if (!isMarketingSwitchTriggered && e.target.checked) {

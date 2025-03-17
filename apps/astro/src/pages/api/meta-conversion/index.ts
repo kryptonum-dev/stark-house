@@ -15,7 +15,6 @@ const { metaPixelId, metaConversionToken } = await sanityFetch<{
   }`,
 })
 
-
 export const POST: APIRoute = async ({ request }) => {
   try {
     const {
