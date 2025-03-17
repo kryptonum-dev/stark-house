@@ -103,7 +103,6 @@ export const POST: APIRoute = async ({ request }) => {
             },
           },
         ],
-        'test_event_code': 'TEST13366'
       }),
     })
 
