@@ -14,6 +14,9 @@ import Newsletter from "./components/Newsletter";
 import ContactForm from "./components/ContactForm";
 import Partners from "./components/Partners";
 import ImagesMarquee from "./components/ImagesMarquee";
+import PackagesTables from "./components/PackagesTables";
+import Partnership from "./components/Partnership";
+import Comparison from "./components/Comparison";
 
 export default defineType({
   name: 'components',
@@ -35,6 +38,9 @@ export default defineType({
     ContactForm,
     Partners,
     ImagesMarquee,
+    PackagesTables,
+    Partnership,
+    Comparison,
   ],
   options: {
     insertMenu: {

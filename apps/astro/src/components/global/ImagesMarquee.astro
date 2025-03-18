@@ -33,7 +33,7 @@ const { index, sectionId, firstRowImages, secondRowImages } = Astro.props
                   {...image}
                   sizes="(max-width: 30rem) 66vw, (max-width: 44rem) 50vw, 33vw"
                   class="marquee-item"
-                  loading={marqueeIndex === 0 && index === 0 ? 'eager' : 'lazy'}
+                  loading={marqueeIndex === 0 && (index === 0 || index === 1) ? 'eager' : 'lazy'}
                 />
               ))
             )}
