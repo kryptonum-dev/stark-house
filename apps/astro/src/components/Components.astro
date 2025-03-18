@@ -17,6 +17,9 @@ import Newsletter, { Newsletter_Query } from '@components/global/Newsletter/News
 import ContactForm, { ContactForm_Query } from '@components/global/ContactForm/index.astro'
 import Partners, { Partners_Query } from '@components/global/Partners.astro'
 import ImagesMarquee, { ImagesMarquee_Query } from '@components/global/ImagesMarquee.astro'
+import PackagesTables, { PackagesTables_Query } from '@components/global/PackagesTables.astro'
+import Partnership, { Partnership_Query } from '@components/global/Partnership.astro'
+import Comparison, { Comparison_Query } from '@components/global/Comparison.astro'
 
 const components = {
   LandingFeature,
@@ -34,6 +37,9 @@ const components = {
   ContactForm,
   Partners,
   ImagesMarquee,
+  packagesTables: PackagesTables,
+  Partnership,
+  Comparison,
 }
 
 type ComponentsMap = {
@@ -70,6 +76,9 @@ export const Components_Query = /* groq */ `
     ${ContactForm_Query}
     ${Partners_Query}
     ${ImagesMarquee_Query}
+    ${PackagesTables_Query}
+    ${Partnership_Query}
+    ${Comparison_Query}
   },
 `
 ---
