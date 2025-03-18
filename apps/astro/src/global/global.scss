@@ -189,12 +189,18 @@ h5,
 h6,
 .h6 {
   overflow-wrap: anywhere;
-  line-height: 1.16;
+  line-height: 1.2;
   font-weight: 400;
+  strong {
+    font-weight: 400;
+    font-style: italic;
+  }
 }
 h1,
-.h1 {
-  font-size: clamp(2.625rem, calc(4vw / 0.48), 4rem);
+.h1,
+h2,
+.h2 {
+  font-size: clamp(2rem, calc(3vw / 0.48), 3rem);
 }
 h1,
 .h1,
@@ -205,10 +211,6 @@ h2,
     color: var(--primary-500, #dbb039);
     font-size: 0.875em;
   }
-}
-h2,
-.h2 {
-  font-size: clamp(2rem, calc(3vw / 0.48), 3rem);
 }
 h3,
 .h3 {
