@@ -1,0 +1,127 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+
+export const Partnership_Query = /* groq */ `
+  _type == "Partnership" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('subheading')}
+    ${PortableTextQuery('paragraph')}
+    logos[] {
+      ${ImageDataQuery('img')}
+      href
+    },
+    sectionId,
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  subheading?: PortableTextValue
+  paragraph: PortableTextValue
+  logos: Array<{
+    img: ImageDataProps
+    name: string
+    href?: string
+  }>
+}
+
+const { index, sectionId, heading, subheading, paragraph, logos } = Astro.props
+---
+
+<section class="Partnership sec-wo-margin" id={sectionId} light-background>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      {subheading && <PortableText value={subheading} heading={index === 0 ? 'h2' : 'h3'} class="subheading h3" />}
+      <PortableText value={paragraph} class="paragraph" />
+    </header>
+    <div class="logos-grid">
+      {
+        logos.map(({ href, img, name }, logosIndex) => (
+          <>
+            {href ? (
+              <a href={href} class="logo-item" target="_blank" rel="noopener noreferrer" aria-label={name}>
+                <Image {...img} sizes="160px" />
+              </a>
+            ) : (
+              <div class="logo-item" aria-label={name}>
+                <Image {...img} sizes="160px" />
+              </div>
+            )}
+            {logosIndex !== logos.length - 1 && 'X'}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .Partnership {
+    padding: clamp(3rem, calc(5vw / 0.48), 7rem) 0;
+    position: relative;
+    z-index: 1;
+    &::before {
+      content: '';
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1/1;
+      background: linear-gradient(#fff1cc, rgba(255, 245, 218, 0));
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 38% 0, 100% 100%, 0% 100%);
+    }
+    .max-width {
+      display: grid;
+      grid-template-columns: 1.75fr 1fr;
+      gap: clamp(2rem, calc(3vw / 0.48), 7rem);
+      align-items: center;
+      @media (max-width: 59rem) {
+        grid-template-columns: 1fr;
+        header,
+        .logos-grid {
+          max-width: 38rem;
+        }
+      }
+    }
+    header {
+      .subheading {
+        margin-top: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+      }
+      .paragraph {
+        margin-top: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      }
+    }
+    .logos-grid {
+      display: grid;
+      justify-content: center;
+      justify-items: center;
+      font-size: 0.75rem;
+      padding: clamp(1.5rem, calc(2vw / 0.48), 3rem);
+      gap: 1rem;
+      border: 1px solid rgba(13, 12, 11, 0.15);
+      .logo-item {
+        width: 100%;
+        max-width: 21rem;
+        height: 3.5rem;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+      a.logo-item {
+        display: block;
+        transition: opacity 500ms var(--easing);
+        &:hover {
+          opacity: 0.76;
+        }
+      }
+    }
+  }
+</style>
