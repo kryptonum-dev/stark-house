@@ -21,6 +21,7 @@ import PackagesTables, { PackagesTables_Query } from '@components/global/Package
 import Partnership, { Partnership_Query } from '@components/global/Partnership.astro'
 import Comparison, { Comparison_Query } from '@components/global/Comparison.astro'
 import ListWithIcons, { ListWithIcons_Query } from '@components/global/ListWithIcons.astro'
+import OfferShowcase, { OfferShowcase_Query } from '@components/global/OfferShowcase.astro'
 
 const components = {
   LandingFeature,
@@ -42,6 +43,7 @@ const components = {
   Partnership,
   Comparison,
   ListWithIcons,
+  OfferShowcase,
 }
 
 type ComponentsMap = {
@@ -82,6 +84,7 @@ export const Components_Query = /* groq */ `
     ${Partnership_Query}
     ${Comparison_Query}
     ${ListWithIcons_Query}
+    ${OfferShowcase_Query}
   },
 `
 ---

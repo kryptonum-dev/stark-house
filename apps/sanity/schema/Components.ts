@@ -18,6 +18,7 @@ import PackagesTables from "./components/PackagesTables";
 import Partnership from "./components/Partnership";
 import Comparison from "./components/Comparison";
 import ListWithIcons from "./components/ListWithIcons";
+import OfferShowcase from "./components/OfferShowcase";
 
 export default defineType({
   name: 'components',
@@ -43,6 +44,7 @@ export default defineType({
     Partnership,
     Comparison,
     ListWithIcons,
+    OfferShowcase,
   ],
   options: {
     insertMenu: {
