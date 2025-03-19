@@ -21,8 +21,7 @@ export default defineField({
     defineField({
       name: 'subheading',
       type: 'PortableText',
-      title: 'Podtytuł',
-      validation: Rule => Rule.required(),
+      title: 'Podtytuł (opcjonalnie)',
     }),
     defineField({
       name: 'benefits',

@@ -16,10 +16,10 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  paragraph: PortableTextValue
+  paragraph?: PortableTextValue
   benefits: {
     title: PortableTextValue
-    description: PortableTextValue
+    description?: PortableTextValue
   }[]
 }
 
@@ -29,14 +29,14 @@ const { index, sectionId, heading, paragraph, benefits } = Astro.props
 <section class="BenefitsNumberedGrid" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    <PortableText value={paragraph} />
+    {paragraph && <PortableText value={paragraph} class="paragraph" />}
   </header>
   <ol class="list">
     {
       benefits.map(({ title, description }) => (
         <li class="item">
-          <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
-          <PortableText value={description} />
+          <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading h3" />
+          {description && <PortableText value={description} class="description" />}
         </li>
       ))
     }
@@ -48,9 +48,9 @@ const { index, sectionId, heading, paragraph, benefits } = Astro.props
     padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
     header {
       max-width: calc(608rem / 16);
-      margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16));
-      .heading {
-        margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
+      .paragraph {
+        margin-top: 1.5rem;
       }
     }
   }
@@ -68,15 +68,17 @@ const { index, sectionId, heading, paragraph, benefits } = Astro.props
       &::before {
         content: '0' counter(counter);
         display: block;
-        font-weight: 600;
-        color: var(--neutral-300, #b8b8b8);
-        font-size: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
-        margin-bottom: clamp(calc(20rem / 16), calc(32vw / 7.68), calc(48rem / 16));
+        color: var(--neutral-400, #868585);
+        font-size: 1rem;;
+        margin-bottom: clamp(calc(8rem / 16), calc(20vw / 7.68), calc(28rem / 16));
       }
-    }
-    .heading {
-      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
-      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+      .heading {
+        font-size: 1.5rem;
+      }
+      .description {
+        margin-top: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+        font-size: 1rem;
+      }
     }
   }
 </style>
