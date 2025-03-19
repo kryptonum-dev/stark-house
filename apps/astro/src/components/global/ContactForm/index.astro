@@ -41,7 +41,7 @@ const { index, sectionId, heading, review, email, tel } = Astro.props
       {
         review && (
           <div class="review">
-            {review.img && <Image {...review.img} sizes="56px" />}
+            {review.img ? <Image {...review.img} sizes="56px" /> : <div class="avatar" />}
             <div class="header">
               <p class="name">{review.name}</p>
               {review.position && <p class="position">{review.position}</p>}
