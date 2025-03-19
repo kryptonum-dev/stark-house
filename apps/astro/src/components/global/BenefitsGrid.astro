@@ -29,7 +29,7 @@ const { index, sectionId, heading, subheading, benefits } = Astro.props
 <section class="BenefitsGrid" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    {subheading && <PortableText value={subheading} />}
+    {subheading && <PortableText value={subheading} class="subheading" />}
   </header>
   <ol class="list">
     {

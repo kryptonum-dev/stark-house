@@ -76,19 +76,14 @@ const { index, sectionId, heading, paragraph, review, partners } = Astro.props
       </div>
       <div class="partners-grid">
         {
-          partners.map((partner) =>
-            partner.link ? (
-              <a
-                href={partner.link}
-                class="partner-item"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={partner.name}>
-                <Image {...partner.img} sizes="144px" />
+          partners.map(({ link, name, img }) =>
+            link ? (
+              <a href={link} class="partner-item" target="_blank" rel="noopener noreferrer" aria-label={name}>
+                <Image {...img} sizes="144px" />
               </a>
             ) : (
               <div class="partner-item">
-                <Image {...partner.img} sizes="144px" />
+                <Image {...img} sizes="144px" />
               </div>
             )
           )

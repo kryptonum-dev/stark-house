@@ -9,6 +9,7 @@ export const Partnership_Query = /* groq */ `
     ${PortableTextQuery('paragraph')}
     logos[] {
       ${ImageDataQuery('img')}
+      name,
       href
     },
     sectionId,
