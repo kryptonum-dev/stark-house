@@ -1,0 +1,82 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+
+export const ListWithIcons_Query = `
+  _type == "ListWithIcons" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    list[] {
+      ${ImageDataQuery('icon')}
+      ${PortableTextQuery('title')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph?: PortableTextValue
+  list: {
+    icon: ImageDataProps
+    title: PortableTextValue
+  }[]
+}
+
+const { index, sectionId, heading, paragraph, list } = Astro.props
+---
+
+<section class="ListWithIcons" id={sectionId}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    {paragraph && <PortableText value={paragraph} class="paragraph" />}
+  </header>
+  <ul class="list">
+    {
+      list.map(({ icon, title }) => (
+        <li class="item">
+          <Image {...icon} sizes="32px" class="icon" />
+          <PortableText value={title} class="title" />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  .ListWithIcons {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    header {
+      max-width: 38rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
+      .paragraph {
+        margin-top: 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+  .list {
+    display: grid;
+    max-width: 68rem;
+    gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+    @media (min-width: calc(768rem / 16)) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (min-width: calc(1100rem / 16)) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      .icon {
+        width: 32px;
+        height: 32px;
+      }
+      .title {
+        font-size: 1.125rem;
+      }
+    }
+  }
+</style>

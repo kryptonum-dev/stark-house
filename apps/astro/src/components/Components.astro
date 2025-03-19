@@ -20,6 +20,7 @@ import ImagesMarquee, { ImagesMarquee_Query } from '@components/global/ImagesMar
 import PackagesTables, { PackagesTables_Query } from '@components/global/PackagesTables.astro'
 import Partnership, { Partnership_Query } from '@components/global/Partnership.astro'
 import Comparison, { Comparison_Query } from '@components/global/Comparison.astro'
+import ListWithIcons, { ListWithIcons_Query } from '@components/global/ListWithIcons.astro'
 
 const components = {
   LandingFeature,
@@ -40,6 +41,7 @@ const components = {
   packagesTables: PackagesTables,
   Partnership,
   Comparison,
+  ListWithIcons,
 }
 
 type ComponentsMap = {
@@ -79,6 +81,7 @@ export const Components_Query = /* groq */ `
     ${PackagesTables_Query}
     ${Partnership_Query}
     ${Comparison_Query}
+    ${ListWithIcons_Query}
   },
 `
 ---
