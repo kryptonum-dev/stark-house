@@ -48,6 +48,30 @@ export default defineField({
         }),
       ],
     }),
+    defineField({
+      name: 'linkedin_conversion',
+      type: 'object',
+      title: 'LinkedIn Conversion',
+      description: 'LinkedIn Conversion for tracking form submissions (note: LinkedIn must be configured as a separate pixel and direct API)',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        defineField({
+          name: 'pixel_conversion_id',
+          type: 'number',
+          title: 'Pixel Conversion ID',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'direct_api_conversion_id',
+          type: 'number',
+          title: 'Direct API Conversion ID',
+          validation: Rule => Rule.required(),
+        }),
+      ],
+    }),
     ...sectionId,
   ],
   preview: {

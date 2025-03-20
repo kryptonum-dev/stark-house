@@ -3,64 +3,61 @@ import sanityFetch from '@utils/sanity.fetch'
 import Switch from '@components/ui/Switch.astro'
 import Button from '@components/ui/Button'
 
-const GTM_CONTAINER_ID = await sanityFetch<{ gtmId: string }>({
-  query: `*[_type == "global"][0].analytics.gtmId`,
+const GTM_ID = await sanityFetch<{ gtm_id: string }>({
+  query: `*[_type == "global"][0].analytics.gtm_id`,
 })
+if (!GTM_ID) return null
 
 const groups = [
   {
     id: 'necessary',
     name: 'Niezbędne',
     description:
-      'Te pliki cookie są konieczne do działania strony i nie mogą być wyłączone. Umożliwiają podstawowe funkcje, takie jak nawigacja i dostęp do zabezpieczonych obszarów. Strona nie może funkcjonować poprawnie bez nich.',
+      'Te pliki cookie są konieczne do działania strony i nie mogą być wyłączone. Umożliwiają podstawowe funkcje, takie jak nawigacja, dostęp do zabezpieczonych obszarów oraz prawidłowe działanie formularzy. Są niezbędne do zapewnienia funkcjonalności i bezpieczeństwa strony zgodnie z wymogami RODO.',
   },
   {
     id: 'analytics',
     name: 'Analityczne',
     description:
-      'Pomagają nam zrozumieć, jak korzystasz z naszej strony, zbierając anonimowe dane. Dzięki nim możemy ulepszać strukturę i zawartość witryny.',
+      'Pomagają nam zrozumieć, jak korzystasz z naszej strony, zbierając anonimowe dane o interakcjach, czasie spędzonym na stronie i odwiedzanych podstronach. Dzięki nim możemy identyfikować problemy, ulepszać strukturę i zawartość witryny oraz optymalizować doświadczenie użytkownika. Dane są przetwarzane w formie zagregowanej i pseudonimizowanej.',
   },
   {
     id: 'preferences',
     name: 'Preferencyjne',
     description:
-      'Zapamiętują Twoje wybory (np. preferowany język), aby dostosować wygląd i działanie strony do Twoich potrzeb.',
+      'Zapamiętują Twoje indywidualne wybory i ustawienia (np. preferowany język, rozmiar czcionki, układ strony) podczas Twojej sesji oraz między wizytami, aby dostosować wygląd i działanie strony do Twoich potrzeb. Zwiększają wygodę korzystania z witryny, eliminując potrzebę ponownego wprowadzania tych samych informacji.',
   },
   {
     id: 'marketing',
     name: 'Marketingowe',
     description:
-      'Służą do śledzenia Twoich aktywności na różnych stronach, aby wyświetlać Ci bardziej trafne i interesujące reklamy.',
+      'Służą do śledzenia Twoich aktywności na naszej stronie i innych witrynach, aby tworzyć profile zainteresowań i wyświetlać Ci bardziej trafne i spersonalizowane reklamy. Przetwarzanie tych danych odbywa się wyłącznie za Twoją zgodą, zgodnie z przepisami RODO, i może być w każdej chwili wycofane.',
     subGroups: [
       {
         id: 'conversion_api',
         name: 'API Konwersji',
         description:
-          'Przesyła dane o Twoich działaniach bezpośrednio do Facebooka, aby mierzyć skuteczność reklam zgodnie z GDPR.',
+          'Przesyła dane o Twoich działaniach bezpośrednio do platform reklamowych (takich jak Meta, LinkedIn, itp.), aby mierzyć skuteczność reklam zgodnie z RODO. Pozwala to na dokładniejsze śledzenie konwersji i optymalizację kampanii reklamowych.',
       },
       {
         id: 'advanced_matching',
         name: 'Zaawansowane Dopasowanie',
         description:
-          'Pomaga Facebookowi lepiej dopasować Twoje działania na stronie do Twojego profilu, co zwiększa trafność wyświetlanych reklam.',
+          'Umożliwia platformom reklamowym (takim jak Meta, LinkedIn, itp.) lepsze dopasowanie Twoich działań na stronie do Twojego profilu, co zwiększa trafność wyświetlanych reklam. Mechanizm ten działa w zgodzie z przepisami RODO, przetwarzając dane tylko za Twoją wyraźną zgodą.',
       },
     ],
   },
 ]
 ---
 
-{
-  GTM_CONTAINER_ID && (
-    <noscript>
-      <iframe
-        src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden;"
-      />
-    </noscript>
-  )
-}
+<noscript>
+  <iframe
+    src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+    height="0"
+    width="0"
+    style="display:none;visibility:hidden;">
+  </iframe>
+</noscript>
 <aside class="cookie-consent" aria-hidden="true">
   <section class="content">
     <header class="header">
@@ -216,7 +213,7 @@ const groups = [
   }
 </style>
 
-<script is:inline define:vars={{ GTM_CONTAINER_ID }}>
+<script is:inline define:vars={{ GTM_ID }}>
   window.dataLayer = window.dataLayer || []
   function gtag() {
     window.dataLayer.push(arguments)
@@ -265,7 +262,7 @@ const groups = [
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer',GTM_CONTAINER_ID);
+  })(window,document,'script','dataLayer',GTM_ID);
 
   if (getCookie('cookie-consent') === null) {
     gtag('consent', 'default', {

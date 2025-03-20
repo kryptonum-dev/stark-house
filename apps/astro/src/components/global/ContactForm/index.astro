@@ -14,6 +14,12 @@ export const ContactForm_Query = `
     },
     "email": *[_type == "global"][0].email,
     "tel": *[_type == "global"][0].tel,
+    "analytics": {
+      linkedin_conversion {
+        pixel_conversion_id,
+        direct_api_conversion_id
+      }
+    }
   },
 `
 
@@ -29,9 +35,15 @@ export type Props = {
   }
   email: string
   tel?: string
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number
+      direct_api_conversion_id: number
+    }
+  }
 }
 
-const { index, sectionId, heading, review, email, tel } = Astro.props
+const { index, sectionId, heading, review, email, tel, analytics } = Astro.props
 ---
 
 <section class="ContactForm sec-wo-margin" id={sectionId} light-background>
@@ -89,7 +101,7 @@ const { index, sectionId, heading, review, email, tel } = Astro.props
         }
       </div>
     </header>
-    <Form client:idle />
+    <Form client:idle analytics={analytics} />
   </div>
 </section>
 

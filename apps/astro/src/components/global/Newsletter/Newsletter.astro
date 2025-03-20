@@ -6,7 +6,13 @@ export const Newsletter_Query = `
   _type == "Newsletter" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
-    groupId
+    groupId,
+    "analytics": {
+      linkedin_conversion {
+        pixel_conversion_id,
+        direct_api_conversion_id
+      }
+    }
   },
 `
 
@@ -16,9 +22,15 @@ export type Props = {
   heading: PortableTextValue
   paragraph: PortableTextValue
   groupId: string
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number
+      direct_api_conversion_id: number
+    }
+  }
 }
 
-const { index, sectionId, heading, paragraph, groupId } = Astro.props
+const { index, sectionId, heading, paragraph, groupId, analytics } = Astro.props
 ---
 
 <section class="Newsletter sec-wo-margin" light-background id={sectionId}>
@@ -27,7 +39,7 @@ const { index, sectionId, heading, paragraph, groupId } = Astro.props
       <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
       <PortableText value={paragraph} />
     </header>
-    <Form groupId={groupId} client:idle />
+    <Form client:idle groupId={groupId} analytics={analytics} />
   </div>
 </section>
 

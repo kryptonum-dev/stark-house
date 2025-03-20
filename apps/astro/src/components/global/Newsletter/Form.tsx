@@ -7,9 +7,19 @@ import Button from '@components/ui/Button';
 import Loader from '@components/ui/Loader';
 import FormState from '@components/ui/FormState';
 import { REGEX } from '@global/constants';
-import { trackEvent } from '@pages/api/meta-conversion/track-event';
+import { trackEvent } from '@pages/api/analytics/track-event';
 
-export default function Form({ groupId }: { groupId: string }) {
+type Props = {
+  groupId: string;
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number;
+      direct_api_conversion_id: number;
+    }
+  }
+};
+
+export default function Form({ groupId, analytics }: Props) {
   const [status, setStatus] = useState<FormStatusTypes>({ sending: false, success: undefined });
   const {
     register,
@@ -29,13 +39,25 @@ export default function Form({ groupId }: { groupId: string }) {
       });
       const responseData = await response.json();
       if (response.ok && responseData.success) {
-        await trackEvent('CompleteRegistration', {
-          content_name: 'Newsletter Form',
-          name: data.name,
-          email: data.email
-        });
         setStatus({ sending: false, success: true });
         reset();
+
+        await trackEvent({
+          user_data: {
+            name: data.name,
+            email: data.email
+          },
+          meta: {
+            event_name: 'Lead',
+            content_name: 'Newsletter Form'
+          },
+          ...(analytics?.linkedin_conversion && {
+            linkedin: {
+              pixel_conversion_id: analytics.linkedin_conversion.pixel_conversion_id,
+              direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
+            }
+          }),
+        });
       } else {
         setStatus({ sending: false, success: false });
       }
@@ -79,7 +101,7 @@ export default function Form({ groupId }: { groupId: string }) {
       <FormState
         success={{
           heading: 'Dziękujemy za zapis do newslettera!',
-          paragraph: <p>Od teraz będziesz na bieżąco z nowościami i aktualnościami!</p>
+          paragraph: <p>Od teraz będziesz na bieżąco z nowościami i aktualnościami!</p>
         }}
         error={{
           heading: 'Nie udało się zapisać do newslettera',

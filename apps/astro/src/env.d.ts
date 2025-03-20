@@ -12,5 +12,3 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
-
-declare function fbq(method: string, ...args: any[]): void;

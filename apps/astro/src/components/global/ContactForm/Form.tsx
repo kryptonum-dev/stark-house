@@ -7,9 +7,18 @@ import Button from '@components/ui/Button';
 import Loader from '@components/ui/Loader';
 import FormState from '@components/ui/FormState';
 import { REGEX } from '@global/constants';
-import { trackEvent } from '@pages/api/meta-conversion/track-event';
+import { trackEvent } from '@pages/api/analytics/track-event';
 
-export default function Form() {
+type Props = {
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number;
+      direct_api_conversion_id: number;
+    }
+  }
+};
+
+export default function Form({ analytics }: Props) {
   const [status, setStatus] = useState<FormStatusTypes>({ sending: false, success: undefined });
   const {
     register,
@@ -28,13 +37,23 @@ export default function Form() {
       });
       const responseData = await response.json();
       if (response.ok && responseData.success) {
-        await trackEvent('Lead', {
-          content_name: 'Contact Form',
-          name: data.name,
-          email: data.email
-        });
         setStatus({ sending: false, success: true });
         reset();
+        await trackEvent({
+          user_data: {
+            email: data.email
+          },
+          meta: {
+            event_name: 'Lead',
+            content_name: 'Contact Form'
+          },
+          ...(analytics?.linkedin_conversion && {
+            linkedin: {
+              pixel_conversion_id: analytics.linkedin_conversion.pixel_conversion_id,
+              direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
+            }
+          }),
+        });
       } else {
         setStatus({ sending: false, success: false });
       }
