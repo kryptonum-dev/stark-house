@@ -26,7 +26,7 @@ const { index, sectionId, firstRowImages, secondRowImages } = Astro.props
         { images: secondRowImages, isReverse: true },
       ].map(({ images, isReverse }, marqueeIndex) => (
         <div class="marquee-row">
-          <div class="marquee-content" style={`animation-duration: ${images.length * 6}s`} data-reverse={isReverse}>
+          <div class="marquee-content" style={`animation-duration: ${images.length * 9}s`} data-reverse={isReverse}>
             {[...Array(2)].map(() =>
               images?.map((image) => (
                 <Image
