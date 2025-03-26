@@ -1,11 +1,13 @@
 ---
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
 
 export const ListWithIcons_Query = `
   _type == "ListWithIcons" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
     list[] {
       ${ImageDataQuery('icon')}
       ${PortableTextQuery('title')}
@@ -18,19 +20,23 @@ export type Props = {
   sectionId?: string
   heading: PortableTextValue
   paragraph?: PortableTextValue
+  cta?: ButtonDataProps
   list: {
     icon: ImageDataProps
     title: PortableTextValue
   }[]
 }
 
-const { index, sectionId, heading, paragraph, list } = Astro.props
+const { index, sectionId, heading, paragraph, cta, list } = Astro.props
 ---
 
 <section class="ListWithIcons" id={sectionId}>
   <header>
-    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    {paragraph && <PortableText value={paragraph} class="paragraph" />}
+    <div class="wrapper">
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      {paragraph && <PortableText value={paragraph} class="paragraph" />}
+    </div>
+    {cta && <Button {...cta} className="cta" />}
   </header>
   <ul class="list">
     {
@@ -48,11 +54,18 @@ const { index, sectionId, heading, paragraph, list } = Astro.props
   .ListWithIcons {
     padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
     header {
-      max-width: 38rem;
-      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
-      .paragraph {
-        margin-top: 1.5rem;
-        font-size: 1rem;
+      margin-bottom: clamp(3rem, calc(4vw / 0.48), 6rem);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem 8rem;
+      .wrapper {
+        max-width: 38rem;
+        .paragraph {
+          margin-top: 1rem;
+          font-size: 1rem;
+        }
       }
     }
   }

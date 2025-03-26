@@ -24,6 +24,11 @@ export default defineField({
       title: 'Paragraf (opcjonalnie)',
     }),
     defineField({
+      name: 'cta',
+      type: 'cta',
+      title: 'Wezwanie do działania (opcjonalnie)',
+    }),
+    defineField({
       name: 'list',
       type: 'array',
       title: 'Lista',
