@@ -42,8 +42,7 @@ export default defineField({
             defineField({
               name: 'name',
               type: 'string',
-              title: 'Imię i nazwisko',
-              validation: Rule => Rule.required(),
+              title: 'Imię i nazwisko (zalecane)',
             }),
             defineField({
               name: 'position',
@@ -62,9 +61,10 @@ export default defineField({
               media: 'img',
               name: 'name',
               position: 'position',
+              content: 'content',
             },
-            prepare: ({ media, name, position }) => ({
-              title: name,
+            prepare: ({ media, name, position, content }) => ({
+              title: name || toPlainText(content),
               subtitle: position,
               media,
             }),

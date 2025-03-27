@@ -22,7 +22,7 @@ export type Props = {
   paragraph: PortableTextValue
   items: {
     img?: ImageDataProps
-    name: string
+    name?: string
     position?: string
     content: PortableTextValue
   }[]
@@ -52,13 +52,15 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
               ))}
             </div>
             <PortableText value={content} class="content" />
-            <div class="author">
-              {img && <Image {...img} sizes="56px" loading={index === 0 ? 'eager' : 'lazy'} />}
-              <div>
-                <p class="name">{name}</p>
-                {position && <p class="position">{position}</p>}
+            {name && (
+              <div class="author">
+                {img && <Image {...img} sizes="56px" loading={index === 0 ? 'eager' : 'lazy'} />}
+                <div>
+                  <p class="name">{name}</p>
+                  {position && <p class="position">{position}</p>}
+                </div>
               </div>
-            </div>
+            )}
           </li>
         ))
       }
