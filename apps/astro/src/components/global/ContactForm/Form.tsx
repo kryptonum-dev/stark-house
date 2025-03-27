@@ -1,14 +1,24 @@
 import { useState } from 'preact/hooks';
 import { useForm, type FieldValues } from 'react-hook-form';
 import styles from './styles.module.scss';
-import Input from '@/components/ui/Input'
-import Checkbox from '@/components/ui/Checkbox/Checkbox'
-import Button from '@/src/components/ui/Button';
-import Loader from '@/components/ui/Loader';
-import FormState from '@/components/ui/FormState';
-import { REGEX } from '@/global/constants';
+import Input from '@components/ui/Input'
+import Checkbox from '@components/ui/Checkbox/Checkbox'
+import Button from '@components/ui/Button';
+import Loader from '@components/ui/Loader';
+import FormState from '@components/ui/FormState';
+import { REGEX } from '@global/constants';
+import { trackEvent } from '@pages/api/analytics/track-event';
 
-export default function Form() {
+type Props = {
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number;
+      direct_api_conversion_id: number;
+    }
+  }
+};
+
+export default function Form({ analytics }: Props) {
   const [status, setStatus] = useState<FormStatusTypes>({ sending: false, success: undefined });
   const {
     register,
@@ -29,6 +39,21 @@ export default function Form() {
       if (response.ok && responseData.success) {
         setStatus({ sending: false, success: true });
         reset();
+        await trackEvent({
+          user_data: {
+            email: data.email
+          },
+          meta: {
+            event_name: 'Lead',
+            content_name: 'Contact Form'
+          },
+          ...(analytics?.linkedin_conversion && {
+            linkedin: {
+              pixel_conversion_id: analytics.linkedin_conversion.pixel_conversion_id,
+              direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
+            }
+          }),
+        });
       } else {
         setStatus({ sending: false, success: false });
       }
@@ -40,17 +65,11 @@ export default function Form() {
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
       <Input
-        label='Email'
+        label='Adres e-mail'
+        type='email'
         register={register('email', {
           required: { value: true, message: 'Email jest wymagany' },
           pattern: { value: REGEX.email, message: 'Niepoprawny adres e-mail' },
-        })}
-        errors={errors}
-      />
-      <Input
-        label='Telefon (opcjonalnie)'
-        register={register('phone', {
-          pattern: { value: REGEX.phone, message: 'Niepoprawny numer telefonu' },
         })}
         errors={errors}
       />
@@ -60,6 +79,7 @@ export default function Form() {
           required: { value: true, message: 'Wiadomość jest wymagana' },
         })}
         isTextarea={true}
+        placeholder='Wpisz swoją wiadomość'
         errors={errors}
       />
       <Checkbox
@@ -72,7 +92,7 @@ export default function Form() {
           politykę prywatności
         </a>
       </Checkbox>
-      <Button type="submit" className={`${styles.cta} cta`}>Zapisz się do newslettera</Button>
+      <Button type="submit" className={`${styles.cta} cta`}>Wyślij wiadomość</Button>
 
       <Loader loading={status.sending} />
       <FormState

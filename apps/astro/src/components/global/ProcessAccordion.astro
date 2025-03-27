@@ -1,9 +1,9 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 import Accordion from '../ui/Accordion.astro'
 
 export const ProcessAccordion_Query = `
-  {
+  _type == "ProcessAccordion" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     items[] {

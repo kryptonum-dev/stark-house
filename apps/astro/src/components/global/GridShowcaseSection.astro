@@ -1,9 +1,9 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
-import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
 
 export const GridShowcaseSection_Query = `
-  {
+  _type == "GridShowcaseSection" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     items[] {
@@ -19,7 +19,7 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  paragraph: PortableTextValue
+  paragraph?: PortableTextValue
   items: {
     img: ImageDataProps
     tag: string
@@ -34,7 +34,7 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
 <section class="GridShowcaseSection" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    <PortableText value={paragraph} />
+    {paragraph && <PortableText value={paragraph} class="paragraph" />}
   </header>
   <ul class="list">
     {
@@ -45,7 +45,7 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
             sizes="(max-width: 599px) 100vw, (max-width: 699px) 80vw, 50vw"
             priority={index === 0 && i === 0}
           />
-          <p class="tag">{tag}</p>
+          {tag && <p class="tag">{tag}</p>}
           <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="title" />
           <PortableText value={description} />
         </li>
@@ -71,35 +71,33 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
 
 <style lang="scss">
   .GridShowcaseSection {
-    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    padding: clamp(3rem, calc(5vw / 0.48), 7rem) 0;
     header {
       max-width: calc(608rem / 16);
-      margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
-      .heading {
-        margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
+      .paragraph {
+        margin-top: 1.5rem;
       }
     }
   }
   .list {
     display: grid;
-    gap: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16))
-      clamp(calc(42rem / 16), calc(56vw / 7.68), calc(56rem / 16));
+    gap: 2rem 3rem;
     .item {
-      padding: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
       max-width: calc(624rem / 16);
     }
     img {
-      margin-bottom: clamp(calc(20rem / 16), calc(24vw / 7.68), calc(32rem / 16));
+      margin-bottom: clamp(1rem, calc(2vw / 0.48), 2rem);
     }
     .tag {
-      padding: calc(8rem / 16) 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
       display: inline-block;
-      background: var(--neutral-600, #3b3b3b);
+      background: var(--neutral-500, #555454);
     }
     .title {
       font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
-      margin: clamp(calc(20rem / 16), calc(24vw / 7.68), calc(32rem / 16)) 0
-        clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      margin: clamp(1rem, calc(1.5vw / 0.48), 1.5rem) 0 0.75rem;
     }
     @media (min-width: calc(1000rem / 16)) {
       grid-template-columns: 1fr 1fr;
@@ -107,7 +105,7 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
   }
   .actions {
     text-align: center;
-    margin-top: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+    margin-top: clamp(3rem, calc(4vw / 0.48), 4rem);
     button {
       display: block;
       margin: 0 auto 24px;
@@ -122,6 +120,9 @@ const { index, sectionId, heading, paragraph, items } = Astro.props
           transform: rotate(90deg) scale(0.9);
         }
       }
+    }
+    .info {
+      font-size: 0.875rem;
     }
   }
 </style>

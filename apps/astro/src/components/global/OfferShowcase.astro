@@ -1,0 +1,156 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+
+export const OfferShowcase_Query = `
+  _type == "OfferShowcase" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    catalog_url,
+    offers[] {
+      ${ImageDataQuery('img')}
+      title,
+      ${PortableTextQuery('paragraph')}
+      features[] {
+        ${ImageDataQuery('icon')}
+        tag,
+        name
+      }
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph?: PortableTextValue
+  catalog_url: string
+  offers: Array<{
+    img: ImageDataProps
+    title: string
+    paragraph: PortableTextValue
+    features: Array<{
+      icon: ImageDataProps
+      tag: string
+      name: string
+    }>
+  }>
+}
+
+const { index, sectionId, heading, paragraph, catalog_url, offers } = Astro.props
+---
+
+<section class="OfferShowcase" id={sectionId}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    {paragraph && <PortableText value={paragraph} class="paragraph" />}
+    <a href={catalog_url} class="catalog_download" target="_blank" rel="noopener noreferrer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 15.833v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5m0 0 5-5m-5 5v-12">
+        </path>
+      </svg>
+      Sprawdź katalog PDF
+    </a>
+  </header>
+  <div class="offers-grid">
+    {
+      offers.map(({ img, title, paragraph, features }) => (
+        <div class="offer-item">
+          <Image {...img} sizes="50vw" />
+          <p class="title h3">{title}</p>
+          <PortableText value={paragraph} class="paragraph" />
+          <ul class="features-list">
+            {features.map(({ icon, tag, name }) => (
+              <li class="feature-item">
+                <Image {...icon} sizes="24px" />
+                <div>
+                  <p class="tag">{tag}</p>
+                  <p class="name">{name}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .OfferShowcase {
+    padding: clamp(5rem, calc(5vw / 0.48), 7rem) 0;
+    header {
+      max-width: 38rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
+      .paragraph {
+        margin-top: 1.5rem;
+      }
+      .catalog_download {
+        margin-top: 1.5rem;
+        display: inline-flex;
+        gap: 0.75rem;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        transition: border-color 300ms var(--easing);
+        svg {
+          transition: transform 300ms var(--easing);
+        }
+        &:hover {
+          border-color: rgba(255, 255, 255, 0.3);
+          svg {
+            transform: rotate(5deg);
+          }
+        }
+      }
+    }
+    .offers-grid {
+      display: grid;
+      gap: 3rem 1rem;
+      grid-template-columns: 1fr 1fr;
+      @media (max-width: 72rem) {
+        grid-template-columns: 1fr;
+        max-width: 48rem;
+      }
+      .offer-item {
+        .title {
+          margin: 0.75rem 0 0.5rem;
+        }
+        .paragraph {
+          font-size: 0.875rem;
+          color: var(--neutral-200, #dadada);
+          max-width: 38rem;
+        }
+        .features-list {
+          margin-top: 1.5rem;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.75rem 1.5rem;
+          .feature-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            img {
+              margin-top: 0.25rem;
+            }
+            .tag {
+              font-size: 0.875rem;
+              color: var(--neutral-200, #dadada);
+            }
+            .name {
+              color: var(--primary-400);
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

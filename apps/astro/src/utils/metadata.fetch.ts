@@ -1,6 +1,6 @@
 
-import type { Props } from "@/src/layouts/Head.astro";
-import sanityFetch from "@/utils/sanity.fetch";
+import type { Props } from "@layouts/Head.astro";
+import sanityFetch from "@utils/sanity.fetch";
 
 export default async function metadataFetch(type: string, slug?: string): Promise<Props> {
   const filter = slug

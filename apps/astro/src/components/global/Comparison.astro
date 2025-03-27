@@ -1,0 +1,157 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+
+export const Comparison_Query = `
+  _type == "Comparison" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    items[] {
+      timelineName,
+      callout,
+      timeline[] {
+        day,
+        name
+      }
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  items: Array<{
+    timelineName: string
+    callout?: string
+    timeline: Array<{
+      day: string
+      name: string
+    }>
+  }>
+}
+
+const { index, sectionId, heading, paragraph, items } = Astro.props
+---
+
+<section class="Comparison" id={sectionId}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} class="paragraph" />
+  </header>
+  <div class="comparison-grid">
+    {
+      items.map(({ timelineName, callout, timeline }, itemsIndex) => (
+        <>
+          <div class="comparison-container">
+            <div class="comparison-item" data-has-callout={!!callout}>
+              <p class="timeline-name">{timelineName}</p>
+              <div class="timeline">
+                {timeline.map(({ day, name }) => (
+                  <div class="timeline-item">
+                    <span class="day">{day}</span>
+                    <span class="name">{name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {callout && <p class="callout h3">{callout}</p>}
+          </div>
+          {itemsIndex !== items.length - 1 && (
+            <p class="divider" aria-hidden="true">
+              vs.
+            </p>
+          )}
+        </>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .Comparison {
+    padding: clamp(3rem, calc(5vw / 0.48), 7rem) 0;
+    header {
+      max-width: 48rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 3rem);
+      .heading {
+        margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      }
+    }
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: clamp(0.5rem, calc(1vw / 0.48), 1rem);
+      @media (max-width: 63rem) {
+        grid-template-columns: 1fr;
+        max-width: 42rem;
+      }
+      .comparison-container {
+        .comparison-item {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          align-items: center;
+          padding: 1.5rem 1rem;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          &[data-has-callout='true'] {
+            border-color: var(--primary-400, #dead26);
+          }
+          .timeline-name {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            margin-right: 1rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+          }
+          .timeline {
+            position: relative;
+            .timeline-item {
+              position: relative;
+              display: grid;
+              grid-template-columns: 5.5rem 1fr;
+              align-items: center;
+              &:last-of-type {
+                .name {
+                  font-size: 1.25rem;
+                }
+              }
+              .day {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 0.875rem;
+                text-align: right;
+                padding: 1rem 0.5rem 1rem 0;
+                margin-right: 1.5rem;
+                border-right: 1px solid rgba(255, 255, 255, 0.15);
+                position: relative;
+                &::after {
+                  content: '';
+                  position: absolute;
+                  left: calc(100% + 1px);
+                  top: 50%;
+                  transform: translateY(-50%);
+                  width: 0.75rem;
+                  height: 1px;
+                  background-color: rgba(255, 255, 255, 0.15);
+                }
+              }
+              .name {
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+        .callout {
+          color: var(--primary-400, #dead26);
+          margin-top: clamp(0.5rem, calc(1vw / 0.48), 1rem);
+        }
+      }
+      .divider {
+        justify-self: center;
+        align-self: center;
+        font-size: 1rem;
+        position: relative;
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+</style>

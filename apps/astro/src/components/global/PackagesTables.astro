@@ -1,0 +1,242 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
+
+export const PackagesTables_Query = `
+  _type == "packagesTables" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    packageTypes[] {
+      type,
+      isHighlighted,
+    },
+    features[] {
+      name,
+      packageAvailability,
+    },
+    ${ButtonDataQuery('cta')}
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  packageTypes: Array<{
+    type: string
+    isHighlighted: boolean
+  }>
+  features: Array<{
+    name: string
+    packageAvailability: string[]
+  }>
+  cta: ButtonDataProps
+}
+
+const { index, sectionId, heading, paragraph, packageTypes, features, cta } = Astro.props
+
+const packageTypeLabels: Record<string, string> = {
+  standard: 'Standard',
+  enhanced: 'Enhanced',
+  advanced: 'Advanced',
+  ultimate: 'Ultimate',
+  elite: 'Elite',
+}
+
+const featuresByPackage = packageTypes.map((packageType) => {
+  const relevantFeatures = features.filter((feature) => feature.packageAvailability.includes(packageType.type))
+  return {
+    type: packageType.type,
+    name: packageTypeLabels[packageType.type],
+    isHighlighted: packageType.isHighlighted,
+    features: relevantFeatures,
+  }
+})
+---
+
+<section class="PackagesTables sec-wo-margin" id={sectionId} light-background>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      <PortableText value={paragraph} />
+    </header>
+    <div class="packages-comparison desktop-view">
+      <div class="package-grid">
+        <div class="feature-label"></div>
+        {
+          packageTypes.map(({ isHighlighted, type }) => (
+            <div class="package-header" data-highlighted={isHighlighted}>
+              <p class="package-name">{packageTypeLabels[type]}</p>
+              <Button {...cta} />
+            </div>
+          ))
+        }
+        {
+          features.map((feature) => (
+            <>
+              <div class="feature-name">
+                <p>{feature.name}</p>
+              </div>
+              {packageTypes.map(({ isHighlighted, type }) => (
+                <div class="feature-cell" data-highlighted={isHighlighted}>
+                  {feature.packageAvailability.includes(type) && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" fill="none" viewBox="0 0 24 25">
+                      <path
+                        stroke="#0D0C0B"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m20 6.833-11 11-5-5"
+                      />
+                    </svg>
+                  )}
+                </div>
+              ))}
+            </>
+          ))
+        }
+      </div>
+    </div>
+    <div class="packages-comparison mobile-view">
+      <div class="package-cards">
+        {
+          featuresByPackage.map(({ isHighlighted, name, features }) => (
+            <div class="package-card" data-highlighted={isHighlighted}>
+              <div class="package-header">
+                <p class="package-name">{name}</p>
+                <Button {...cta} />
+              </div>
+              <ul class="features-list">
+                {features.map(({ name }) => (
+                  <li class="feature-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 25">
+                      <path
+                        stroke="#0D0C0B"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m20 6.833-11 11-5-5"
+                      />
+                    </svg>
+                    <span>{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .PackagesTables {
+    padding: clamp(3rem, calc(5vw / 0.48), 7rem) 0;
+    position: relative;
+    z-index: 1;
+    &::before {
+      content: '';
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1/1;
+      background: linear-gradient(#fff1cc, rgba(255, 245, 218, 0));
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 38% 0, 100% 100%, 0% 100%);
+    }
+    header {
+      margin: 0 auto;
+      text-align: center;
+      max-width: 48rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 4rem);
+      .heading {
+        margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      }
+    }
+    .desktop-view {
+      .package-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+        .feature-label,
+        .package-header {
+          padding: 1.5rem 1rem;
+          border-bottom: 1px solid var(--packages-border-color);
+        }
+        .feature-label {
+          display: flex;
+          align-items: center;
+        }
+        .package-header {
+          text-align: center;
+          .package-name {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+          }
+        }
+        .feature-name {
+          padding: 1rem 1.5rem 1rem 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+          font-size: 0.875rem;
+        }
+        .feature-cell {
+          display: grid;
+          place-items: center;
+          padding: 1rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+          &[data-highlighted='true'] {
+            background-color: var(--primary-200, #f8eed3);
+          }
+        }
+      }
+    }
+    .mobile-view {
+      display: none;
+      .package-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+        gap: 1.5rem;
+        .package-card {
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          padding: 1rem 1.5rem;
+          &[data-highlighted='true'] {
+            border-color: var(--primary-400, #dead26);
+          }
+          .package-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            .package-name {
+              font-size: 1.25rem;
+              margin-bottom: 0.75rem;
+            }
+          }
+          .features-list {
+            display: grid;
+            gap: 0.5rem;
+            .feature-item {
+              display: grid;
+              grid-template-columns: auto 1fr;
+              gap: 0.5rem;
+              font-size: 0.875rem;
+              svg {
+                margin-top: 0.25rem;
+              }
+            }
+          }
+        }
+      }
+    }
+    @media (max-width: 72rem) {
+      .desktop-view {
+        display: none;
+      }
+      .mobile-view {
+        display: block;
+      }
+    }
+  }
+</style>

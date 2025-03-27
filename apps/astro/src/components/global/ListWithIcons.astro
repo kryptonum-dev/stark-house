@@ -1,0 +1,95 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
+
+export const ListWithIcons_Query = `
+  _type == "ListWithIcons" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    list[] {
+      ${ImageDataQuery('icon')}
+      ${PortableTextQuery('title')}
+    },
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph?: PortableTextValue
+  cta?: ButtonDataProps
+  list: {
+    icon: ImageDataProps
+    title: PortableTextValue
+  }[]
+}
+
+const { index, sectionId, heading, paragraph, cta, list } = Astro.props
+---
+
+<section class="ListWithIcons" id={sectionId}>
+  <header>
+    <div class="wrapper">
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      {paragraph && <PortableText value={paragraph} class="paragraph" />}
+    </div>
+    {cta && <Button {...cta} className="cta" />}
+  </header>
+  <ul class="list">
+    {
+      list.map(({ icon, title }) => (
+        <li class="item">
+          <Image {...icon} sizes="32px" class="icon" />
+          <PortableText value={title} class="title" />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  .ListWithIcons {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    header {
+      margin-bottom: clamp(3rem, calc(4vw / 0.48), 6rem);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem 8rem;
+      .wrapper {
+        max-width: 38rem;
+        .paragraph {
+          margin-top: 1rem;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  .list {
+    display: grid;
+    max-width: 68rem;
+    gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+    @media (min-width: calc(768rem / 16)) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (min-width: calc(1100rem / 16)) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      .icon {
+        width: 32px;
+        height: 32px;
+      }
+      .title {
+        font-size: 1.125rem;
+      }
+    }
+  }
+</style>

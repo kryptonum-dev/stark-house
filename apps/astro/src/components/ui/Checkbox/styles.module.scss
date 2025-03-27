@@ -3,14 +3,13 @@
   width: fit-content;
   align-items: center;
   grid-template-columns: auto 1fr;
-  gap: calc(2rem / 16);
-  font-size: calc(14rem / 16);
-  color: var(--neutral-100, #e6e6e6);
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--neutral-600, #252423);
   cursor: pointer;
   &:not(:has(input:checked)):hover {
     .checkmark {
-      border: 1px solid var(--neutral-500, #6f6f6f);
-      background-color: var(--primary-100, #edebe7);
+      background-color: var(--primary-200, #fbf6e9);
     }
   }
   &:active {
@@ -32,15 +31,13 @@
 .checkmark {
   width: 32px;
   height: 32px;
-  margin: 6px;
-  border: 1px solid var(--neutral-300, #b8b8b8);
-  background: var(--neutral-000, #fcfcfc);
+  border: 1px solid var(--neutral-500, #6f6f6f);
+  background-color: var(--primary-100, #fbf6e9);
   display: grid;
   place-items: center;
   transition:
-    border 0.3s var(--easing),
-    background-color 0.3s var(--easing),
-    transform 0.5s var(--easing);
+    background-color 500ms var(--easing),
+    transform 500ms var(--easing);
   input {
     opacity: 0;
     position: absolute;
@@ -50,8 +47,8 @@
     stroke-dasharray: 0 17;
   }
   &:has(input[aria-invalid='true']) {
-    border: 1px solid var(--Error-500, #ff6a59);
-    background-color: var(--Error-100, #ffe2de);
+    border: 1px solid var(--error-500, #ff6a59);
+    background: #ffe2de;
   }
   input:checked {
     + svg {

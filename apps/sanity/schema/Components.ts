@@ -12,6 +12,13 @@ import ProcessAccordion from "./components/ProcessAccordion";
 import TestimonialSection from "./components/TestimonialSection";
 import Newsletter from "./components/Newsletter";
 import ContactForm from "./components/ContactForm";
+import Partners from "./components/Partners";
+import ImagesMarquee from "./components/ImagesMarquee";
+import PackagesTables from "./components/PackagesTables";
+import Partnership from "./components/Partnership";
+import Comparison from "./components/Comparison";
+import ListWithIcons from "./components/ListWithIcons";
+import OfferShowcase from "./components/OfferShowcase";
 
 export default defineType({
   name: 'components',
@@ -31,6 +38,13 @@ export default defineType({
     TestimonialSection,
     Newsletter,
     ContactForm,
+    Partners,
+    ImagesMarquee,
+    PackagesTables,
+    Partnership,
+    Comparison,
+    ListWithIcons,
+    OfferShowcase,
   ],
   options: {
     insertMenu: {

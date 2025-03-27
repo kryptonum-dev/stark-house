@@ -5,14 +5,15 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".vercel/**"],
-      "env": ["VERCEL_ENV", "VERCEL_DEPLOYMENT_ID"]
+      "env": ["SANITY_API_TOKEN", "MAILERLITE_API_KEY", "RESEND_API_KEY"]
     },
     "lint": {
       "dependsOn": ["^lint"]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["SANITY_API_TOKEN", "MAILERLITE_API_KEY", "RESEND_API_KEY"]
     }
   }
 }

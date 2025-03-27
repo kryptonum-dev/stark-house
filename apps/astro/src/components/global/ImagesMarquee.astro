@@ -1,0 +1,89 @@
+---
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/image'
+
+export const ImagesMarquee_Query = `
+  _type == "ImagesMarquee" => {
+    ${ImageDataQuery('firstRowImages[]')}
+    ${ImageDataQuery('secondRowImages[]')}
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  firstRowImages: ImageDataProps[]
+  secondRowImages: ImageDataProps[]
+}
+
+const { index, sectionId, firstRowImages, secondRowImages } = Astro.props
+---
+
+<section class="ImagesMarquee sec-wo-margin" id={sectionId}>
+  <div class="marquee-container">
+    {
+      [
+        { images: firstRowImages, isReverse: false },
+        { images: secondRowImages, isReverse: true },
+      ].map(({ images, isReverse }, marqueeIndex) => (
+        <div class="marquee-row">
+          <div class="marquee-content" style={`animation-duration: ${images.length * 9}s`} data-reverse={isReverse}>
+            {[...Array(2)].map(() =>
+              images?.map((image) => (
+                <Image
+                  {...image}
+                  sizes="(max-width: 30rem) 66vw, (max-width: 44rem) 50vw, 33vw"
+                  class="marquee-item"
+                  loading={marqueeIndex === 0 && (index === 0 || index === 1) ? 'eager' : 'lazy'}
+                />
+              ))
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .ImagesMarquee {
+    overflow: hidden;
+    .marquee-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      .marquee-row {
+        width: 100%;
+        overflow: hidden;
+        .marquee-content {
+          display: flex;
+          gap: 1rem;
+          width: max-content;
+          animation-name: ImagesMarquee;
+          animation-iteration-count: infinite;
+          animation-timing-function: linear;
+          &[data-reverse='true'] {
+            animation-direction: reverse;
+          }
+          .marquee-item {
+            flex: 0 0 auto;
+            width: 33vw;
+            @media (max-width: 44rem) {
+              width: 50vw;
+            }
+            @media (max-width: 30rem) {
+              width: 66vw;
+            }
+          }
+          @keyframes ImagesMarquee {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

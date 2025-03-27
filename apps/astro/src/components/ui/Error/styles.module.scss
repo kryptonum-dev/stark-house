@@ -1,15 +1,14 @@
 .error {
-  margin-top: calc(6rem / 16);
+  margin-top: 0.25rem;
   margin-left: auto;
-  font-size: calc(12rem / 16);
-  line-height: 158%;
+  font-size: 0.75rem;
   color: var(--error-100, #ffe2de);
   width: fit-content;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: calc(2rem / 16);
+  gap: 0.125rem;
   svg {
-    margin-top: calc(1rem / 16);
+    margin-top: 0.0625rem;
   }
   animation: error 500ms var(--easing);
   @keyframes error {

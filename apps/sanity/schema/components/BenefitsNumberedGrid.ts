@@ -21,8 +21,7 @@ export default defineField({
     defineField({
       name: 'paragraph',
       type: 'PortableText',
-      title: 'Paragraf',
-      validation: Rule => Rule.required(),
+      title: 'Paragraf (opcjonalnie)',
     }),
     defineField({
       name: 'benefits',
@@ -42,8 +41,7 @@ export default defineField({
             defineField({
               name: 'description',
               type: 'PortableText',
-              title: 'Opis',
-              validation: Rule => Rule.required(),
+              title: 'Opis (opcjonalnie)',
             }),
           ],
           preview: {

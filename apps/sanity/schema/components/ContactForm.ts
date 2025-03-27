@@ -19,10 +19,58 @@ export default defineField({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'paragraph',
-      type: 'PortableText',
-      title: 'Paragraf',
-      validation: Rule => Rule.required(),
+      name: 'review',
+      type: 'object',
+      title: 'Opinia',
+      fields: [
+        defineField({
+          name: 'img',
+          type: 'image',
+          title: 'Zdjęcie (opcjonalne)',
+        }),
+        defineField({
+          name: 'name',
+          type: 'string',
+          title: 'Imię i nazwisko',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'position',
+          type: 'string',
+          title: 'Stanowisko',
+        }),
+        defineField({
+          name: 'review',
+          type: 'text',
+          rows: 3,
+          title: 'Opinia',
+          validation: Rule => Rule.required(),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'linkedin_conversion',
+      type: 'object',
+      title: 'LinkedIn Conversion',
+      description: 'LinkedIn Conversion for tracking form submissions (note: LinkedIn must be configured as a separate pixel and direct API)',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        defineField({
+          name: 'pixel_conversion_id',
+          type: 'number',
+          title: 'Pixel Conversion ID',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'direct_api_conversion_id',
+          type: 'number',
+          title: 'Direct API Conversion ID',
+          validation: Rule => Rule.required(),
+        }),
+      ],
     }),
     ...sectionId,
   ],

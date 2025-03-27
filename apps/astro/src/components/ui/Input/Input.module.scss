@@ -1,0 +1,42 @@
+[light-background] .Input {
+  color: var(--neutral-700, #0d0c0b);
+}
+
+.Input {
+  color: var(--neutral-000, #fcfcfc);
+  .label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  input,
+  textarea {
+    border: 1px solid var(--neutral-500, #6f6f6f);
+    background-color: var(--primary-100, #fbf6e9);
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    transition: background-color 0.5s var(--easing);
+    font-size: 1rem;
+    &:hover {
+      background-color: var(--primary-200, #fbf6e9);
+    }
+    &:focus-visible {
+      outline: none;
+      background-color: var(--primary-200, #fbf6e9);
+    }
+    &[aria-invalid='true'] {
+      border: 1px solid var(--error-500, #ff6a59);
+      background: #ffe2de;
+    }
+    &::placeholder {
+      color: var(--neutral-500, #6f6f6f);
+    }
+  }
+  input {
+    height: 44px;
+  }
+  textarea {
+    min-height: calc(82rem / 16);
+    max-height: calc(233rem / 16);
+    resize: none;
+  }
+}

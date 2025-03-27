@@ -1,8 +1,9 @@
 ---
-import Layout from '@/src/layouts/Layout.astro'
-import sanityFetch from '@/utils/sanity.fetch'
-import metadataFetch from '@/utils/metadata.fetch'
-import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
+import Layout from '@layouts/Layout.astro'
+import sanityFetch from '@utils/sanity.fetch'
+import metadataFetch from '@utils/metadata.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
 
 export async function getStaticPaths() {
   const collection = await sanityFetch<{ slug: string }[]>({
@@ -18,9 +19,10 @@ export async function getStaticPaths() {
 const { slug: paramsSlug } = Astro.params
 const slug = `/${paramsSlug}`
 
-const page = await sanityFetch<{ title: string; components: ComponentsProps }>({
+const page = await sanityFetch<{ nav_cta: ButtonDataProps; title: string; components: ComponentsProps }>({
   query: `
     *[_type == 'Landing_Collection' && slug.current == $slug][0] {
+      ${ButtonDataQuery('nav_cta')}
       title,
       ${Components_Query}
     }
@@ -32,6 +34,6 @@ if (!page) return Astro.rewrite('/404')
 const metadata = await metadataFetch('Landing_Collection', slug)
 ---
 
-<Layout {...metadata}>
+<Layout {...metadata} nav_cta={page.nav_cta}>
   <Components data={page.components} />
 </Layout>

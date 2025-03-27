@@ -1,5 +1,5 @@
 ---
-import sanityFetch from '@/utils/sanity.fetch'
+import sanityFetch from '@utils/sanity.fetch'
 
 type QueryProps = {
   socials: {
@@ -23,7 +23,7 @@ const data = await sanityFetch<QueryProps>({
 <footer class="footer" id="footer">
   <div class="max-width">
     <p class="copy">
-      © 2024{' '}
+      © {new Date().getFullYear()}{' '}
       <a href="https://kryptonum.eu/pl" aria-label="Kryptonum">
         <svg xmlns="http://www.w3.org/2000/svg" width="88" height="16" fill="none">
           <title>Kryptonum</title>
@@ -129,7 +129,7 @@ const data = await sanityFetch<QueryProps>({
 </style>
 
 <script>
-  import { setCookie } from '@/utils/set-cookie'
+  import { setCookie } from '@utils/set-cookie'
   const footer = document.querySelector('#footer')!
   const resetCookiesButton = footer.querySelector('.reset-cookies')!
   resetCookiesButton.addEventListener('click', () => {

@@ -1,8 +1,8 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 
 export const BenefitsGrid_Query = `
-  {
+  _type == "BenefitsGrid" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('subheading')}
     benefits[] {
@@ -16,7 +16,7 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  subheading: PortableTextValue
+  subheading?: PortableTextValue
   benefits: {
     title: PortableTextValue
     description: PortableTextValue
@@ -29,14 +29,14 @@ const { index, sectionId, heading, subheading, benefits } = Astro.props
 <section class="BenefitsGrid" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    <PortableText value={subheading} />
+    {subheading && <PortableText value={subheading} class="subheading" />}
   </header>
   <ol class="list">
     {
       benefits.map(({ title, description }) => (
         <li class="item">
-          <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
-          <PortableText value={description} />
+          <PortableText value={title} heading={index === 0 ? 'h2' : 'h3'} class="heading h3" />
+          <PortableText value={description} class="description" />
         </li>
       ))
     }
@@ -50,13 +50,13 @@ const { index, sectionId, heading, subheading, benefits } = Astro.props
     align-items: flex-start;
     gap: clamp(2rem, calc(48vw / 7.68), 3rem) clamp(calc(82rem / 16), calc(82vw / 7.68), calc(116rem / 16));
     @media (min-width: calc(1250rem / 16)) {
-      grid-template-columns: 1fr 1.4fr;
+      grid-template-columns: 1fr 1.75fr;
     }
   }
   header {
     max-width: calc(641rem / 16);
-    .heading {
-      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    .subheading {
+      margin-top: 1.5rem;
     }
   }
   .list {
@@ -68,14 +68,15 @@ const { index, sectionId, heading, subheading, benefits } = Astro.props
       &::before {
         content: '0' counter(counter);
         display: block;
-        font-weight: 600;
-        color: var(--neutral-300, #b8b8b8);
-        font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
+        color: var(--neutral-400, #868585);
+        font-size: 1rem;
         margin-bottom: clamp(calc(8rem / 16), calc(20vw / 7.68), calc(28rem / 16));
+      }
+      .description {
+        font-size: 1rem;
       }
     }
     .heading {
-      font-size: clamp(calc(24rem / 16), calc(28vw / 7.68), calc(28rem / 16));
       margin-bottom: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
     }
     @media (max-width: calc(1249rem/16)) {

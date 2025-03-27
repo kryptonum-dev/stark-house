@@ -13,12 +13,6 @@ export default defineField({
   icon,
   fields: [
     defineField({
-      name: 'logo',
-      type: 'image',
-      title: 'Logo (optional)',
-      description: 'The logo should be in SVG format.',
-    }),
-    defineField({
       name: 'heading',
       type: 'Heading',
       title: 'Heading',
@@ -37,23 +31,15 @@ export default defineField({
       of: [{ type: 'cta' }],
       validation: Rule => Rule.required().max(2),
     }),
-    defineField({
-      name: 'image',
-      type: 'image',
-      title: 'Image',
-      validation: Rule => Rule.required(),
-    }),
     ...sectionId,
   ],
   preview: {
     select: {
       heading: 'heading',
-      media: 'image',
     },
-    prepare: ({ heading, media }) => ({
+    prepare: ({ heading }) => ({
       title: title,
       subtitle: toPlainText(heading),
-      media,
       icon,
     }),
   },

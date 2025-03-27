@@ -1,9 +1,9 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
 import CountUp from '../ui/count-up.astro'
 
 export const MetricsHighlightSection_Query = `
-  {
+  _type == "MetricsHighlightSection" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     metrics[] {
@@ -17,7 +17,7 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  paragraph: PortableTextValue
+  paragraph?: PortableTextValue
   metrics: {
     value: string
     description: string
@@ -30,27 +30,12 @@ const { index, sectionId, heading, paragraph, metrics } = Astro.props
 <section class="MetricsHighlightSection" id={sectionId}>
   <header>
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
-    <PortableText value={paragraph} />
+    {paragraph && <PortableText value={paragraph} class="paragraph" />}
   </header>
   <ul class="metrics">
     {
       metrics?.map(({ value, description }) => (
         <li class="metric">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="25" fill="none">
-            <path fill="url(#MetricsHighlightSection)" d="M24.205 24.435 0 .435h23.795l24.205 24H24.205Z" />
-            <defs>
-              <linearGradient
-                id="MetricsHighlightSection"
-                x1="0"
-                x2="58.612"
-                y1=".435"
-                y2="24.786"
-                gradientUnits="userSpaceOnUse">
-                <stop stop-color="#DEAD26" />
-                <stop offset="1" stop-color="#252525" />
-              </linearGradient>
-            </defs>
-          </svg>
           <CountUp class="value">{value}</CountUp>
           <p class="description">{description}</p>
         </li>
@@ -61,40 +46,37 @@ const { index, sectionId, heading, paragraph, metrics } = Astro.props
 
 <style lang="scss">
   .MetricsHighlightSection {
-    padding: clamp(calc(64rem / 16), calc(96vw / 7.68), calc(96rem / 16)) 0;
-  }
-  header {
-    max-width: calc(522rem / 16);
-    margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(82rem / 16));
-    .heading {
-      margin-bottom: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    padding: clamp(3rem, calc(5vw / 0.48), 7rem) 0;
+    header {
+      max-width: 48rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 3rem);
+      .paragraph {
+        margin-top: 1.5rem;
+      }
     }
-  }
-  .metrics {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    $column-gap: clamp(calc(32rem / 16), calc(64vw / 7.68), calc(64rem / 16));
-    gap: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16)) $column-gap;
-    .metric {
-      width: 100%;
-      svg {
-        vertical-align: middle;
-        margin-right: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
-      }
-      .value {
-        vertical-align: middle;
-        display: inline-block;
-        font-size: clamp(calc(42rem / 16), calc(64vw / 7.68), calc(64rem / 16));
-        font-weight: 600;
-        color: var(--neutral-100, #e6e6e6);
-      }
-      .description {
-        margin-top: clamp(calc(12rem / 16), calc(20vw / 7.68), calc(20rem / 16));
-      }
-      @media (min-width: calc(1100rem / 16)) {
-        text-align: center;
-        width: calc((100% / 3) - $column-gap * 2 / 3);
+    .metrics {
+      max-width: 68rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 4rem;
+      .metric {
+        max-width: 25%;
+        @media (max-width: 65rem) {
+          max-width: 50%;
+        }
+        @media (max-width: 47rem) {
+          width: 100%;
+          max-width: 100%;
+        }
+        .value {
+          vertical-align: middle;
+          display: inline-block;
+          color: var(--primary-400, #dead26);
+          font-size: 2.25rem;
+        }
+        .description {
+          margin-top: 0.5rem;
+        }
       }
     }
   }

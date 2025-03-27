@@ -1,74 +1,47 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
-import Button, { ButtonDataQuery, type ButtonDataProps } from '@/src/components/ui/Button'
-import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
 
 export const LandingFeature_Query = `
-  {
-    ${ImageDataQuery('logo')}
+  _type == "LandingFeature" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     ${ButtonDataQuery('ctas[]')}
-    ${ImageDataQuery('image')}
   },
 `
 
 type Props = {
   index: number
   sectionId?: string
-  logo?: ImageDataProps
   heading: PortableTextValue
   paragraph: PortableTextValue
   ctas: ButtonDataProps[]
-  image: ImageDataProps
 }
 
-const { index, sectionId, logo, heading, paragraph, ctas, image } = Astro.props
+const { index, sectionId, heading, paragraph, ctas } = Astro.props
 ---
 
 <section class="LandingFeature" id={sectionId}>
   <header>
-    {logo && <Image {...logo} sizes="" class="logo" loading="eager" />}
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h1" />
     <PortableText value={paragraph} class="paragraph" />
     <div class="cta-wrapper">
       {ctas?.map((cta) => <Button {...cta} />)}
     </div>
   </header>
-  <Image {...image} sizes="(max-width: 999px) 100vw, 33vw" priority={index === 0} class="img" />
 </section>
 
 <style lang="scss">
   .LandingFeature {
-    display: grid;
-    align-items: center;
-    column-gap: calc(36rem / 16);
-    @media (min-width: calc(1000rem / 16)) {
-      grid-template-columns: 1.4fr 1fr;
-      .img {
-        margin-right: calc(var(--page-margin) * -1);
-        max-width: calc(100% + var(--page-margin));
-        margin-bottom: 0;
+    header {
+      max-width: 56rem;
+      padding: clamp(3rem, calc(5vw / 0.48), 5rem) 0 clamp(5rem, calc(8vw / 0.48), 8rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, calc(24vw / 7.68), calc(24rem / 16));
+      .paragraph {
+        max-width: 48rem;
       }
     }
-  }
-  header {
-    padding: clamp(2rem, calc(48vw / 7.68), calc(80rem / 16)) 0 clamp(3rem, calc(48vw / 7.68), calc(200rem / 16));
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem, calc(24vw / 7.68), calc(24rem / 16));
-  }
-  .logo {
-    width: clamp(129px, calc(192vw / 7.68), 192px);
-    margin-bottom: clamp(48px, calc(64vw / 7.68), calc(128rem / 16));
-  }
-  .paragraph {
-    max-width: calc(626rem / 16);
-  }
-  .img {
-    clip-path: polygon(100% 0, 100% 70%, 52% 100%, 0 100%, 0 0);
-    width: 608px;
-    margin-bottom: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(64rem / 16));
-    align-self: stretch;
   }
 </style>

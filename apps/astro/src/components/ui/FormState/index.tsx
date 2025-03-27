@@ -1,5 +1,5 @@
 
-import Button from '@/src/components/ui/Button';
+import Button from '@components/ui/Button';
 import styles from './styles.module.scss';
 
 type Props = {
