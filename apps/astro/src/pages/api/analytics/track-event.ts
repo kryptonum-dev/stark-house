@@ -1,6 +1,7 @@
 import type { Props as MetaConversionProps } from './meta-conversion'
 import type { Props as LinkedinConversionProps } from './linkedin-conversion'
 import type { Props as TikTokConversionProps } from './tiktok-conversion'
+import { hash } from '@utils/hash'
 
 type Props = {
   user_data?: {
@@ -126,8 +127,8 @@ export async function trackEvent({
     try {
       if (typeof window.ttq !== 'undefined') {
         window.ttq.track(tiktok.event_name, {
-          ...(user_data?.email && { email: user_data.email }),
-          ...(user_data?.phone && { phone: user_data.phone }),
+          ...(user_data?.email && { email: await hash(user_data.email) }),
+          ...(user_data?.phone && { phone_number: await hash(user_data.phone) }),
         }, { event_id });
       }
     } catch {
