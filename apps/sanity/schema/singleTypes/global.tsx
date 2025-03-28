@@ -118,6 +118,18 @@ export default defineType({
           title: 'LinkedIn Conversion API Token',
           description: 'Secret token for server-side LinkedIn Conversion API tracking.',
         }),
+        defineField({
+          name: 'tiktok_pixel_id',
+          type: 'string',
+          title: 'TikTok Pixel ID',
+          description: 'Used for TikTok Pixel tracking.',
+        }),
+        defineField({
+          name: 'tiktok_conversion_token',
+          type: 'string',
+          title: 'TikTok Conversion API Token',
+          description: 'Secret token for server-side TikTok Conversion API tracking.',
+        }),
       ],
     }),
   ],

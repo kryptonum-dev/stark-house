@@ -1,7 +1,10 @@
 /**
- * Normalizes and hashes user data for Meta Pixel Conversion API
+ * Normalizes and hashes user data for conversion API tracking (Meta, TikTok, etc.)
+ * Uses SHA-256 algorithm to hash personal data like emails and phone numbers
+ * for privacy-compliant conversion tracking
+ *
  * @param value The value to hash
- * @returns The normalized and hashed value
+ * @returns The normalized and hashed value as lowercase hex string
  */
 export async function hash(value: string): Promise<string> {
   const normalized = value.toLowerCase().trim();

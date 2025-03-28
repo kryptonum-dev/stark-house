@@ -3,8 +3,6 @@ import { isProductionDeployment } from './is-production-deployment';
 
 const SANITY_API_TOKEN = import.meta.env.SANITY_API_TOKEN;
 
-console.log(SANITY_API_TOKEN)
-
 if (!SANITY_API_TOKEN) console.warn('\x1b[33m%s\x1b[0m', "The `SANITY_API_TOKEN` environment variable is required.");
 
 export const client = createClient({

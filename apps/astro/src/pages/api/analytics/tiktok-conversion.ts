@@ -4,44 +4,39 @@ import type { APIRoute } from 'astro'
 import sanityFetch from '@utils/sanity.fetch';
 import { hash } from '@utils/hash'
 import { getCookie } from '@utils/get-cookie'
-import { getFirstName } from '@utils/name-parser'
 
 export type Props = {
   event_name: string;
-  content_name: string;
   url: string;
   event_id: string;
   event_time: number;
-  name?: string;
   email?: string;
   phone?: string;
 }
 
-const { meta_pixel_id, meta_conversion_token } = await sanityFetch<{
-  meta_pixel_id: string;
-  meta_conversion_token: string;
+const { tiktok_pixel_id, tiktok_conversion_token } = await sanityFetch<{
+  tiktok_pixel_id: string;
+  tiktok_conversion_token: string;
 }>({
   query: `*[_type == "global"][0].analytics {
-    meta_pixel_id,
-    meta_conversion_token
+    tiktok_pixel_id,
+    tiktok_conversion_token
   }`,
 })
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!meta_pixel_id || !meta_conversion_token) {
+  if (!tiktok_pixel_id || !tiktok_conversion_token) {
     return new Response(JSON.stringify({
       success: false,
-      message: 'Meta Pixel ID or/and conversion token not configured'
+      message: 'TikTok Pixel ID or/and conversion token not configured'
     }), { status: 400 })
   }
 
   const {
     event_name,
-    content_name,
     url,
     event_id,
     event_time,
-    name,
     email,
     phone,
   } = (await request.json()) as Props
@@ -57,62 +52,62 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const client_ip_address = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
     const client_user_agent = request.headers.get('user-agent')
-    const referer = request.headers.get('referer')
-    const fbc = getCookie('_fbc')
-    const fbp = getCookie('_fbp')
+    const referer = request.headers.get('referer') || ''
 
-
-    const user_data: Record<'client_ip_address' | 'client_user_agent' | 'em' | 'fn' | 'ph' | 'fbc' | 'fbp', string | null> = {
-      client_ip_address: client_ip_address,
-      client_user_agent: client_user_agent,
-      em: null,
-      fn: null,
-      ph: null,
-      fbc: null,
-      fbp: null,
-    }
+    const refererUrl = new URL(referer);
+    const refererParams = refererUrl.searchParams;
+    const ttclid = refererParams.get('ttclid') || getCookie('ttclid', request.headers.get('cookie') || '');
+    const ttp = getCookie('_ttp', request.headers.get('cookie') || '');
 
     const advanced_matching_consent = cookie_consent.advanced_matching || 'denied'
-    if (advanced_matching_consent === 'granted') {
-      if (email) user_data.em = await hash(email)
-      if (name) user_data.fn = await hash(getFirstName(name))
-      if (phone) user_data.ph = await hash(phone)
-      if (fbc) user_data.fbc = fbc
-      if (fbp) user_data.fbp = fbp
+
+    type UserDataKey = 'ip' | 'user_agent' | 'email' | 'phone' | 'ttclid' | 'ttp';
+    const userData: Partial<Record<UserDataKey, string>> = {
+      ip: client_ip_address || '',
+      user_agent: client_user_agent || ''
     }
 
-    const response = await fetch(`https://graph.facebook.com/v21.0/${meta_pixel_id}/events?access_token=${meta_conversion_token}`, {
+    if (advanced_matching_consent === 'granted') {
+      if (email) userData.email = await hash(email)
+      if (phone) userData.phone = await hash(phone)
+      if (ttclid) userData.ttclid = ttclid
+      if (ttp) userData.ttp = ttp
+    }
+
+    const response = await fetch('https://business-api.tiktok.com/open_api/v1.3/event/track/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Token': tiktok_conversion_token,
+      },
       body: JSON.stringify({
+        event_source: 'web',
+        event_source_id: tiktok_pixel_id,
         data: [
           {
-            event_name: event_name,
-            content_name: content_name,
-            event_source_url: url,
-            event_id,
-            event_time,
-            action_source: 'website',
-            referrer_url: referer,
-            user_data: {
-              ...user_data,
-            },
-            custom_data: {
-              advanced_matching_consent: advanced_matching_consent,
-            },
-          },
+            event: event_name,
+            event_time: event_time,
+            event_id: event_id,
+            user: userData,
+            page: {
+              url: url,
+              referrer: referer
+            }
+          }
         ],
       }),
     })
+
     if (!response.ok) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'Meta API error occurred'
+        message: 'TikTok API error occurred'
       }), { status: response.status })
     }
+
     return new Response(JSON.stringify({
       success: true,
-      message: 'Event sent to Meta'
+      message: 'Event sent to TikTok'
     }), { status: 200 })
   } catch (error) {
     return new Response(JSON.stringify({

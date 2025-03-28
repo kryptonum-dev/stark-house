@@ -53,6 +53,9 @@ export default function Form({ analytics }: Props) {
               direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
             }
           }),
+          tiktok: {
+            event_name: 'SubmitForm'
+          }
         });
       } else {
         setStatus({ sending: false, success: false });

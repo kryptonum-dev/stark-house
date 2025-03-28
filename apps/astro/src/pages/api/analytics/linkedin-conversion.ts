@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro'
 import sanityFetch from '@utils/sanity.fetch';
 import { hash } from '@utils/hash'
 import { getFirstName, getLastName } from '@utils/name-parser'
+import { getCookie } from '@utils/get-cookie';
 
 export type Props = {
   direct_api_conversion_id: number;
@@ -44,18 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
     }), { status: 400 })
   }
 
-  const getCookie = (name: string) => {
-    const cookie = request.headers.get('cookie')?.split(';').find(cookie => cookie.trim().split('=')[0] === name);
-    return cookie ? cookie.trim().split('=')[1] : '';
-  };
-
-  const cookie_consent = JSON.parse(decodeURIComponent(getCookie('cookie-consent')))
-  if (!cookie_consent) {
-    return new Response(JSON.stringify({
-      success: false,
-      message: 'Cookie consent data not found in request'
-    }), { status: 400 })
-  }
+  const cookie_consent = JSON.parse(getCookie('cookie-consent', request.headers.get('cookie') || '') || '{}');
   if (cookie_consent.conversion_api !== 'granted') {
     return new Response(JSON.stringify({
       success: false,
