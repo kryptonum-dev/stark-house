@@ -53,7 +53,7 @@ export async function trackEvent({
     milliseconds: Date.now(),
     seconds: Math.floor(Date.now() / 1000)
   }
-  const event_id = `${event_time.milliseconds}-${Math.random().toString(36).substring(2, 15)}`;
+  const event_id = `${event_time.milliseconds}${Math.random().toString(36).substring(2, 15)}`;
   const url = window.location.href
 
   if (meta) {
