@@ -55,24 +55,21 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const client_ip_address = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
-    const client_user_agent = request.headers.get('user-agent')
-    const referer = request.headers.get('referer')
-    const fbc = getCookie('_fbc')
-    const fbp = getCookie('_fbp')
+    const client_ip_address = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || ''
+    const client_user_agent = request.headers.get('user-agent') || ''
+    const referer = request.headers.get('referer') || ''
 
-
-    const user_data: Record<'client_ip_address' | 'client_user_agent' | 'em' | 'fn' | 'ph' | 'fbc' | 'fbp', string | null> = {
-      client_ip_address: client_ip_address,
-      client_user_agent: client_user_agent,
-      em: null,
-      fn: null,
-      ph: null,
-      fbc: null,
-      fbp: null,
-    }
+    const fbc = getCookie('_fbc', request.headers)
+    const fbp = getCookie('_fbp', request.headers)
 
     const advanced_matching_consent = cookie_consent.advanced_matching || 'denied'
+
+    type UserDataKey = 'client_ip_address' | 'client_user_agent' | 'em' | 'fn' | 'ph' | 'fbc' | 'fbp';
+    const user_data: Partial<Record<UserDataKey, string>> = {
+      client_ip_address: client_ip_address || '',
+      client_user_agent: client_user_agent || ''
+    }
+
     if (advanced_matching_consent === 'granted') {
       if (email) user_data.em = await hash(email)
       if (name) user_data.fn = await hash(getFirstName(name))
@@ -81,40 +78,49 @@ export const POST: APIRoute = async ({ request }) => {
       if (fbp) user_data.fbp = fbp
     }
 
+    const payload = {
+      data: [
+        {
+          event_name,
+          content_name,
+          event_source_url: url,
+          event_id,
+          event_time,
+          action_source: 'website',
+          referrer_url: referer,
+          user_data,
+          custom_data: {
+            advanced_matching_consent
+          },
+        },
+      ],
+    }
+
+    console.log('[Meta Conversion API] Sending payload:', JSON.stringify(payload, null, 2))
+
     const response = await fetch(`https://graph.facebook.com/v21.0/${meta_pixel_id}/events?access_token=${meta_conversion_token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: [
-          {
-            event_name: event_name,
-            content_name: content_name,
-            event_source_url: url,
-            event_id,
-            event_time,
-            action_source: 'website',
-            referrer_url: referer,
-            user_data: {
-              ...user_data,
-            },
-            custom_data: {
-              advanced_matching_consent: advanced_matching_consent,
-            },
-          },
-        ],
-      }),
+      body: JSON.stringify(payload),
     })
+
+    const responseData = await response.json()
+
     if (!response.ok) {
+      console.error('[Meta Conversion API] Error response:', JSON.stringify(responseData, null, 2))
       return new Response(JSON.stringify({
         success: false,
         message: 'Meta API error occurred'
       }), { status: response.status })
     }
+
+    console.log('[Meta Conversion API] Success response:', JSON.stringify(responseData, null, 2))
     return new Response(JSON.stringify({
       success: true,
       message: 'Event sent to Meta'
     }), { status: 200 })
   } catch (error) {
+    console.error('[Meta Conversion API] Server error:', error)
     return new Response(JSON.stringify({
       success: false,
       message: 'Server error processing conversion event'

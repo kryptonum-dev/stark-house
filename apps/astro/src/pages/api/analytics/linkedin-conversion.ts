@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
     }), { status: 400 })
   }
 
-  const cookie_consent = JSON.parse(getCookie('cookie-consent', request.headers.get('cookie') || '') || '{}');
+  const cookie_consent = JSON.parse(getCookie('cookie-consent', request.headers) || '{}');
   if (cookie_consent.conversion_api !== 'granted') {
     return new Response(JSON.stringify({
       success: false,
@@ -54,8 +54,34 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const li_fat_id = getCookie('li_fat_id')
+    const li_fat_id = getCookie('li_fat_id', request.headers)
     const advanced_matching_consent = cookie_consent.advanced_matching || 'denied'
+
+    const payload = {
+      conversion: `urn:lla:llaPartnerConversion:${direct_api_conversion_id}`,
+      conversionHappenedAt: event_time,
+      user: {
+        userIds: [
+          ...(advanced_matching_consent === 'granted' && email ? [{
+            idType: 'SHA256_EMAIL',
+            idValue: await hash(email),
+          }] : []),
+          ...(li_fat_id ? [{
+            idType: 'LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID',
+            idValue: li_fat_id,
+          }] : []),
+        ],
+        ...(advanced_matching_consent === 'granted' && name ? {
+          userInfo: {
+            firstName: getFirstName(name),
+            lastName: getLastName(name)
+          }
+        } : {})
+      },
+      eventId: event_id,
+    }
+
+    console.log('[LinkedIn Conversion API] Sending payload:', JSON.stringify(payload, null, 2))
 
     const response = await fetch('https://api.linkedin.com/rest/conversionEvents', {
       method: 'POST',
@@ -65,42 +91,26 @@ export const POST: APIRoute = async ({ request }) => {
         'X-Restli-Protocol-Version': '2.0.0',
         'Authorization': `Bearer ${linkedin_conversion_token}`,
       },
-      body: JSON.stringify({
-        conversion: `urn:lla:llaPartnerConversion:${direct_api_conversion_id}`,
-        conversionHappenedAt: event_time,
-        user: {
-          userIds: [
-            ...(advanced_matching_consent === 'granted' && email ? [{
-              idType: 'SHA256_EMAIL',
-              idValue: await hash(email),
-            }] : []),
-            ...(li_fat_id ? [{
-              idType: 'LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID',
-              idValue: li_fat_id,
-            }] : []),
-          ],
-          ...(advanced_matching_consent === 'granted' && name ? {
-            userInfo: {
-              firstName: getFirstName(name),
-              lastName: getLastName(name)
-            }
-          } : {})
-        },
-        eventId: event_id,
-      }),
+      body: JSON.stringify(payload),
     })
 
+    const responseData = await response.json().catch(() => ({}))
+
     if (!response.ok) {
+      console.error('[LinkedIn Conversion API] Error response:', JSON.stringify(responseData, null, 2))
       return new Response(JSON.stringify({
         success: false,
         message: 'LinkedIn API error occurred'
       }), { status: response.status })
     }
+
+    console.log('[LinkedIn Conversion API] Success response:', JSON.stringify(responseData, null, 2))
     return new Response(JSON.stringify({
       success: true,
       message: 'Conversion event tracked successfully'
     }), { status: 200 })
   } catch (error) {
+    console.error('[LinkedIn Conversion API] Server error:', error)
     return new Response(JSON.stringify({
       success: false,
       message: 'Internal server error processing conversion event'
