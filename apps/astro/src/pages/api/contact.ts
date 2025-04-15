@@ -2,6 +2,7 @@ export const prerender = false
 
 import { REGEX } from "@global/constants";
 import { htmlToString } from "@utils/html-to-string";
+import { confirmationEmailTemplate, confirmationEmailText } from "../../emails/confirmation-email";
 import type { APIRoute } from "astro";
 
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
@@ -17,6 +18,42 @@ type Props = {
   contactValue: string
   message: string
   legal: boolean
+}
+
+/**
+ * Sends a confirmation email to the user who submitted the contact form
+ */
+async function sendConfirmationEmail(email: string): Promise<boolean> {
+  try {
+    const html = confirmationEmailTemplate();
+    const text = confirmationEmailText();
+
+    const res = await fetch(`https://api.resend.com/emails`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: 'Stark House <potwierdzenie@send.starkhouse.pl>',
+        to: email,
+        subject: 'Dziękujemy za kontakt z Stark House!',
+        html,
+        text,
+        attachments: [
+          {
+            path: 'https://lp.starkhouse.pl/StarkHouse-katalog-2025.pdf',
+            filename: 'StarkHouse-katalog-2025.pdf',
+          },
+        ],
+      }),
+    });
+
+    return res.status === 200;
+  } catch (error) {
+    console.error('Error sending confirmation email:', error);
+    return false;
+  }
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -35,6 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
       }), { status: 400 })
     }
 
+    // Send the form data to admin email
     const res = await fetch(`https://api.resend.com/emails`, {
       method: 'POST',
       headers: {
@@ -50,11 +88,23 @@ export const POST: APIRoute = async ({ request }) => {
         text: htmlToString(template({ contactType, contactValue, message })),
       }),
     });
+
     if (res.status !== 200) {
       return new Response(JSON.stringify({ message: "Something went wrong", success: false }), { status: 400 })
     }
+
+    // If the user provided an email, send a confirmation email to them
+    if (contactType === 'email') {
+      // We send the confirmation email but don't wait for it to complete
+      // This way the form submission is not delayed by the confirmation email
+      sendConfirmationEmail(contactValue).catch(error => {
+        console.error('Failed to send confirmation email:', error);
+      });
+    }
+
     return new Response(JSON.stringify({ message: "Successfully sent message", success: true }), { status: 200 })
-  } catch {
+  } catch (error) {
+    console.error('Error in contact form submission:', error);
     return new Response(JSON.stringify({ message: "An error occurred while sending message", success: false }), { status: 400 })
   }
 };
