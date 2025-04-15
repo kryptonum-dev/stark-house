@@ -25,7 +25,11 @@ export default function Form({ analytics }: Props) {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm({ mode: 'onTouched' });
+
+  const contactType = watch('contactType', 'email');
 
   const onSubmit = async (data: FieldValues) => {
     setStatus({ sending: true, success: undefined });
@@ -41,7 +45,8 @@ export default function Form({ analytics }: Props) {
         reset();
         await trackEvent({
           user_data: {
-            email: data.email
+            email: contactType === 'email' ? data.contactValue : undefined,
+            phone: contactType === 'phone' ? data.contactValue : undefined
           },
           meta: {
             event_name: 'Lead',
@@ -65,17 +70,67 @@ export default function Form({ analytics }: Props) {
     }
   };
 
+  const handleContactTypeChange = (type: 'email' | 'phone') => {
+    setValue('contactType', type);
+    setValue('contactValue', '');
+  };
+
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        label='Adres e-mail'
-        type='email'
-        register={register('email', {
-          required: { value: true, message: 'Email jest wymagany' },
-          pattern: { value: REGEX.email, message: 'Niepoprawny adres e-mail' },
-        })}
-        errors={errors}
-      />
+      <div
+        className={styles.pillSelector}
+        role="tablist"
+        aria-label="Wybierz metodę kontaktu"
+        data-type={contactType}
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={contactType === 'email'}
+          id="contact-email-tab"
+          aria-controls="contact-email-panel"
+          className={`${styles.pill} ${contactType === 'email' ? styles.active : ''}`}
+          onClick={() => handleContactTypeChange('email')}
+        >
+          Email
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={contactType === 'phone'}
+          id="contact-phone-tab"
+          aria-controls="contact-phone-panel"
+          className={`${styles.pill} ${contactType === 'phone' ? styles.active : ''}`}
+          onClick={() => handleContactTypeChange('phone')}
+        >
+          Telefon
+        </button>
+        <input
+          type="hidden"
+          {...register('contactType')}
+          value={contactType}
+        />
+      </div>
+
+      <div
+        role="tabpanel"
+        id={contactType === 'email' ? 'contact-email-panel' : 'contact-phone-panel'}
+        aria-labelledby={contactType === 'email' ? 'contact-email-tab' : 'contact-phone-tab'}
+      >
+        <Input
+          label={contactType === 'email' ? 'Adres e-mail' : 'Numer telefonu'}
+          type={contactType === 'email' ? 'email' : 'tel'}
+          register={register('contactValue', {
+            required: { value: true, message: contactType === 'email' ? 'Email jest wymagany' : 'Numer telefonu jest wymagany' },
+            pattern: {
+              value: contactType === 'email' ? REGEX.email : REGEX.phone,
+              message: contactType === 'email' ? 'Niepoprawny adres e-mail' : 'Niepoprawny numer telefonu'
+            },
+          })}
+          errors={errors}
+        />
+      </div>
+
       <Input
         label='Twoja wiadomość'
         register={register('message', {
@@ -106,7 +161,7 @@ export default function Form({ analytics }: Props) {
         error={{
           heading: 'Nie udało się wysłać wiadomości',
           paragraph: <>
-            <p>Podczas przesyłania, wystąpił problem z serwerem. Wyślij wiadomość ponownie. W razie niepowodzenia, skontaktuj się z nami mailowo: <a href="mailto:kontakt@starkhouse.com" className='link'>kontakt@starkhouse.com</a>
+            <p>Podczas przesyłania, wystąpił problem z serwerem. Wyślij wiadomość ponownie. W razie niepowodzenia, skontaktuj się z nami mailowo: <a href="mailto:kontakt@starkhouse.com" className='link'>kontakt@starkhouse.com</a>
             </p>
           </>,
         }}

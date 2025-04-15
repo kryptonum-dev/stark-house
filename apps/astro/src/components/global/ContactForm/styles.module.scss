@@ -5,4 +5,60 @@
   .cta {
     margin-top: clamp(calc(16rem / 16), calc(28vw / 7.68), calc(28rem / 16));
   }
+
+  .pillSelector {
+    display: flex;
+    width: 100%;
+    max-width: calc(200rem / 16);
+    position: relative;
+    margin-bottom: calc(16rem / 16);
+    border-radius: 2rem;
+    background-color: var(--neutral-200);
+    padding: calc(4rem / 16);
+    height: calc(34rem / 16);
+    &[data-type='email']::after {
+      transform: translateX(0);
+    }
+    &[data-type='phone']::after {
+      transform: translateX(calc(100% - 0.25rem));
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      height: calc(100% - calc(4rem / 16));
+      width: 50%;
+      top: calc(2rem / 16);
+      left: calc(2rem / 16);
+      border-radius: 2rem;
+      background-color: white;
+      box-shadow: 0 calc(1rem / 16) calc(2rem / 16) rgba(0, 0, 0, 0.04);
+      z-index: 0;
+      transition: transform 0.3s var(--easing, ease);
+    }
+    .pill {
+      flex: 1;
+      font-size: calc(13rem / 16);
+      padding: 0;
+      line-height: calc(26rem / 16);
+      text-align: center;
+      position: relative;
+      color: var(--neutral-500);
+      border-radius: 2rem;
+      z-index: 1;
+      transition: color 0.3s var(--easing, ease);
+      &.active {
+        color: var(--neutral-700);
+      }
+      &:focus {
+        outline: none;
+      }
+      &:focus-visible {
+        outline: 2px solid var(--primary-400);
+        outline-offset: 1px;
+      }
+      &:hover:not(.active) {
+        color: var(--neutral-600);
+      }
+    }
+  }
 }
