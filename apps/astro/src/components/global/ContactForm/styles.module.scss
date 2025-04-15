@@ -6,6 +6,21 @@
     margin-top: clamp(calc(16rem / 16), calc(28vw / 7.68), calc(28rem / 16));
   }
 
+  .formInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0;
+    margin-top: 0.5rem;
+    color: var(--neutral-600);
+    font-size: 0.75rem;
+    svg {
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+      color: var(--primary-400, #dead26);
+    }
+  }
+
   .pillSelector {
     display: flex;
     width: 100%;
