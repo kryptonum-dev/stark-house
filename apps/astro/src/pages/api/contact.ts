@@ -7,8 +7,10 @@ import type { APIRoute } from "astro";
 
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
 
-const template = ({ contactType, contactValue, message }: { contactType: string, contactValue: string, message: string }) => `
+const template = ({ contactType, contactValue, message, fullname, city }: { contactType: string, contactValue: string, message: string, fullname?: string, city?: string }) => `
   <p>${contactType === 'email' ? 'Adres email' : 'Numer telefonu'}: <b>${contactValue}</b></p>
+  <p>Imię i nazwisko: <b>${fullname || 'Nie podano'}</b></p>
+  <p>Miasto: <b>${city || 'Nie podano'}</b></p>
   <br />
   <p>${message.trim().replace(/\n/g, '<br />')}</p>
 `;
@@ -18,6 +20,8 @@ type Props = {
   contactValue: string
   message: string
   legal: boolean
+  fullname?: string
+  city?: string
 }
 
 /**
@@ -37,7 +41,7 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
       body: JSON.stringify({
         from: 'Stark House <potwierdzenie@send.starkhouse.pl>',
         to: email,
-        subject: 'Dziękujemy za kontakt z Stark House!',
+        subject: 'Stark House – oferta carportów i platforma dla partnerów',
         html,
         text,
         attachments: [
@@ -58,7 +62,7 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { contactType, contactValue, message, legal } = await request.json() as Props
+    const { contactType, contactValue, message, legal, fullname, city } = await request.json() as Props
 
     // Validate based on contact type
     const isValidContact = contactType === 'email'
@@ -84,8 +88,8 @@ export const POST: APIRoute = async ({ request }) => {
         to: 'biuro@starkhouse.pl',
         reply_to: contactType === 'email' ? contactValue : undefined,
         subject: `Wiadomość z formularza kontaktowego ${contactType === 'email' ? 'wysłana przez ' + contactValue : 'z numerem ' + contactValue}`,
-        html: template({ contactType, contactValue, message }),
-        text: htmlToString(template({ contactType, contactValue, message })),
+        html: template({ contactType, contactValue, message, fullname, city }),
+        text: htmlToString(template({ contactType, contactValue, message, fullname, city })),
       }),
     });
 

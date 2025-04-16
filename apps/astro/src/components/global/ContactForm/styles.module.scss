@@ -1,11 +1,15 @@
 .form {
-  max-width: calc(410rem / 16);
+  max-width: calc(440rem / 16);
   display: grid;
   gap: calc(20rem / 16);
   .cta {
     margin-top: clamp(calc(16rem / 16), calc(28vw / 7.68), calc(28rem / 16));
   }
-
+  .column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
   .formInfo {
     display: flex;
     align-items: flex-start;

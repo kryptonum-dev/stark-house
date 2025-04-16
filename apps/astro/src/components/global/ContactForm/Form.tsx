@@ -52,7 +52,7 @@ export default function Form({ analytics }: Props) {
             event_name: 'Lead',
             content_name: 'Contact Form'
           },
-          ...(analytics?.linkedin_conversion && {
+          ...((analytics?.linkedin_conversion && contactType === 'email') && {
             linkedin: {
               pixel_conversion_id: analytics.linkedin_conversion.pixel_conversion_id,
               direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
@@ -137,7 +137,20 @@ export default function Form({ analytics }: Props) {
           errors={errors}
         />
       </div>
-
+      <div className={styles.column}>
+        <Input
+          label='Imię i nazwisko'
+          type='text'
+          register={register('fullname')}
+          errors={errors}
+        />
+        <Input
+          label='Miasto'
+          type='text'
+          register={register('city')}
+          errors={errors}
+        />
+      </div>
       <Input
         label='Twoja wiadomość'
         register={register('message', {
