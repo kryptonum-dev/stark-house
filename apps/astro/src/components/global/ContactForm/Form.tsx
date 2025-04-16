@@ -125,7 +125,7 @@ export default function Form({ analytics }: Props) {
         aria-labelledby={contactType === 'email' ? 'contact-email-tab' : 'contact-phone-tab'}
       >
         <Input
-          label={contactType === 'email' ? 'Adres e-mail' : 'Numer telefonu'}
+          label={contactType === 'email' ? 'Adres e-mail*' : 'Numer telefonu*'}
           type={contactType === 'email' ? 'email' : 'tel'}
           register={register('contactValue', {
             required: { value: true, message: contactType === 'email' ? 'Email jest wymagany' : 'Numer telefonu jest wymagany' },
@@ -152,7 +152,7 @@ export default function Form({ analytics }: Props) {
         />
       </div>
       <Input
-        label='Twoja wiadomość'
+        label='Twoja wiadomość*'
         register={register('message', {
           required: { value: true, message: 'Wiadomość jest wymagana' },
         })}
