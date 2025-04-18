@@ -30,6 +30,7 @@ export default function Form({ analytics }: Props) {
   } = useForm({ mode: 'onTouched' });
 
   const contactType = watch('contactType', 'email');
+  const clientType = watch('clientType', 'individual');
 
   const onSubmit = async (data: FieldValues) => {
     setStatus({ sending: true, success: undefined });
@@ -75,6 +76,13 @@ export default function Form({ analytics }: Props) {
     setValue('contactValue', '');
   };
 
+  const handleClientTypeChange = (type: 'individual' | 'business') => {
+    setValue('clientType', type);
+    if (type === 'individual') {
+      setValue('nip', '');
+    }
+  };
+
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
       <div
@@ -111,8 +119,9 @@ export default function Form({ analytics }: Props) {
           value={contactType}
         />
       </div>
+
       {contactType === 'email' && (
-        <div className={styles.formInfo}>
+        <div key="email-info" className={`${styles.formInfo} ${styles.fadeInBlur}`}>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
           </svg>
@@ -123,6 +132,8 @@ export default function Form({ analytics }: Props) {
         role="tabpanel"
         id={contactType === 'email' ? 'contact-email-panel' : 'contact-phone-panel'}
         aria-labelledby={contactType === 'email' ? 'contact-email-tab' : 'contact-phone-tab'}
+        key={`contact-${contactType}-panel`}
+        className={styles.fadeInBlur}
       >
         <Input
           label={contactType === 'email' ? 'Adres e-mail*' : 'Numer telefonu*'}
@@ -151,6 +162,68 @@ export default function Form({ analytics }: Props) {
           errors={errors}
         />
       </div>
+      <div
+        className={`${styles.pillSelector} ${styles.clientTypePills}`}
+        role="tablist"
+        aria-label="Wybierz typ klienta"
+        data-type={clientType}
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={clientType === 'individual'}
+          id="client-individual-tab"
+          aria-controls="client-individual-panel"
+          className={`${styles.pill} ${clientType === 'individual' ? styles.active : ''}`}
+          onClick={() => handleClientTypeChange('individual')}
+        >
+          Klient indywidualny
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={clientType === 'business'}
+          id="client-business-tab"
+          aria-controls="client-business-panel"
+          className={`${styles.pill} ${clientType === 'business' ? styles.active : ''}`}
+          onClick={() => handleClientTypeChange('business')}
+        >
+          Klient biznesowy
+        </button>
+        <input
+          type="hidden"
+          {...register('clientType')}
+          value={clientType}
+        />
+      </div>
+      {clientType === 'business' && (
+        <div key="nip-field" className={styles.fadeInBlur}>
+          <Input
+            label='Numer NIP'
+            type='text'
+            register={register('nip', {
+              validate: {
+                validNip: (value) => {
+                  if (!value) return true;
+                  const nip = value.replace(/[\ \-]/gi, '');
+                  if (!/^\d{10}$/.test(nip)) {
+                    return 'NIP musi składać się z 10 cyfr';
+                  }
+                  const weight = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+                  let sum = 0;
+                  const controlNumber = parseInt(nip.substring(9, 10));
+                  for (let i = 0; i < 9; i++) {
+                    sum += parseInt(nip.charAt(i)) * weight[i];
+                  }
+                  return (sum % 11) === controlNumber || 'Nieprawidłowy numer NIP - błędna cyfra kontrolna';
+                }
+              }
+            })}
+            placeholder="np. 123-456-78-90"
+            errors={errors}
+          />
+        </div>
+      )}
       <Input
         label='Twoja wiadomość*'
         register={register('message', {
