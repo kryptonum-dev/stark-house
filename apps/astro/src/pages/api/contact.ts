@@ -50,7 +50,7 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
         text,
         attachments: [
           {
-            path: 'https://lp.starkhouse.pl/StarkHouse-katalog-2025.pdf',
+            path: 'https://starkhouse.pl/StarkHouse-katalog-2025.pdf',
             filename: 'StarkHouse-katalog-2025.pdf',
           },
         ],

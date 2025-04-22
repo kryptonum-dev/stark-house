@@ -5,7 +5,7 @@
  * @constant
  * @type {string}
  */
-export const DOMAIN: string = "https://lp.starkhouse.pl";
+export const DOMAIN: string = "https://starkhouse.pl";
 
 /**
  * The domain used for preview deployments.

@@ -29,7 +29,7 @@ export const LOCALE: string = "pl";
  * @constant
  * @type {string}
  */
-export const DOMAIN: string = "https://lp.starkhouse.pl";
+export const DOMAIN: string = "https://starkhouse.pl";
 
 /**
  * Global declaration of the default title for the application.
