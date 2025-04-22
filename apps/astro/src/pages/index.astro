@@ -1,0 +1,27 @@
+---
+import Layout from '@layouts/Layout.astro'
+import sanityFetch from '@utils/sanity.fetch'
+import metadataFetch from '@utils/metadata.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Button'
+
+const slug = '/'
+
+const page = await sanityFetch<{ nav_cta: ButtonDataProps; title: string; components: ComponentsProps }>({
+  query: `
+    *[_type == 'Landing_Collection' && slug.current == $slug][0] {
+      ${ButtonDataQuery('nav_cta')}
+      title,
+      ${Components_Query}
+    }
+  `,
+  params: { slug: slug },
+})
+if (!page) return Astro.rewrite('/404')
+
+const metadata = await metadataFetch('Landing_Collection', slug)
+---
+
+<Layout {...metadata} nav_cta={page.nav_cta}>
+  <Components data={page.components} />
+</Layout>
