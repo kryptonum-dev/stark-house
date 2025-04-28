@@ -7,12 +7,16 @@ import type { APIRoute } from "astro";
 
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
 
-const template = ({ contactType, contactValue, message, fullname, city, clientType, nip }: { contactType: string, contactValue: string, message: string, fullname?: string, city?: string, clientType: string, nip?: string }) => `
+const template = ({ contactType, contactValue, message, fullname, city, clientType, nip, parkingSpaces }: { contactType: string, contactValue: string, message: string, fullname?: string, city?: string, clientType: string, nip?: string, parkingSpaces: string }) => `
   <p>${contactType === 'email' ? 'Adres email' : 'Numer telefonu'}: <b>${contactValue}</b></p>
   <p>Imię i nazwisko: <b>${fullname || 'Nie podano'}</b></p>
   <p>Miasto: <b>${city || 'Nie podano'}</b></p>
   <p>Typ klienta: <b>${clientType === 'individual' ? 'Klient indywidualny' : 'Klient biznesowy'}</b></p>
   ${clientType === 'business' && nip ? `<p>NIP: <b>${nip}</b></p>` : ''}
+  <p>Liczba miejsc parkingowych: <b>${parkingSpaces === 'less10' ? '< 10' :
+    parkingSpaces === '10to50' ? '10-50' :
+      '50+'
+  }</b></p>
   <br />
   <p>${message.trim().replace(/\n/g, '<br />')}</p>
 `;
@@ -26,6 +30,7 @@ type Props = {
   city?: string
   clientType: 'individual' | 'business'
   nip?: string
+  parkingSpaces: 'less10' | '10to50' | 'more50'
 }
 
 /**
@@ -66,14 +71,14 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { contactType, contactValue, message, legal, fullname, city, clientType, nip } = await request.json() as Props
+    const { contactType, contactValue, message, legal, fullname, city, clientType, nip, parkingSpaces } = await request.json() as Props
 
     // Validate based on contact type
     const isValidContact = contactType === 'email'
       ? REGEX.email.test(contactValue)
       : REGEX.phone.test(contactValue);
 
-    if (!isValidContact || !message || !legal) {
+    if (!isValidContact || !message || !legal || !parkingSpaces) {
       return new Response(JSON.stringify({
         message: "Missing or invalid required fields",
         success: false
@@ -92,8 +97,8 @@ export const POST: APIRoute = async ({ request }) => {
         to: 'biuro@starkhouse.pl',
         reply_to: contactType === 'email' ? contactValue : undefined,
         subject: `Wiadomość z formularza kontaktowego ${contactType === 'email' ? 'wysłana przez ' + contactValue : 'z numerem ' + contactValue}`,
-        html: template({ contactType, contactValue, message, fullname, city, clientType, nip }),
-        text: htmlToString(template({ contactType, contactValue, message, fullname, city, clientType, nip })),
+        html: template({ contactType, contactValue, message, fullname, city, clientType, nip, parkingSpaces }),
+        text: htmlToString(template({ contactType, contactValue, message, fullname, city, clientType, nip, parkingSpaces })),
       }),
     });
 

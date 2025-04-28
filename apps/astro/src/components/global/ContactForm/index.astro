@@ -6,11 +6,11 @@ import Form from './Form'
 export const ContactForm_Query = `
   _type == "ContactForm" => {
     ${PortableTextQuery('heading')}
-    review {
+    reviews[] {
       ${ImageDataQuery('img')}
       name,
       position,
-      review
+      ${PortableTextQuery('review')}
     },
     "email": *[_type == "global"][0].email,
     "tel": *[_type == "global"][0].tel,
@@ -27,12 +27,12 @@ export type Props = {
   index: number
   sectionId?: string
   heading: PortableTextValue
-  review?: {
+  reviews?: Array<{
     img?: ImageDataProps
     name: string
     position?: string
     review: PortableTextValue
-  }
+  }>
   email: string
   tel?: string
   analytics?: {
@@ -43,7 +43,7 @@ export type Props = {
   }
 }
 
-const { index, sectionId, heading, review, email, tel, analytics } = Astro.props
+const { index, sectionId, heading, reviews, email, tel, analytics } = Astro.props
 ---
 
 <section class="ContactForm sec-wo-margin" id={sectionId} light-background>
@@ -51,20 +51,24 @@ const { index, sectionId, heading, review, email, tel, analytics } = Astro.props
     <header>
       <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
       {
-        review && (
-          <div class="review">
-            {review.img ? <Image {...review.img} sizes="56px" /> : <div class="avatar" />}
-            <div class="header">
-              <p class="name">{review.name}</p>
-              {review.position && <p class="position">{review.position}</p>}
-            </div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
-              <path
-                fill="#CCC5B4"
-                d="M19.5.722v2.935a4.507 4.507 0 0 0-2.323 1.55c-.609.76-1.079 1.74-1.41 2.935-.277 1.196-.415 2.501-.415 3.914h3.235v7.666h-7.052v-6.769c0-3.098.442-5.49 1.327-7.176.886-1.74 1.936-2.962 3.153-3.669C17.232 1.347 18.394.885 19.5.722Zm-11.035 0v2.935c-.996.272-1.798.789-2.406 1.55-.553.76-.996 1.74-1.328 2.935-.276 1.196-.414 2.501-.414 3.914h3.235v7.666H.5v-6.769c0-3.098.443-5.49 1.328-7.176.885-1.74 1.935-2.962 3.152-3.669C6.197 1.347 7.36.885 8.465.722Z"
-              />
-            </svg>
-            <p class="content">{review.review}</p>
+        reviews && reviews.length > 0 && (
+          <div class="reviews">
+            {reviews.map((review) => (
+              <div class="review">
+                {review.img ? <Image {...review.img} sizes="56px" /> : <div class="avatar" />}
+                <div class="header">
+                  <p class="name">{review.name}</p>
+                  {review.position && <p class="position">{review.position}</p>}
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                  <path
+                    fill="#CCC5B4"
+                    d="M19.5.722v2.935a4.507 4.507 0 0 0-2.323 1.55c-.609.76-1.079 1.74-1.41 2.935-.277 1.196-.415 2.501-.415 3.914h3.235v7.666h-7.052v-6.769c0-3.098.442-5.49 1.327-7.176.886-1.74 1.936-2.962 3.153-3.669C17.232 1.347 18.394.885 19.5.722Zm-11.035 0v2.935c-.996.272-1.798.789-2.406 1.55-.553.76-.996 1.74-1.328 2.935-.276 1.196-.414 2.501-.414 3.914h3.235v7.666H.5v-6.769c0-3.098.443-5.49 1.328-7.176.885-1.74 1.935-2.962 3.152-3.669C6.197 1.347 7.36.885 8.465.722Z"
+                  />
+                </svg>
+                <PortableText value={review.review} class="content" />
+              </div>
+            ))}
           </div>
         )
       }
@@ -140,30 +144,34 @@ const { index, sectionId, heading, review, email, tel, analytics } = Astro.props
       }
     }
     header {
-      max-width: 34rem;
-      .review {
+      max-width: 38rem;
+      .reviews {
         margin-top: 2rem;
-        border-left: 1px solid #dead26;
-        padding-left: 1.5rem;
         display: grid;
-        grid-template-columns: 3.5rem 1fr;
-        gap: 1.5rem 1rem;
-        img {
-          width: 3.5rem;
-          height: 3.5rem;
-          border-radius: 50%;
-        }
-        .header {
-          align-self: center;
-          .position {
+        gap: 2rem;
+        .review {
+          border-left: 1px solid #dead26;
+          padding-left: 1.5rem;
+          display: grid;
+          grid-template-columns: 3.5rem 1fr;
+          gap: 1rem 1rem;
+          img {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+          }
+          .header {
+            align-self: center;
+            .position {
+              font-size: 0.875rem;
+            }
+          }
+          svg {
+            justify-self: center;
+          }
+          .content {
             font-size: 0.875rem;
           }
-        }
-        svg {
-          justify-self: center;
-        }
-        .content {
-          font-size: 0.875rem;
         }
       }
       .contact {

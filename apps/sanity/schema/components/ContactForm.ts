@@ -19,33 +19,38 @@ export default defineField({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'review',
-      type: 'object',
-      title: 'Opinia',
-      fields: [
-        defineField({
-          name: 'img',
-          type: 'image',
-          title: 'Zdjęcie (opcjonalne)',
-        }),
-        defineField({
-          name: 'name',
-          type: 'string',
-          title: 'Imię i nazwisko',
-          validation: Rule => Rule.required(),
-        }),
-        defineField({
-          name: 'position',
-          type: 'string',
-          title: 'Stanowisko',
-        }),
-        defineField({
-          name: 'review',
-          type: 'text',
-          rows: 3,
+      name: 'reviews',
+      type: 'array',
+      title: 'Opinie',
+      of: [
+        {
+          type: 'object',
           title: 'Opinia',
-          validation: Rule => Rule.required(),
-        }),
+          fields: [
+            defineField({
+              name: 'img',
+              type: 'image',
+              title: 'Zdjęcie (opcjonalne)',
+            }),
+            defineField({
+              name: 'name',
+              type: 'string',
+              title: 'Imię i nazwisko',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'position',
+              type: 'string',
+              title: 'Stanowisko',
+            }),
+            defineField({
+              name: 'review',
+              type: 'PortableText',
+              title: 'Opinia',
+              validation: Rule => Rule.required(),
+            }),
+          ],
+        }
       ],
     }),
     defineField({

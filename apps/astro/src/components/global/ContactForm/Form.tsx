@@ -31,6 +31,7 @@ export default function Form({ analytics }: Props) {
 
   const contactType = watch('contactType', 'email');
   const clientType = watch('clientType', 'individual');
+  const parkingSpaces = watch('parkingSpaces', 'less10');
 
   const onSubmit = async (data: FieldValues) => {
     setStatus({ sending: true, success: undefined });
@@ -83,6 +84,10 @@ export default function Form({ analytics }: Props) {
     }
   };
 
+  const handleParkingSpacesChange = (value: 'less10' | '10to50' | 'more50') => {
+    setValue('parkingSpaces', value);
+  };
+
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
       <div
@@ -119,7 +124,6 @@ export default function Form({ analytics }: Props) {
           value={contactType}
         />
       </div>
-
       {contactType === 'email' && (
         <div key="email-info" className={`${styles.formInfo} ${styles.fadeInBlur}`}>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -147,6 +151,52 @@ export default function Form({ analytics }: Props) {
           })}
           errors={errors}
         />
+      </div>
+      <div className={styles.parkingSpacesSection}>
+        <div className={styles.parkingSpacesLabel}>
+          <label>Liczba miejsc parkingowych*</label>
+        </div>
+        <div
+          className={`${styles.pillSelector} ${styles.parkingSpacesPills}`}
+          role="radiogroup"
+          aria-label="Wybierz liczbę miejsc parkingowych"
+          data-selected={parkingSpaces}
+        >
+          <button
+            type="button"
+            role="radio"
+            aria-checked={parkingSpaces === 'less10'}
+            className={`${styles.pill} ${parkingSpaces === 'less10' ? styles.active : ''}`}
+            onClick={() => handleParkingSpacesChange('less10')}
+          >
+            {'< 10'}
+          </button>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={parkingSpaces === '10to50'}
+            className={`${styles.pill} ${parkingSpaces === '10to50' ? styles.active : ''}`}
+            onClick={() => handleParkingSpacesChange('10to50')}
+          >
+            10-50
+          </button>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={parkingSpaces === 'more50'}
+            className={`${styles.pill} ${parkingSpaces === 'more50' ? styles.active : ''}`}
+            onClick={() => handleParkingSpacesChange('more50')}
+          >
+            50+
+          </button>
+          <input
+            type="hidden"
+            {...register('parkingSpaces', {
+              required: { value: true, message: 'Wybór liczby miejsc parkingowych jest wymagany' }
+            })}
+            value={parkingSpaces}
+          />
+        </div>
       </div>
       <div className={styles.column}>
         <Input

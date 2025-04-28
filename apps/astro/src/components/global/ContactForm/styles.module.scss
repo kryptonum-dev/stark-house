@@ -100,4 +100,34 @@
       }
     }
   }
+
+  .parkingSpacesSection {
+    .parkingSpacesLabel {
+      margin-bottom: 0.25rem;
+      label {
+        font-size: calc(14rem / 16);
+        color: var(--neutral-700);
+      }
+    }
+    .parkingSpacesPills {
+      max-width: 100%;
+      &[data-selected='less10']::after {
+        transform: translateX(0);
+      }
+      &[data-selected='10to50']::after {
+        transform: translateX(calc(100% - 0.25rem));
+      }
+      &[data-selected='more50']::after {
+        transform: translateX(calc(200% - 0.25rem));
+      }
+      &::after {
+        width: 33.333%;
+      }
+      .pill {
+        &.active {
+          color: var(--neutral-700);
+        }
+      }
+    }
+  }
 }
