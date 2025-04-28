@@ -250,7 +250,8 @@ export default function Form({ analytics }: Props) {
         <div key="nip-field" className={styles.fadeInBlur}>
           <Input
             label='Numer NIP'
-            type='number'
+            type='text'
+            inputMode='numeric'
             register={register('nip', {
               validate: {
                 validNip: (value) => {
