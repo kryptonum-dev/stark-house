@@ -29,7 +29,6 @@ export default function Form({ analytics }: Props) {
     setValue,
   } = useForm({ mode: 'onTouched' });
 
-  const contactType = watch('contactType', 'email');
   const clientType = watch('clientType', 'individual');
   const parkingSpaces = watch('parkingSpaces', 'less10');
 
@@ -47,14 +46,14 @@ export default function Form({ analytics }: Props) {
         reset();
         await trackEvent({
           user_data: {
-            email: contactType === 'email' ? data.contactValue : undefined,
-            phone: contactType === 'phone' ? data.contactValue : undefined
+            email: data.email,
+            phone: data.phone
           },
           meta: {
             event_name: 'Lead',
             content_name: 'Contact Form'
           },
-          ...((analytics?.linkedin_conversion && contactType === 'email') && {
+          ...((analytics?.linkedin_conversion && data.email) && {
             linkedin: {
               pixel_conversion_id: analytics.linkedin_conversion.pixel_conversion_id,
               direct_api_conversion_id: analytics.linkedin_conversion.direct_api_conversion_id
@@ -72,11 +71,6 @@ export default function Form({ analytics }: Props) {
     }
   };
 
-  const handleContactTypeChange = (type: 'email' | 'phone') => {
-    setValue('contactType', type);
-    setValue('contactValue', '');
-  };
-
   const handleClientTypeChange = (type: 'individual' | 'business') => {
     setValue('clientType', type);
     if (type === 'individual') {
@@ -90,63 +84,32 @@ export default function Form({ analytics }: Props) {
 
   return (
     <form className={`${styles.form} Form`} onSubmit={handleSubmit(onSubmit)}>
-      <div
-        className={styles.pillSelector}
-        role="tablist"
-        aria-label="Wybierz metodę kontaktu"
-        data-type={contactType}
-      >
-        <button
-          type="button"
-          role="tab"
-          aria-selected={contactType === 'email'}
-          id="contact-email-tab"
-          aria-controls="contact-email-panel"
-          className={`${styles.pill} ${contactType === 'email' ? styles.active : ''}`}
-          onClick={() => handleContactTypeChange('email')}
-        >
-          Email
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={contactType === 'phone'}
-          id="contact-phone-tab"
-          aria-controls="contact-phone-panel"
-          className={`${styles.pill} ${contactType === 'phone' ? styles.active : ''}`}
-          onClick={() => handleContactTypeChange('phone')}
-        >
-          Telefon
-        </button>
-        <input
-          type="hidden"
-          {...register('contactType')}
-          value={contactType}
-        />
+      <div key="form-info" className={`${styles.formInfo} ${styles.fadeInBlur}`}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+        </svg>
+        <p>Po podaniu adresu e-mail i uzupełnieniu formularza wyślemy Ci nasz katalog.</p>
       </div>
-      {contactType === 'email' && (
-        <div key="email-info" className={`${styles.formInfo} ${styles.fadeInBlur}`}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
-          </svg>
-          <p>Po uzupełnieniu formularza wyślemy Ci nasz katalog oraz link do platformy, gdzie w 2 minuty uzyskasz wycenę swojego projektu.</p>
-        </div>
-      )}
-      <div
-        role="tabpanel"
-        id={contactType === 'email' ? 'contact-email-panel' : 'contact-phone-panel'}
-        aria-labelledby={contactType === 'email' ? 'contact-email-tab' : 'contact-phone-tab'}
-        key={`contact-${contactType}-panel`}
-        className={styles.fadeInBlur}
-      >
+      <div className={styles.column}>
         <Input
-          label={contactType === 'email' ? 'Adres e-mail*' : 'Numer telefonu*'}
-          type={contactType === 'email' ? 'email' : 'tel'}
-          register={register('contactValue', {
-            required: { value: true, message: contactType === 'email' ? 'Email jest wymagany' : 'Numer telefonu jest wymagany' },
+          label='Numer telefonu*'
+          type='tel'
+          register={register('phone', {
+            required: { value: true, message: 'Numer telefonu jest wymagany' },
             pattern: {
-              value: contactType === 'email' ? REGEX.email : REGEX.phone,
-              message: contactType === 'email' ? 'Niepoprawny adres e-mail' : 'Niepoprawny numer telefonu'
+              value: REGEX.phone,
+              message: 'Niepoprawny numer telefonu'
+            },
+          })}
+          errors={errors}
+        />
+        <Input
+          label='Adres e-mail'
+          type='email'
+          register={register('email', {
+            pattern: {
+              value: REGEX.email,
+              message: 'Niepoprawny adres e-mail'
             },
           })}
           errors={errors}

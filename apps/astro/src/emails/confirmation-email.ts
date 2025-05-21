@@ -1,4 +1,4 @@
-export const confirmationEmailTemplate = () => `
+export const confirmationEmailTemplate = (clientType: 'individual' | 'business') => `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="pl">
   <head>
@@ -40,6 +40,7 @@ export const confirmationEmailTemplate = () => `
               style="color:rgb(51,51,51);font-size:16px;line-height:24px;margin-bottom:16px;margin-top:16px">
               W załączniku przesyłamy katalog produktów Stark House. Znajdą w nim Państwo modele dla klientów indywidualnych oraz komercyjnych.
             </p>
+            ${clientType === 'business' ? `
             <p
               style="color:rgb(51,51,51);font-size:16px;line-height:24px;margin-top:24px;margin-bottom:16px">
               Jeśli chcą Państwo szybko wycenić projekt z wykorzystaniem carportów Stark House, zapraszamy na platforma.starkhouse.pl. W 2 minuty poznają Państwo wycenę realizacji z wykorzystaniem naszych carportów.
@@ -56,7 +57,7 @@ export const confirmationEmailTemplate = () => `
               ><span
                 ><!--[if mso]><i style="mso-font-width:400%" hidden>&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span
               ></a
-            >
+            >` : ''}
             <p
               style="color:rgb(51,51,51);font-size:16px;line-height:24px;margin-bottom:16px;margin-top:16px">
               Jeśli pojawią się jakiekolwiek pytania lub będą Państwo potrzebować dodatkowych informacji, pozostaję do dyspozycji.
@@ -115,7 +116,7 @@ export const confirmationEmailTemplate = () => `
 </html>
 `;
 
-export const confirmationEmailText = () => `
+export const confirmationEmailText = (clientType: 'individual' | 'business') => `
 Dziękujemy za zainteresowanie naszą ofertą.
 
 -----------------------------------------
@@ -126,10 +127,10 @@ Dziękujemy za zainteresowanie naszą ofertą.
 
 W załączniku przesyłamy katalog produktów Stark House. Znajdą w nim Państwo modele dla klientów indywidualnych oraz komercyjnych.
 
-Jeśli chcą Państwo szybko wycenić projekt z wykorzystaniem carportów Stark House, zapraszamy na platforma.starkhouse.pl. W 2 minuty poznają Państwo wycenę realizacji z wykorzystaniem naszych carportów.
+${clientType === 'business' ? `Jeśli chcą Państwo szybko wycenić projekt z wykorzystaniem carportów Stark House, zapraszamy na platforma.starkhouse.pl. W 2 minuty poznają Państwo wycenę realizacji z wykorzystaniem naszych carportów.
 
 SPRAWDŹ WYCENĘ NA PLATFORMIE: https://platforma.starkhouse.pl?utm_source=email&utm_medium=confirmation&utm_campaign=catalog
-
+` : ''}
 Jeśli pojawią się jakiekolwiek pytania lub będą Państwo potrzebować dodatkowych informacji, pozostaję do dyspozycji.
 
 -----------------------------------------
