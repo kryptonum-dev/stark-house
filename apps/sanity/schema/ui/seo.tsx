@@ -28,6 +28,13 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'noIndex',
+      type: 'boolean',
+      title: 'Blokuj indeksowanie (noindex)',
+      description: 'Ustaw noindex dla tej strony (zostanie dodany meta tag robots).',
+      initialValue: false,
+    }),
+    defineField({
       name: 'img',
       type: 'image',
       title: 'Social Share Image (optional)',

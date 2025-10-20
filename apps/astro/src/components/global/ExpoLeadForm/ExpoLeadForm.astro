@@ -1,0 +1,89 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/portable-text'
+import Form from './Form'
+
+export const ExpoLeadForm_Query = `
+  _type == "ExpoLeadForm" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    groupId,
+    "analytics": {
+      linkedin_conversion {
+        pixel_conversion_id,
+        direct_api_conversion_id
+      }
+    }
+  },
+`
+
+export type Props = {
+  index: number
+  sectionId?: string
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  groupId?: string
+  analytics?: {
+    linkedin_conversion?: {
+      pixel_conversion_id: number
+      direct_api_conversion_id: number
+    }
+  }
+}
+
+const { index, sectionId, heading, paragraph, groupId, analytics } = Astro.props
+---
+
+<section class="ExpoLeadForm sec-wo-margin" id={sectionId} light-background>
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      <PortableText value={paragraph} class="paragraph" />
+    </header>
+    <Form client:idle groupId={groupId} analytics={analytics} />
+  </div>
+</section>
+
+<style lang="scss">
+  .ExpoLeadForm {
+    padding: clamp(5rem, calc(5vw / 0.48), 7rem) 0;
+    position: relative;
+    z-index: 1;
+    &::before {
+      content: '';
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1/1;
+      background: linear-gradient(#fff1cc, rgba(255, 245, 218, 0));
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 38% 0, 100% 100%, 0% 100%);
+    }
+    .max-width {
+      display: grid;
+      gap: clamp(calc(42rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+      @media (min-width: calc(1000rem / 16)) {
+        grid-template-columns: 1fr 1fr;
+        :global(.Form) {
+          width: 100%;
+          margin-left: auto;
+          :global(.cta) {
+            width: fit-content;
+          }
+        }
+      }
+      :global(.Loader) {
+        color: var(--neutral-700, #222222);
+      }
+    }
+    header {
+      max-width: 38rem;
+      .paragraph {
+        margin-top: 1rem;
+      }
+    }
+  }
+</style>
+
+

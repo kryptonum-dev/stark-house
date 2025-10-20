@@ -15,7 +15,6 @@ export default defineType({
       name: 'nav_cta',
       type: 'cta',
       title: 'Wezwanie do działania w nawigacji',
-      validation: Rule => Rule.required(),
       options: {
         collapsible: true,
         collapsed: true,

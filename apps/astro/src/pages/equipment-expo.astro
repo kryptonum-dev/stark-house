@@ -1,0 +1,33 @@
+---
+import Layout from '@layouts/Layout.astro'
+import sanityFetch from '@utils/sanity.fetch'
+import metadataFetch from '@utils/metadata.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+
+const slug = '/equipment-expo'
+
+const page = await sanityFetch<{ nav_cta: any; title: string; components: ComponentsProps }>({
+  query: `
+    *[_type == 'Landing_Collection' && slug.current == $slug][0] {
+      title,
+      ${Components_Query}
+    }
+  `,
+  params: { slug },
+})
+
+const metadata = await metadataFetch('Landing_Collection', slug)
+---
+
+<Layout {...metadata}>
+  {page ? <Components data={page.components} /> : (
+    <section class="sec">
+      <div class="max-width">
+        <h1>Equipment Expo</h1>
+        <p>Ta strona zostanie wypełniona po dodaniu treści w CMS.</p>
+      </div>
+    </section>
+  )}
+</Layout>
+
+

@@ -19,6 +19,7 @@ import Partnership from "./components/Partnership";
 import Comparison from "./components/Comparison";
 import ListWithIcons from "./components/ListWithIcons";
 import OfferShowcase from "./components/OfferShowcase";
+import ExpoLeadForm from "./components/ExpoLeadForm";
 
 export default defineType({
   name: 'components',
@@ -45,6 +46,7 @@ export default defineType({
     Comparison,
     ListWithIcons,
     OfferShowcase,
+    ExpoLeadForm,
   ],
   options: {
     insertMenu: {

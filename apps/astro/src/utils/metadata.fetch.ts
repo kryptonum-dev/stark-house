@@ -13,6 +13,7 @@ export default async function metadataFetch(type: string, slug?: string): Promis
         "path": slug.current,
         "title": seo.title,
         "description": seo.description,
+        "noIndex": coalesce(seo.noIndex, false),
         "openGraphImage": {
           "url": seo.img.asset -> url + "?w=1200",
           "height": round(1200 / seo.img.asset -> metadata.dimensions.aspectRatio),

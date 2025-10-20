@@ -31,9 +31,10 @@ export type Props = {
   title: string
   description: string
   openGraphImage?: OpenGraphImageProps
+  noIndex?: boolean
 }
 
-const { path, title, description, openGraphImage } = Astro.props
+const { path, title, description, openGraphImage, noIndex } = Astro.props
 
 const OpenGraphImage = {
   url: openGraphImage?.url || seo.openGraphImage?.url,
@@ -70,3 +71,6 @@ const url = `${DOMAIN}${path}`
 <meta name="twitter:image:width" content="1200" />
 <meta name="twitter:image:height" content={OpenGraphImage.height} />
 <link rel="sitemap" href="/sitemap-index.xml" />
+{noIndex && (
+  <meta name="robots" content="noindex, nofollow" />
+)}

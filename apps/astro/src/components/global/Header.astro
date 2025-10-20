@@ -2,7 +2,7 @@
 import Button, { type ButtonDataProps } from '@components/ui/Button'
 
 type Props = {
-  nav_cta: ButtonDataProps
+  nav_cta?: ButtonDataProps
   tel?: string
 }
 
@@ -22,7 +22,7 @@ const { nav_cta, tel } = Astro.props
         </svg>
       </a>
       <div class="wrapper">
-        <Button {...nav_cta} className="cta" />
+        {nav_cta && <Button {...nav_cta} className="cta" />}
         {
           tel && (
             <a href={`tel:${tel}`} class="tel">

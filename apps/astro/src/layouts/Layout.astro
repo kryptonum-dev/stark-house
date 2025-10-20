@@ -15,7 +15,7 @@ type Props = HeadProps & {
 
 const { nav_cta, ...props } = Astro.props
 
-const data = await sanityFetch<{ tel?: string, socials: { facebook: string, linkedin: string } }>({
+const data = await sanityFetch<{ tel?: string; socials: { facebook: string; linkedin: string } }>({
   query: `
     *[_type == "global"][0] {
       tel,
@@ -35,7 +35,7 @@ const data = await sanityFetch<{ tel?: string, socials: { facebook: string, link
   </head>
   <body>
     <CookieConsent />
-    {nav_cta && <Header nav_cta={nav_cta} tel={data.tel} />}
+    <Header nav_cta={nav_cta} tel={data.tel} />
     <main id="main">
       <slot />
     </main>
